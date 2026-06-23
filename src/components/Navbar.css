@@ -122,5 +122,5 @@
 }
 
 .side-menu a:hover {
-    color: #d34242;
+    color: var(--accent);
 }
