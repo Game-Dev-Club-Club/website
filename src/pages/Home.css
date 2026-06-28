@@ -1,0 +1,55 @@
+h1 {
+    line-height: 1.5;
+}
+
+.logo {
+    width: 25%;
+    height: 25%;
+}
+
+.home-details {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5%;
+}
+
+.home-description-div {
+    display: flex;
+    margin: 20px;
+    height: 20%;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 5%;
+    transform-origin: bottom left;
+}
+
+
+.home-description {
+    flex-shrink: 0;
+    color: #ecdb33;
+    font-size: 3rem;
+    margin: 20px;
+    border-radius: 10%;
+    height: 15rem;
+    width: 15rem;
+    text-align: center;
+    background-color: #000000;
+    border: 15px solid #000000;
+    overflow: hidden;
+    aspect-ratio: 1/1;
+    transition: height 0.3s ease-in-out;
+    transition: width 0.3s ease-in-out;
+}
+
+.home-description:hover {
+    background-color: #191919;
+    border: 15px solid #191919;
+    height: 20rem;
+    width: 20rem;
+}
+
+.description {
+    width: 200%;
+    text-align: left;
+}
