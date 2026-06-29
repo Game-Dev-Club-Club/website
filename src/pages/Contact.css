@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Capriola&display=swap');
-
 .contact-page {
-  font-family: 'Capriola', sans-serif;
+  font-family: 'Capriola-Regular';
   /* Cancel the 2rem padding App.tsx wraps all routes in */
   margin: -2rem;
   /* Fill exactly the viewport — no scroll possible */
@@ -38,17 +36,17 @@
   width: 240px;
   height: 240px;
   border-radius: 50%;
-  background: var(--accent);
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--orange);
 }
 
 .sun-label {
   font-family: 'Capriola', sans-serif;
   font-size: 2.4rem;
-  color: #fff;
+  color: var(--blackberry);
   text-align: center;
   line-height: 1.1;
   user-select: none;
@@ -65,7 +63,9 @@
 }
 
 @keyframes ring-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ── Planet ─────────────────────────────────────────────── */
@@ -78,8 +78,10 @@
 */
 .planet {
   position: absolute;
-  top: -22px;          /* bubble center (half of 44px) sits on ring top edge */
-  left: calc(50% - 22px); /* ring center minus half bubble width */
+  top: -22px;
+  /* bubble center (half of 44px) sits on ring top edge */
+  left: calc(50% - 22px);
+  /* ring center minus half bubble width */
   width: 44px;
   overflow: visible;
   display: flex;
@@ -89,12 +91,18 @@
   text-decoration: none;
   animation: planet-counter linear infinite;
   pointer-events: auto;
-  transform-origin: 22px 22px; /* pivot at bubble center, not element center */
+  transform-origin: 22px 22px;
+  /* pivot at bubble center, not element center */
 }
 
 @keyframes planet-counter {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(-360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
 }
 
 /* ── Planet bubble ──────────────────────────────────────── */
@@ -156,7 +164,7 @@
   font-family: 'Capriola', sans-serif;
   font-size: 0.85rem;
   font-weight: 400;
-  color: rgba(255,255,255,0.9);
+  color: rgba(255, 255, 255, 0.9);
   margin: 0 0 4px;
   text-align: center;
   letter-spacing: 0.06em;
@@ -170,7 +178,7 @@
   padding: 8px 10px;
   border: none;
   border-radius: 10px;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   color: #fff;
   outline: none;
   resize: none;
@@ -179,15 +187,17 @@
 
 .email-form input::placeholder,
 .email-form textarea::placeholder {
-  color: rgba(255,255,255,0.55);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .email-form input:focus,
 .email-form textarea:focus {
-  background: rgba(255,255,255,0.32);
+  background: rgba(255, 255, 255, 0.32);
 }
 
-.email-form textarea { height: 70px; }
+.email-form textarea {
+  height: 70px;
+}
 
 .email-form button {
   font-family: 'Capriola', sans-serif;
@@ -195,18 +205,21 @@
   padding: 8px 0;
   border: none;
   border-radius: 10px;
-  background: rgba(255,255,255,0.25);
+  background: rgba(255, 255, 255, 0.25);
   color: #fff;
   cursor: pointer;
   transition: background 0.15s ease, transform 0.1s ease;
 }
 
 .email-form button:hover:not(:disabled) {
-  background: rgba(255,255,255,0.42);
+  background: rgba(255, 255, 255, 0.42);
   transform: scale(1.03);
 }
 
-.email-form button:disabled { opacity: 0.6; cursor: default; }
+.email-form button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
 
 .form-sent {
   display: flex;
@@ -217,8 +230,15 @@
   font-family: 'Capriola', sans-serif;
 }
 
-.form-sent span { font-size: 2rem; }
-.form-sent p    { font-size: 0.8rem; opacity: 0.9; margin: 0; }
+.form-sent span {
+  font-size: 2rem;
+}
+
+.form-sent p {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  margin: 0;
+}
 
 /* ── Mobile layout ──────────────────────────────────────── */
 
@@ -281,7 +301,18 @@
 /* ── Breakpoints ────────────────────────────────────────── */
 
 @media (max-width: 680px) {
-  .solar-system   { display: none; }
-  .contact-mobile { display: flex; }
-  .contact-page   { margin: -2rem; height: auto; overflow: visible; padding: 2rem 0 4rem; }
+  .solar-system {
+    display: none;
+  }
+
+  .contact-mobile {
+    display: flex;
+  }
+
+  .contact-page {
+    margin: -2rem;
+    height: auto;
+    overflow: visible;
+    padding: 2rem 0 4rem;
+  }
 }

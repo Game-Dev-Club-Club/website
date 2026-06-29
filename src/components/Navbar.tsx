@@ -25,7 +25,7 @@ const Navbar = () => {
                 <span />
             </button>
 
-            <div className={`side-menu ${isOpen ? 'open' : ''}`}>
+            <div className={`ml-5 font-cascadia side-menu ${isOpen ? 'open' : ''}`}>
                 <Link to="/" onClick={closeMenu}>
                     Home
                 </Link>

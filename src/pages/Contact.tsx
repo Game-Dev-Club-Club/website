@@ -73,8 +73,8 @@ function OrbitPlanet({ social }: { social: SocialLink }) {
       ref={ringRef}
       className="orbit-ring"
       style={{
-        width:  social.orbitRadius * 2,
-        height: social.orbitRadius * 2,
+        width:  `${social.orbitRadius * 2}px`, 
+        height: `${social.orbitRadius * 2}px`, 
         top:  `calc(50% - ${social.orbitRadius}px)`,
         left: `calc(50% - ${social.orbitRadius}px)`,
         animationDuration: `${social.speed}s`,
@@ -94,7 +94,7 @@ function OrbitPlanet({ social }: { social: SocialLink }) {
         aria-label={social.name}
         title={social.name}
       >
-        <div className="planet-bubble" style={{ background: social.color }}>
+        <div className="planet-bubble no-cursor" style={{ background: social.color }}>
           <social.Icon />
         </div>
         <span className="planet-label">{social.name}</span>

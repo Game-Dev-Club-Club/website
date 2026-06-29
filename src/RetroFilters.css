@@ -1,0 +1,90 @@
+.crt-scanlines {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.6) 0%,
+            rgba(0, 0, 0, 0.6) 33%,
+            rgba(255, 255, 255, 0.6) 66%,
+            rgba(0, 0, 0, 0.1) 100%);
+    background-size: 100% 6px;
+
+    opacity: 0.1;
+
+    background-position: 0px 0px;
+    animation: scanline-scroll 2s linear infinite;
+}
+
+@keyframes scanline-scroll {
+    0% {
+        background-position: 0px 0px;
+    }
+
+    100% {
+        background-position: 0px 60px;
+    }
+}
+
+/* 2. The Slow Refresh Flicker - Now an Electric Glow */
+.crt-flicker-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 15%;
+    z-index: 51;
+    pointer-events: none;
+    /* Changed from dull gray to a bright, glowing cyan-white */
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0),
+            rgba(200, 255, 255, 0.6) 50%,
+            rgba(255, 255, 255, 0));
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+    animation: crt-scroll 6s linear infinite;
+    mix-blend-mode: screen;
+    /* Ensures it acts as pure light */
+}
+
+@keyframes crt-scroll {
+    0% {
+        transform: translateY(-100%);
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(1000%);
+        /* Changed from 100vh so it scales with the box */
+        opacity: 1;
+    }
+}
+
+.vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 52;
+    pointer-events: none;
+
+    background: radial-gradient(circle,
+            transparent 35%,
+            white 45.5%);
+}
+
+/* 4. Chromatic Aberration for Text */
+.retro-pixel-text {
+    font-family: 'VT323', monospace;
+
+    /* This creates the classic RGB separation effect on any text inside the container */
+    text-shadow:
+        1.5px 0 0 rgba(255, 0, 0, 0.7),
+        -1.5px 0 0 rgba(0, 255, 255, 0.7);
+}
+
+/* Ensures any 2D images stay blocky */
+img {
+    image-rendering: pixelated;
+}

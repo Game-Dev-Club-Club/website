@@ -1,121 +1,145 @@
+@import "tailwindcss";
+
+
+
+@font-face {
+  font-family: "Capriola";
+  src: url("./assets/fonts/Capriola-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "CascadiaCode-Regular";
+  src: url("./assets/fonts/CascadiaCode-VariableFont_wght.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "CascadiaCode-Italic";
+  src: url("./assets/fonts/CascadiaCode-Italic-VariableFont_wght.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "BebasNeue-Regular";
+  src: url("./assets/fonts/BebasNeue-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hiruko-Black";
+  src: url("./assets/fonts/hirukoblackalternate.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@theme {
+  --font-capriola: "Capriola", sans-serif;
+  --font-cascadia: "CascadiaCode-Regular", monospace;
+  --font-cascadia-italic: "CascadiaCode-Italic", monospace;
+  --font-bebas: "BebasNeue-Regular", sans-serif;
+  --font-hiruko: "Hiruko-Black", sans-serif;
+}
+
 :root {
-  /* ── Palette ────────────────────────────────────────────
-     Row 1 (darks):  navy #161520 · indigo #1d1b38 · plum #3c1e5a · teal #1b4a6a
-     Row 2 (mids):   sky #5aaecf  · emerald #23a468 · green #4aad32 · lime #a9c93a
-     Row 3 (warms):  coral #e84040 · salmon #f06060 · pink #f07890 · blush #f0a0a0
-     Row 4 (lights): orange #f08020 · gold #f0b020 · yellow #f0d840 · cream #faf0d0
-  ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── */
-
-  --text: #4a3060;
-  --text-h: #161520;
-  --bg: #ffffff;
-  --border: #e0d8f0;
-  --code-bg: #faf0d0;
-  --accent: #e84040;
-  --accent-bg: rgba(232, 64, 64, 0.08);
-  --accent-border: rgba(232, 64, 64, 0.30);
-  --social-bg: rgba(250, 240, 208, 0.5);
-  --shadow:
-    rgba(22, 21, 32, 0.10) 0 10px 15px -3px, rgba(22, 21, 32, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* COLOR PALETTE! */
+  --blackberry: #120e23;
+  --grape: #472859;
+  --blueberry: #225875;
+  --verdant: #249E4F;
+  --leaf: #70AF17;
+  --ripe: #B6CC3D;
+  --pale: #FFF7CE;
+  --offwhite: #fffcf6;
+  --orange: #FC931A;
+  --strawberry1: #EA5C5C;
+  --strawberry2: #FF6F68;
+  --strawberry3: #FF8688;
+  --strawberry4: #FF9A8F;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #a0b8cf;
-    --text-h: #faf0d0;
-    --bg: #161520;
-    --border: #2a2248;
-    --code-bg: #1d1b38;
-    --accent: #f08020;
-    --accent-bg: rgba(240, 128, 32, 0.12);
-    --accent-border: rgba(240, 128, 32, 0.40);
-    --social-bg: rgba(29, 27, 56, 0.6);
-    --shadow:
-      rgba(0, 0, 0, 0.40) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
 
 #root {
   width: 1126px;
+  height: 100vh;
   max-width: 100%;
   margin: 0 auto;
-  text-align: center;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  cursor: none;
 }
 
 body {
   margin: 0;
+  cursor: none;
+  background-color: var(--offwhite);
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+::selection {
+  background-color: var(--ripe);
+  color: #161520;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
 
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+@keyframes popInChar {
+  0% {
+    opacity: 0;
+    transform: scale(0) translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 }
 
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
+@keyframes fadeInText {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 
-  @media (max-width: 1024px) {
-    font-size: 20px;
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-p {
-  margin: 0;
+/* Optional utility class for the header/footer */
+.animate-fade-in {
+  opacity: 0;
+  animation: fadeInText 0.6s ease-out forwards;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+.diagonal-bg {
+  background-color: white;
+  /* Base color (gray-100) */
+  /* Uses two linear gradients to draw intersecting horizontal and vertical lines */
+  background-image:
+    linear-gradient(#e5e7eb 2px, transparent 2px),
+    linear-gradient(90deg, #e5e7eb 2px, transparent 2px);
+  background-size: 40px 40px;
+  /* Size of each grid square */
+
+  animation: diagonalScroll 8s linear infinite;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+@keyframes diagonalScroll {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 200px 200px;
+  }
+}
+
+.no-cursor {
+  cursor: none;
 }
