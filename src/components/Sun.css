@@ -1,0 +1,80 @@
+/* ── Central sun ────────────────────────────────────────── */
+
+:root {
+    --orange: #ff9800;
+    --blackberry: #1a1a24;
+    /* A very subtle gradient: soft light orange fading into your main orange */
+    --sun-gradient: radial-gradient(circle at 30% 30%, #ffb74d 0%, var(--orange) 60%);
+}
+
+.sun-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 160px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    /* Makes it feel like a button */
+
+    /* 1. Add a transition for a smooth, slightly bouncy scale effect */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 2. Scale the entire container on hover */
+.sun-container:hover {
+    /* We must keep the translate so it stays centered, then add the scale */
+    transform: translate(-50%, -50%) scale(1.15);
+    cursor: none;
+}
+
+/* The main sun */
+.sun {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Applying the subtle gradient */
+    background: var(--sun-gradient);
+
+    /* 4. Add a smooth transition so the glow fades in and out nicely */
+    transition: box-shadow 0.3s ease-in-out;
+
+    /* Made the animation twice as fast (3s) and increased the distance */
+    animation: float 3s ease-in-out infinite;
+}
+
+.sun-label {
+    font-family: 'Capriola', sans-serif;
+    font-size: 1.8rem;
+    color: var(--blackberry);
+    text-align: center;
+    line-height: 1.1;
+    user-select: none;
+    z-index: 15;
+}
+
+/* ── Animations ─────────────────────────────────────────── */
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        /* Increased from -8px to -15px so the movement is obvious */
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}

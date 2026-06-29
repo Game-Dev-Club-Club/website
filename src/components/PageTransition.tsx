@@ -28,7 +28,7 @@ export default function PageTransition({ children }) {
           <h1 className="text-4xl font-hiruko text-white tracking-widest mb-4">
             game dev club club
           </h1>
-          <p className="text-zinc-400 font-cascadia uppercase animate-pulse">
+          <p className="text-(--pale) font-cascadia uppercase animate-pulse">
             loading...
           </p>
         </motion.div>

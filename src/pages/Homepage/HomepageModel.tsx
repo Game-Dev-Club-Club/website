@@ -66,7 +66,7 @@ function InteractivePlaceholder({
 
   return (
     <mesh {...props} ref={meshRef}>
-      <boxGeometry args={[2, 2, 2]} />
+      <boxGeometry args={[3, 3, 3]} />
       <meshStandardMaterial color="#ff6b6b" />
     </mesh>
   );

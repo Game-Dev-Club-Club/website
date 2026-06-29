@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import './Contact.css';
+import Sun from '../components/Sun'
 
 const DiscordIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
@@ -173,9 +174,7 @@ function Contact() {
 
       {/* Desktop: planetary system */}
       <div className="solar-system">
-        <div className="sun">
-          <span className="sun-label">Contact<br />Us</span>
-        </div>
+        <Sun />
         {socials.map(s => <OrbitPlanet key={s.name} social={s} />)}
       </div>
 

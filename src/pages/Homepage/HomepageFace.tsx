@@ -10,7 +10,7 @@ function HomepageFace() {
   const baseRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const highlightRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
-  const radius = 45;
+  const radius = 60;
   const strength = 0.12;
   const push = 5;
   const lerp = 0.15;
@@ -129,7 +129,7 @@ function HomepageFace() {
 
   return (
     <div>
-      <h1 className="text-3xl font-capriola text-[var(--grape)] leading-[1.3]">
+      <h1 className="text-3xl font-capriola text-[var(--blackberry)] leading-[1.3]">
         Hi! We are the
       </h1>
 
@@ -137,7 +137,8 @@ function HomepageFace() {
         ref={textRef}
         className="relative inline-block"
       >
-        <h1 className="text-6xl select-none font-hiruko text-[var(--blackberry)] leading-[1.3]">
+        {/* Added drop-shadow-lg here! */}
+        <h1 className="text-6xl select-none font-hiruko text-[var(--blackberry)] leading-[1.3] drop-shadow-lg">
           {renderLayer(baseRefs)}
         </h1>
 
