@@ -4,16 +4,16 @@ import './Jam.css';
 
 /* ------------------------------------------------------------------
    Data model
-   Each edition is one game jam. The active edition ('live' or
-   'in progress') drives the timer + join goal; 'past' editions become
-   the archive timeline and, when selected, swap the hero into a
-   finished "stats" view.
+   Each edition is one game jam. Status can be:
+   - 'upcoming': jam is being set up, not yet announced
+   - 'in progress': jam is active, show countdown + join
+   - 'past': jam is finished, show final stats
 
    To run a real jam: replace `liveEndsAt` below with a fixed ISO date
    (e.g. new Date('2026-07-15T23:59:00')) and update `joined`/`itchUrl`.
 ------------------------------------------------------------------- */
 
-type JamStatus = 'live' | 'in progress' | 'past';
+type JamStatus = 'upcoming' | 'in progress' | 'past';
 
 interface JamEdition {
   id: string;
@@ -44,7 +44,7 @@ const EDITIONS: JamEdition[] = [
     number: 1,
     title: 'Summer Jam',
     theme: 'TBD',
-    status: 'in progress',
+    status: 'upcoming',
     joined: 0,
     goal: 200,
     itchUrl: 'https://itch.io/jams',
@@ -55,9 +55,13 @@ const EDITIONS: JamEdition[] = [
    Helpers
 ------------------------------------------------------------------- */
 
-/* Anything that isn't finished shows the active (timer + join) view. */
+/* Active jams show countdown + join meter. */
 function isActive(jam: JamEdition): boolean {
-  return jam.status !== 'past';
+  return jam.status === 'in progress';
+}
+
+function isUpcoming(jam: JamEdition): boolean {
+  return jam.status === 'upcoming';
 }
 
 interface TimeLeft { days: number; hours: number; mins: number; secs: number; done: boolean; }
@@ -185,11 +189,12 @@ function ThemeWord({ text }: { text: string }) {
 }
 
 /* ------------------------------------------------------------------
-   Hero — adapts to active vs finished editions
+   Hero — adapts to upcoming / active vs finished editions
 ------------------------------------------------------------------- */
 
 function Hero({ jam }: { jam: JamEdition }) {
   const active = isActive(jam);
+  const upcoming = isUpcoming(jam);
 
   return (
     <motion.div
@@ -204,7 +209,11 @@ function Hero({ jam }: { jam: JamEdition }) {
         style={{ background: 'linear-gradient(135deg, var(--verdant), var(--leaf))' }}
       >
         <div className="flex items-center gap-2">
-          {active ? (
+          {upcoming ? (
+            <span className="font-cascadia text-sm uppercase tracking-[0.25em] text-(--pale)">
+              Coming soon
+            </span>
+          ) : active ? (
             <>
               <span className="jam-live-dot h-3 w-3 rounded-full bg-(--strawberry2)" />
               <span className="font-cascadia text-sm uppercase tracking-[0.25em] text-(--pale)">
@@ -218,7 +227,11 @@ function Hero({ jam }: { jam: JamEdition }) {
           )}
         </div>
 
-        {active ? (
+        {upcoming ? (
+          <div className="font-capriola text-2xl text-(--pale) tracking-wide">
+            Details coming soon
+          </div>
+        ) : active ? (
           <Countdown target={liveEndsAt} />
         ) : (
           <div className="grid grid-cols-3 gap-6 sm:gap-10">
@@ -229,7 +242,11 @@ function Hero({ jam }: { jam: JamEdition }) {
         )}
 
         <div className="w-full max-w-xl mt-1">
-          {active ? (
+          {upcoming ? (
+            <p className="font-cascadia text-sm text-(--pale)">
+              Theme, dates, and submission details will be announced here.
+            </p>
+          ) : active ? (
             <JoinMeter joined={jam.joined} goal={jam.goal} />
           ) : (
             <p className="font-cascadia text-sm text-(--pale)">
@@ -246,31 +263,35 @@ function Hero({ jam }: { jam: JamEdition }) {
         style={{ background: 'linear-gradient(160deg, var(--orange), #ffb347)' }}
       >
         <span className="font-cascadia text-sm uppercase tracking-[0.3em] text-(--blackberry)/70 mb-4">
-          {active ? 'This jam\u2019s theme' : 'The theme was'}
+          {upcoming ? 'The first jam' : active ? 'This jam\u2019s theme' : 'The theme was'}
         </span>
 
         <ThemeWord text={jam.theme} />
 
         <p className="font-capriola text-(--blackberry)/80 text-center max-w-xl mt-6 text-sm sm:text-base">
-          {active
+          {upcoming
+            ? 'We\u2019re putting together our first game jam. Stay tuned!'
+            : active
             ? 'Make a game in 48 hours.'
             : 'See what the game devs were able to make on our itch.'}
         </p>
 
-        {/* itch CTA — straddles the seam between THEME and TIMELINE */}
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 z-20">
-          <a
-            href={jam.itchUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="jam-join-btn no-cursor block rounded-2xl px-8 py-5 text-center"
-            style={{ background: 'linear-gradient(180deg, var(--ripe), #c9e04a)' }}
-          >
-            <span className="font-bebas text-2xl sm:text-3xl tracking-wide text-(--blackberry)">
-              {active ? 'JOIN ON ITCH' : 'PLAY THE ENTRIES'}
-            </span>
-          </a>
-        </div>
+        {/* itch CTA — only show when active or past */}
+        {!upcoming && (
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 z-20">
+            <a
+              href={jam.itchUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="jam-join-btn no-cursor block rounded-2xl px-8 py-5 text-center"
+              style={{ background: 'linear-gradient(180deg, var(--ripe), #c9e04a)' }}
+            >
+              <span className="font-bebas text-2xl sm:text-3xl tracking-wide text-(--blackberry)">
+                {active ? 'JOIN ON ITCH' : 'PLAY THE ENTRIES'}
+              </span>
+            </a>
+          </div>
+        )}
       </div>
     </motion.div>
   );
@@ -319,7 +340,8 @@ function Timeline({
       <div className="jam-timeline-scroll flex gap-4 overflow-x-auto pb-3 -mx-1 px-1">
         {editions.map((jam, i) => {
           const selected = jam.id === selectedId;
-          const liveCard = isActive(jam);
+          const isUpcomingCard = isUpcoming(jam);
+          const isActiveCard = isActive(jam);
           return (
             <motion.button
               key={jam.id}
@@ -342,7 +364,11 @@ function Timeline({
                 >
                   #{pad(jam.number)}
                 </span>
-                {liveCard ? (
+                {isUpcomingCard ? (
+                  <span className={`font-cascadia text-[0.6rem] uppercase tracking-widest ${selected ? 'text-(--grape)' : 'text-(--pale)/60'}`}>
+                    soon
+                  </span>
+                ) : isActiveCard ? (
                   <span className="flex items-center gap-1">
                     <span className="jam-live-dot h-2 w-2 rounded-full bg-(--strawberry2)" />
                     <span className={`font-cascadia text-[0.6rem] uppercase tracking-widest ${selected ? 'text-(--strawberry1)' : 'text-(--strawberry3)'}`}>
@@ -361,7 +387,9 @@ function Timeline({
               </p>
 
               <p className={`font-cascadia text-[0.7rem] mt-3 ${selected ? 'text-(--blueberry)/70' : 'text-(--pale)/70'}`}>
-                {liveCard
+                {isUpcomingCard
+                  ? 'Announcement coming'
+                  : isActiveCard
                   ? `${jam.joined} joined`
                   : `${jam.stats!.submissions} games \u00b7 ${jam.stats!.participants} devs`}
               </p>
@@ -378,14 +406,14 @@ function Timeline({
 ------------------------------------------------------------------- */
 
 function Jam() {
-  const liveJam = EDITIONS.find(isActive) ?? EDITIONS[0];
+  const liveJam = EDITIONS.find(isActive) ?? EDITIONS.find(isUpcoming) ?? EDITIONS[0];
   const [selectedId, setSelectedId] = useState(liveJam.id);
   const selected = EDITIONS.find((j) => j.id === selectedId) ?? liveJam;
 
   return (
     <div className="relative z-10 w-full flex justify-center">
       <div className="w-full max-w-screen-4xl bg-(--verdant-faded) py-8 px-4 sm:px-8 shadow-2xl overflow-hidden">
-        <div className="relative z-10 w-full flex flex-col bg-white py-8 px-4 sm:px-8 shadow-2xl rounded-lg">
+        <div className="relative z-10 w-full flex flex-col bg-white py-8 px-4 sm:px-8 shadow-2xl">
 
           {/* header */}
           <div className="flex flex-col items-center text-center mb-6">
