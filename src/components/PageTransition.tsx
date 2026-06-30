@@ -1,9 +1,9 @@
-import React from 'react';
+import { type ReactNode } from 'react';
 import { motion } from 'framer-motion';
 // If you want to use the missing textures image in the loading screen:
 // import missing from '../assets/img/Missing_Textures_artwork.jpg';
 
-export default function PageTransition({ children }) {
+export default function PageTransition({ children }: { children?: ReactNode }) {
   return (
     <div className="relative w-full min-h-screen">
       

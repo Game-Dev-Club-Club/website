@@ -1,5 +1,4 @@
-import React from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
 
 import CustomCursor from './components/CustomCursor';
@@ -7,9 +6,7 @@ import PageTransition from './components/PageTransition';
 import AnimatedRoutes from './components/AnimatedRoutes';
 
 import "./App.css";
-import Home from './pages/Homepage/Home';
-import Contact from './pages/Contact';
-import Jam from './pages/Jam';
+
 
 const App = () => {
   return (
