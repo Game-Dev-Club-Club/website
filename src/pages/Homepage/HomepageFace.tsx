@@ -129,7 +129,7 @@ function HomepageFace() {
 
   return (
     <div>
-      <h1 className="text-3xl font-capriola text-[var(--blackberry)] leading-[1.3]">
+      <h1 className="mb-3 text-3xl font-cascadia text-(--blackberry) leading-[1.3]">
         Hi! We are the
       </h1>
 
@@ -138,7 +138,7 @@ function HomepageFace() {
         className="relative inline-block"
       >
         {/* Added drop-shadow-lg here! */}
-        <h1 className="text-6xl select-none font-hiruko text-[var(--blackberry)] leading-[1.3] drop-shadow-lg">
+        <h1 className="text-6xl select-none font-hiruko text-(--blackberry) leading-[1.3] drop-shadow-lg">
           {renderLayer(baseRefs)}
         </h1>
 
@@ -153,7 +153,7 @@ function HomepageFace() {
         </h1>
       </div>
 
-      <h2 className="mt-6 text-2xl font-cascadia text-[var(--grape)] leading-[1.3]">
+      <h2 className="mt-6 text-2xl font-cascadia text-[var(--blackberry)] leading-[1.3]">
         A club for game dev clubs.
       </h2>
     </div>
