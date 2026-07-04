@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import './Contact.css';
 import Sun from '../components/Sun'
-import EmailForm from '../components/MobileEmailForm';
+import DesktopEmailForm from '../components/DesktopEmailForm';
+import MobileEmailForm from '../components/MobileEmailForm';
 import { OrbitPlanet } from '../components/OrbitPlanets';
 import type { SocialLink } from '../components/OrbitPlanets';
 
@@ -42,9 +43,9 @@ const ItchIcon = () => (
 );
 
 const socials: SocialLink[] = [
-  { name: 'Discord', url: '#', color: '#5865F2', orbitRadius: 165, speed: 12, startAngle: 30, Icon: DiscordIcon },
-  { name: 'X', url: '#', color: '#2d3a4a', orbitRadius: 215, speed: 17, startAngle: 100, Icon: XIcon },
-  { name: 'Instagram', url: '#', color: '#C13584', orbitRadius: 265, speed: 23, startAngle: 200, Icon: InstagramIcon },
+  { name: 'Discord', url: 'https://discord.gg/gamedevclubclub', color: '#5865F2', orbitRadius: 165, speed: 12, startAngle: 30, Icon: DiscordIcon },
+  { name: 'X', url: 'https://x.com/gamedevclubclub', color: '#2d3a4a', orbitRadius: 215, speed: 17, startAngle: 100, Icon: XIcon },
+  { name: 'Instagram', url: 'https://www.instagram.com/gamedevclubclub/', color: '#C13584', orbitRadius: 265, speed: 23, startAngle: 200, Icon: InstagramIcon },
   { name: 'GitHub', url: 'https://github.com/Game-Dev-Club-Club', color: '#23a468', orbitRadius: 315, speed: 30, startAngle: 260, Icon: GitHubIcon },
   { name: 'YouTube', url: '#', color: '#FF0000', orbitRadius: 365, speed: 38, startAngle: 150, Icon: YouTubeIcon },
   { name: 'Itch.io', url: '#', color: '#f08020', orbitRadius: 415, speed: 47, startAngle: 320, Icon: ItchIcon },
@@ -70,7 +71,7 @@ function Contact() {
       <div className="solar-system">
         <Sun onClickEffect={openEmailForm} />
         {socials.map(s => <OrbitPlanet key={s.name} social={s} />)}
-        <EmailForm opened={emailFormOpened} />
+        <DesktopEmailForm opened={emailFormOpened} />
       </div>
 
       {/* Mobile: card grid */}
@@ -89,6 +90,7 @@ function Contact() {
               <span className="planet-label">{s.name}</span>
             </a>
           ))}
+          <MobileEmailForm />
         </div>
       </div>
     </div>

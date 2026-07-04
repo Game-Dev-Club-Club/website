@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from 'react';
 import '../pages/Contact.css';
 
 type FormState = 'idle' | 'sending' | 'sent';
-const MobileEmailForm = () => {
+const DesktopEmailForm = (props: { opened: boolean }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
@@ -31,7 +31,7 @@ const MobileEmailForm = () => {
 
     return (
         <div>
-            <form className={"email-form mobile-email-form "} onSubmit={handleSubmit}>
+            <form className={"email-form desktop-email-form " + (props.opened ? 'show' : 'hide')} onSubmit={handleSubmit}>
                 <h2>Send us a message</h2>
                 <input
                     type="text"
@@ -62,4 +62,4 @@ const MobileEmailForm = () => {
     );
 }
 
-export default MobileEmailForm;
+export default DesktopEmailForm;

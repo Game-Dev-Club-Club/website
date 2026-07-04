@@ -37,6 +37,7 @@ export function OrbitPlanet({ social }: { social: SocialLink }) {
                 animationDuration: `${social.speed}s`,
                 animationDelay: delay,
             }}
+            onClick={() => { window.location.href = social.url }}
         >
             <a
                 ref={planetRef}
