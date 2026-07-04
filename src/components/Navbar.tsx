@@ -33,10 +33,16 @@ const Navbar = () => {
                 <Link to="/contact-us" onClick={closeMenu}>
                     Contact Us
                 </Link>
+                
+                <Link to="/map" onClick={closeMenu}>
+                    Map
+                </Link>
 
                 <Link to="/jam" onClick={closeMenu}>
                     Jam
                 </Link>
+
+
             </div>
         </>
     );
