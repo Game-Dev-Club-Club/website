@@ -15,6 +15,8 @@ export function OrbitPlanet({ social }: { social: SocialLink }) {
     const ringRef = useRef<HTMLDivElement>(null);
     const planetRef = useRef<HTMLAnchorElement>(null);
 
+    console.log(social);
+
     const setPaused = (paused: boolean) => {
         const state = paused ? 'paused' : 'running';
         if (ringRef.current) ringRef.current.style.animationPlayState = state;
@@ -35,7 +37,6 @@ export function OrbitPlanet({ social }: { social: SocialLink }) {
                 animationDuration: `${social.speed}s`,
                 animationDelay: delay,
             }}
-            onClick={() => window.open(social.url, '_blank')}
         >
             <a
                 ref={planetRef}
