@@ -1,6 +1,9 @@
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './Contact.css';
 import Sun from '../components/Sun'
+import EmailForm from '../components/MobileEmailForm';
+import { OrbitPlanet } from '../components/OrbitPlanets';
+import type { SocialLink } from '../components/OrbitPlanets';
 
 const DiscordIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
@@ -38,130 +41,15 @@ const ItchIcon = () => (
   </svg>
 );
 
-interface SocialLink {
-  name: string;
-  url: string;
-  color: string;
-  orbitRadius: number;
-  speed: number;
-  startAngle: number;
-  Icon: () => React.ReactElement;
-}
-
 const socials: SocialLink[] = [
-  { name: 'Discord',   url: '#', color: '#5865F2', orbitRadius: 165, speed: 12, startAngle: 30,  Icon: DiscordIcon   },
-  { name: 'X',         url: '#', color: '#2d3a4a', orbitRadius: 215, speed: 17, startAngle: 100, Icon: XIcon         },
+  { name: 'Discord', url: '#', color: '#5865F2', orbitRadius: 165, speed: 12, startAngle: 30, Icon: DiscordIcon },
+  { name: 'X', url: '#', color: '#2d3a4a', orbitRadius: 215, speed: 17, startAngle: 100, Icon: XIcon },
   { name: 'Instagram', url: '#', color: '#C13584', orbitRadius: 265, speed: 23, startAngle: 200, Icon: InstagramIcon },
-  { name: 'GitHub',    url: '#', color: '#23a468', orbitRadius: 315, speed: 30, startAngle: 260, Icon: GitHubIcon    },
-  { name: 'YouTube',   url: '#', color: '#FF0000', orbitRadius: 365, speed: 38, startAngle: 150, Icon: YouTubeIcon   },
-  { name: 'Itch.io',  url: '#', color: '#f08020', orbitRadius: 415, speed: 47, startAngle: 320, Icon: ItchIcon      },
+  { name: 'GitHub', url: '#', color: '#23a468', orbitRadius: 315, speed: 30, startAngle: 260, Icon: GitHubIcon },
+  { name: 'YouTube', url: '#', color: '#FF0000', orbitRadius: 365, speed: 38, startAngle: 150, Icon: YouTubeIcon },
+  { name: 'Itch.io', url: '#', color: '#f08020', orbitRadius: 415, speed: 47, startAngle: 320, Icon: ItchIcon },
 ];
 
-function OrbitPlanet({ social }: { social: SocialLink }) {
-  const ringRef  = useRef<HTMLDivElement>(null);
-  const planetRef = useRef<HTMLAnchorElement>(null);
-
-  const setPaused = (paused: boolean) => {
-    const state = paused ? 'paused' : 'running';
-    if (ringRef.current)   ringRef.current.style.animationPlayState   = state;
-    if (planetRef.current) planetRef.current.style.animationPlayState = state;
-  };
-
-  const delay = `-${(social.startAngle / 360) * social.speed}s`;
-
-  return (
-    <div
-      ref={ringRef}
-      className="orbit-ring"
-      style={{
-        width:  `${social.orbitRadius * 2}px`, 
-        height: `${social.orbitRadius * 2}px`, 
-        top:  `calc(50% - ${social.orbitRadius}px)`,
-        left: `calc(50% - ${social.orbitRadius}px)`,
-        animationDuration: `${social.speed}s`,
-        animationDelay: delay,
-      }}
-    >
-      <a
-        ref={planetRef}
-        href={social.url}
-        className="planet"
-        style={{
-          animationDuration: `${social.speed}s`,
-          animationDelay: delay,
-        }}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        aria-label={social.name}
-        title={social.name}
-      >
-        <div className="planet-bubble no-cursor" style={{ background: social.color }}>
-          <social.Icon />
-        </div>
-        <span className="planet-label">{social.name}</span>
-      </a>
-    </div>
-  );
-}
-
-type FormState = 'idle' | 'sending' | 'sent';
-
-function EmailForm() {
-  const [name, setName]       = useState('');
-  const [email, setEmail]     = useState('');
-  const [message, setMessage] = useState('');
-  const [status, setStatus]   = useState<FormState>('idle');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('sending');
-    setTimeout(() => {
-      setStatus('sent');
-      setName('');
-      setEmail('');
-      setMessage('');
-    }, 1000);
-  };
-
-  if (status === 'sent') {
-    return (
-      <div className="form-sent">
-        <span>✓</span>
-        <p>Message sent!</p>
-      </div>
-    );
-  }
-
-  return (
-    <form className="email-form" onSubmit={handleSubmit}>
-      <h2>Send us a message</h2>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={e => setName(e.target.value)}
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        required
-      />
-      <textarea
-        placeholder="Message"
-        value={message}
-        onChange={e => setMessage(e.target.value)}
-        rows={3}
-        required
-      />
-      <button type="submit" disabled={status === 'sending'}>
-        {status === 'sending' ? 'Sending…' : 'Send'}
-      </button>
-    </form>
-  );
-}
 
 function Contact() {
   useEffect(() => {
@@ -169,20 +57,24 @@ function Contact() {
     return () => { document.body.style.overflow = ''; };
   }, []);
 
+  const [emailFormOpened, setEmailFormOpened] = useState(false);
+
+  function openEmailForm() {
+    setEmailFormOpened(!emailFormOpened);
+  }
+
   return (
     <div className="contact-page">
 
       {/* Desktop: planetary system */}
       <div className="solar-system">
-        <Sun />
+        <Sun onClickEffect={openEmailForm} />
         {socials.map(s => <OrbitPlanet key={s.name} social={s} />)}
+        <EmailForm opened={emailFormOpened} />
       </div>
 
       {/* Mobile: card grid */}
       <div className="contact-mobile">
-        <div className="mobile-form-card">
-          <EmailForm />
-        </div>
         <div className="mobile-grid">
           {socials.map(s => (
             <a

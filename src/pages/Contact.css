@@ -128,10 +128,28 @@
 
 .email-form {
   display: flex;
+  position: fixed;
+  width: 100%;
+  top: -100%;
   flex-direction: column;
   align-items: stretch;
   gap: 8px;
   box-sizing: border-box;
+  background: #ff9800;
+  ;
+  border-radius: 5px;
+  z-index: 1;
+  transition: top 1s ease, opacity 0.4s;
+}
+
+.email-form.show {
+  top: 10%;
+  opacity: 1;
+}
+
+.email-form.hide {
+  top: -100%;
+  opacity: 0;
 }
 
 .email-form h2 {
