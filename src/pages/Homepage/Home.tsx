@@ -8,7 +8,7 @@ import '../../index.css'
 function Home() {
   return (
     <>
-    <div className="relative z-10 w-full flex justify-center align-center flex h-screen items-center justify-center">
+    <div className="relative z-10 w-full flex justify-center align-center">
       <div className="w-full max-w-screen-4xl bg-(--verdant-faded) py-8 px-8 shadow-2xl overflow-hidden">
           {/* --- INNER WHITE PANEL --- */}
           <div className="relative z-10 w-full max-w-screen-2xl flex flex-col items-center bg-white py-12 px-6 shadow-2xl">
