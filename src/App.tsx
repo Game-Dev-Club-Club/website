@@ -6,6 +6,7 @@ import CustomCursor from './components/CustomCursor';
 import PageTransition from './components/PageTransition';
 import AnimatedRoutes from './components/AnimatedRoutes';
 import GlobalHUD from "./GlobalHUD";
+import NavigationArrows from "./components/NavigationArrows"; // 1. Import the new component
 
 import "./App.css";
 
@@ -32,13 +33,16 @@ function AppContent() {
     <>
       <div className="fixed inset-0 -z-10 diagonal-bg" />
       <CustomCursor />
-
+      
       <GlobalHUD />
+      
+      {/* 2. Place the arrows here so they float globally over everything */}
+      <NavigationArrows />
 
       <PageTransition>
         <Navbar />
 
-<div className={`route-content ${isMap ? "route-map" : ""}`}>
+        <div className={`route-content ${isMap ? "route-map" : ""}`}>
             <AnimatedRoutes />
         </div>
       </PageTransition>

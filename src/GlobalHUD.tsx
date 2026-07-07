@@ -28,15 +28,15 @@ export default function GlobalHUD() {
         }
       `}
     >
-      <h1 className="text-2xl font-bold text-black drop-shadow font-hiruko">
+      <h1 className="text-2xl font-bold retro-pixel-text text-black drop-shadow font-hiruko">
         Game Dev Clubs
       </h1>
 
-      <p className="text-sm text-black/80 max-w-xs font-cascadia">
+      <p className="text-sm retro-pixel-text text-black/80 max-w-xs font-cascadia">
         Hover over pins for info about a game dev club. Click to visit their site!
       </p>
 
-      <p className="text-sm text-black/80 max-w-xs font-cascadia">
+      <p className="text-sm retro-pixel-text text-black/80 max-w-xs font-cascadia">
         Click a state to zoom in, and click again to zoom out.
       </p>
     </div>

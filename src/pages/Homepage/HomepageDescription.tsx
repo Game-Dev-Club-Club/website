@@ -1,8 +1,8 @@
 import { useEffect, useRef, type MouseEvent } from "react";
 
-const one = "We are a group of passionate student game developers from universities across the nation!";
-const two = "We hope to connect bridge the gap between collegiate game development clubs.";
-const three = "We are building a community of student game developers to share knowledge, resources, and opportunities!";
+const one = "We are student game developers from over 70 university clubs around the world!";
+const two = "We want to bridge gaps and bring collegiate game development clubs together!";
+const three = "We are building an awesome community through fun global events, jams, and collaborations!";
 
 type Panel = {
   id: number;
@@ -22,10 +22,10 @@ function InteractivePanel({ panel }: { panel: Panel }) {
     let frame: number;
 
     const animate = () => {
-      // 1. Keep the mouse position tracking responsive
+      //Keep the mouse position tracking responsive
       const posLerp = 0.1;
 
-      // 2. Make the radius expansion much slower (0.03) than the shrinking (0.15)
+      // Make the radius expansion much slower (0.03) than the shrinking (0.15)
       const isGrowing = target.current.r > 0;
       const radiusLerp = isGrowing ? 0.03 : 0.15;
 
