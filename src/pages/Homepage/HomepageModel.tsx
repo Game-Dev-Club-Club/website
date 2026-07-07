@@ -1,10 +1,10 @@
-import React, { useRef, useEffect, useMemo, useState, Suspense } from "react";
+import { useRef, useEffect, useMemo, useState, Suspense } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
 
-interface InteractivePlaceholderProps extends React.ComponentProps<"mesh"> {
+interface InteractivePlaceholderProps {
   wrapperRef: React.RefObject<HTMLDivElement | null>;
 }
 

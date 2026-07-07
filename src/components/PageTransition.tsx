@@ -1,10 +1,14 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-export default function PageTransition({ children }) {
+interface PageTransitionProps {
+  children: React.ReactNode;
+}
+
+export default function PageTransition({ children }: PageTransitionProps) {
   // Synchronously check if our flag exists before rendering
   const skipIntro = typeof window !== "undefined" && sessionStorage.getItem("skipMapLoad") === "true";
-
+  
   useEffect(() => {
     // If we skipped the intro, immediately delete the flag. 
     // This ensures if they navigate to other pages later, the intro plays normally.

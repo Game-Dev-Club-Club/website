@@ -17,7 +17,7 @@ function SchoolMarkers({
   setTooltip,
   setShowNoLink,
 }: Props) {
-  const toastTimer = useRef<NodeJS.Timeout | null>(null);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // What's hovered right this moment — drives the grow/shrink animation
   // AND which marker currently owns real interaction on the overlay.
