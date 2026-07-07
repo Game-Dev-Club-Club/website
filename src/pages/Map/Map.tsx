@@ -119,7 +119,7 @@ function Map() {
             projection="geoAlbersUsa"
             viewBox="0 0 800 600"
             className="w-full h-full overflow-visible"
-            onClick={(e) => {
+            onClick={() => {
               if (activeState === null) return;
               resetZoom();
             }}
