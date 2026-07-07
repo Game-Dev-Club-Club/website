@@ -120,7 +120,6 @@ function Map() {
             viewBox="0 0 800 600"
             className="w-full h-full overflow-visible"
             onClick={(e) => {
-              const target = e.target as HTMLElement;
               if (activeState === null) return;
               resetZoom();
             }}

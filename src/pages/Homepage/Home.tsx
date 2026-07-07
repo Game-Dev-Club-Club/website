@@ -1,4 +1,3 @@
-import React from 'react';
 import HomepageFace from './HomepageFace';
 import HomepageDescription from './HomepageDescription';
 import HomepageModel from './HomepageModel';
