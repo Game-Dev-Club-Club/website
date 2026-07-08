@@ -36,6 +36,13 @@
     box-sizing: border-box;
 }
 
+@media (max-width: 768px) {
+    .route-content {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+}
+
 .route-content>* {
     width: 100%;
     /* Optional: Add a max-width so it doesn't stretch infinitely on massive ultrawide monitors */
@@ -44,6 +51,11 @@
 
 /* MAP PAGE OVERRIDE */
 .route-content.route-map {
+    /* Needs a *definite* height (not just min-height) so the child's
+       height: 100% below actually resolves instead of collapsing to
+       content size — otherwise the map sits at the top instead of
+       being centered in the leftover space. */
+    height: 100dvh;
     padding: 0;
     align-items: stretch;
     /* justify-content: stretch is invalid in Flexbox, use center instead */
