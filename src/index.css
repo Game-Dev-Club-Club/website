@@ -48,6 +48,7 @@
 :root {
   /* COLOR PALETTE! */
   --blackberry: #120e23;
+  --blackberry-faded: #120e233e;
   --grape: #472859;
   --blueberry: #225875;
   --verdant: #249E4F;
@@ -65,7 +66,7 @@
 
 
 #root {
-  width: 1126px;
+  width: 80%;
   height: 100vh;
   max-width: 100%;
   margin: 0 auto;
@@ -80,6 +81,12 @@ body {
   margin: 0;
   cursor: none;
   background-color: var(--offwhite);
+}
+
+html,
+body,
+* {
+  cursor: none !important;
 }
 
 ::selection {

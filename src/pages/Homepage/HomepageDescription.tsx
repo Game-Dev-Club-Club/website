@@ -1,8 +1,8 @@
 import { useEffect, useRef, type MouseEvent } from "react";
 
-const about = "We are the game dev club club";
-const links = "Links to our social media and other stuff";
-const test = "Lorem Ipsum dolor sit amet... (truncated for brevity)";
+const one = "We are a group of passionate student game developers from universities across the nation!";
+const two = "We hope to connect bridge the gap between collegiate game development clubs.";
+const three = "We are building a community of student game developers to share knowledge, resources, and opportunities!";
 
 type Panel = {
   id: number;
@@ -83,20 +83,22 @@ function InteractivePanel({ panel }: { panel: Panel }) {
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative overflow-hidden no-cursor clickable rounded-lg min-h-[150px] flex items-center justify-center text-center bg-(--ripe) transition-transform duration-200 ease-in-out odd:-rotate-2 even:rotate-2 hover:-translate-y-1 hover:shadow-md hover:rotate-0"
+      className="relative overflow-hidden no-cursor rounded-lg min-h-[150px] 
+      flex items-center justify-center text-center bg-white
+      transition-transform duration-200 ease-in-out odd:-rotate-2 even:rotate-2 hover:-translate-y-1 shadow-md hover:rotate-0"
     >
       {/* Base Layer (Title) */}
-      <h2 className="text-2xl font-bebas text-(--blueberry) px-5 py-8">
+      <h2 className="text-2xl font-cascadia text-(--blackberry) px-5 py-8">
         {panel.title}
       </h2>
 
       {/* Reveal Layer (Expands on Hover) */}
       <div
         ref={revealRef}
-        className="absolute inset-0 flex items-center justify-center text-center bg-(--pale) px-5 py-8 z-10 pointer-events-none"
+        className="absolute inset-0 flex items-center justify-center text-center bg-white px-5 py-8 z-10 pointer-events-none"
         style={{ clipPath: "circle(0px at 0px 0px)" }}
       >
-        <p className="text-lg font-bebas text-(--blueberry) leading-relaxed">
+        <p className="text-sm font-cascadia text-(--blackberry) leading-relaxed">
           {panel.text}
         </p>
       </div>
@@ -106,9 +108,9 @@ function InteractivePanel({ panel }: { panel: Panel }) {
 
 function HomepageDescription() {
   const panels: Panel[] = [
-    { id: 1, title: "Who are we?", text: about },
-    { id: 2, title: "Links", text: links },
-    { id: 3, title: "Test", text: test }
+    { id: 1, title: "Who are we?", text: one },
+    { id: 2, title: "What do we want?", text: two },
+    { id: 3, title: "How will we achieve it?", text: three }
   ];
 
   return (

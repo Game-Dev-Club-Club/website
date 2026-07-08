@@ -26,17 +26,23 @@ const Navbar = () => {
             </button>
 
             <div className={`ml-5 font-cascadia side-menu ${isOpen ? 'open' : ''}`}>
-                <Link to="/" onClick={closeMenu}>
+                <Link to="/" onClick={closeMenu} className="mt-2">
                     Home
                 </Link>
 
-                <Link to="/contact-us" onClick={closeMenu}>
+                <Link to="/contact-us" onClick={closeMenu} className="mt-2">
                     Contact Us
                 </Link>
 
-                <Link to="/jam" onClick={closeMenu}>
+                <Link to="/map" onClick={closeMenu} className="mt-2">
+                    Map
+                </Link>
+
+                <Link to="/jam" onClick={closeMenu} className="mt-2">
                     Jam
                 </Link>
+
+
             </div>
         </>
     );
