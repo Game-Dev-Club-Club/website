@@ -13,8 +13,8 @@ export default function AnimatedRoutes() {
       <Routes location={location}>
         <Route path="/" element={<Home />} />
         <Route path="/contact-us" element={<Contact />} />
-        <Route path="/jam" element={<Jam />} />
         <Route path="/map" element={<Map />} />
+        <Route path="/jam" element={<Jam />} />
       </Routes>
     </div>
   );

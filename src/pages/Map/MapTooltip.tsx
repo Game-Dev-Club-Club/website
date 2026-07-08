@@ -5,7 +5,7 @@ import type { TooltipState } from "./types";
 interface Props {
   tooltip: TooltipState;
   zoom: number;
-  cx: number; // Added center X prop
+  cx: number;
 }
 
 function MapTooltip({ tooltip, zoom, cx }: Props) {
@@ -13,18 +13,24 @@ function MapTooltip({ tooltip, zoom, cx }: Props) {
 
   if (!tooltip.location) return null;
 
-  const [x] = projection(tooltip.location.coordinates);
+  const projectedCoords = projection(tooltip.location.coordinates);
+  if (!projectedCoords) return null; 
+  
+  const [x] = projectedCoords;
 
   const TOOLTIP_WIDTH = 250;
   const OFFSET = 15;
 
-  // Check if the marker is on the right half of the CURRENT VISIBLE view
   const shouldFlipLeft = x > cx;
 
   return (
     <Marker
       coordinates={tooltip.location.coordinates}
-      style={{ pointerEvents: "none" }}
+      style={{
+        default: { pointerEvents: "none" },
+        hover: { pointerEvents: "none" },
+        pressed: { pointerEvents: "none" },
+      }}
     >
       <g
         style={{

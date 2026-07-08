@@ -15,12 +15,13 @@ function Home() {
             <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-7xl mx-auto gap-10 mt-4">
               
               {/* Model Wrapper */}
-              <div className="w-full md:w-1/3 flex relative overflow-hidden bg-white retro-pixel-text">
-                <div className="crt-scanlines"></div>
-                <div className="crt-flicker-line"></div>
-                <div className="vignette"></div>
-                <div className="ml-[0.75rem] z-10000">
-                  <HomepageModel/>
+              <div className="w-full md:w-1/3 relative flex items-center justify-center overflow-visible bg-white retro-pixel-text">
+                
+                {/* CRT Effects */}
+                <div className="crt-scanlines pointer-events-none z-10 absolute inset-0"></div>
+                <div className="vignette pointer-events-none z-10 absolute inset-0"></div>
+                <div className="relative z-[9999] ml-[0.5rem] mt-[-3rem]">
+                    <HomepageModel/>
                 </div>
               </div>
 

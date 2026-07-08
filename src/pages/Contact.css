@@ -126,12 +126,40 @@
 
 /* ── Email form (mobile only) ───────────────────────────── */
 
-.email-form {
+.desktop-email-form {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  top: -100%;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  box-sizing: border-box;
+  background: #ff9800;
+  ;
+  border-radius: 5px;
+  z-index: 1;
+  transition: top 1s ease, opacity 0.4s;
+}
+
+.desktop-email-form.show {
+  top: 10%;
+  opacity: 1;
+}
+
+.desktop-email-form.hide {
+  top: -100%;
+  opacity: 0;
+}
+
+.mobile-email-form {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 8px;
   box-sizing: border-box;
+  background: #ff9800;
+  width: 200%;
 }
 
 .email-form h2 {
@@ -274,7 +302,7 @@
 
 /* ── Breakpoints ────────────────────────────────────────── */
 
-@media (max-width: 680px) {
+@media (max-width: 768px) {
   .solar-system {
     display: none;
   }
@@ -284,7 +312,8 @@
   }
 
   .contact-page {
-    margin: -2rem;
+    /* Cancel .route-content's mobile padding (1.25rem horizontal, 2rem vertical) exactly */
+    margin: -2rem -1.25rem;
     height: auto;
     overflow: visible;
     padding: 2rem 0 4rem;

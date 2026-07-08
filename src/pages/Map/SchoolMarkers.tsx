@@ -17,7 +17,7 @@ function SchoolMarkers({
   setTooltip,
   setShowNoLink,
 }: Props) {
-  const toastTimer = useRef<NodeJS.Timeout | null>(null);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // What's hovered right this moment — drives the grow/shrink animation
   // AND which marker currently owns real interaction on the overlay.
@@ -29,6 +29,18 @@ function SchoolMarkers({
   const [elevatedId, setElevatedId] = useState<SchoolMarker["id"] | null>(null);
 
   const [popIn, setPopIn] = useState(false);
+
+  // Touch devices have no hover, so tapping a pin needs a bigger hitbox and
+  // a "tap to preview, tap again to open" flow instead of hover-then-click.
+  const [noHover, setNoHover] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: none)");
+    setNoHover(mq.matches);
+    const handleChange = (e: MediaQueryListEvent) => setNoHover(e.matches);
+    mq.addEventListener("change", handleChange);
+    return () => mq.removeEventListener("change", handleChange);
+  }, []);
 
   useEffect(() => {
     if (hoveredId != null) {
@@ -43,7 +55,7 @@ function SchoolMarkers({
       <circle
         cx="0"
         cy="-7.5"
-        r="12"
+        r={noHover ? 28 : 12}
         fill="transparent"
         className="clickable transition-transform group-hover:scale-125"
       />
@@ -90,6 +102,20 @@ function SchoolMarkers({
     }
   };
 
+  // On touch devices, the first tap on a pin previews its tooltip instead of
+  // immediately opening the link blind. Tapping the same pin again activates it.
+  const handleTap = (location: SchoolMarker) => (e: React.MouseEvent) => {
+    if (!noHover) return handleActivate(location)(e);
+
+    e.stopPropagation();
+
+    if (hoveredId === location.id) {
+      handleActivate(location)(e);
+    } else {
+      handleEnter(location);
+    }
+  };
+
   return (
     <>
       {locations.map((location, i) => {
@@ -120,7 +146,7 @@ function SchoolMarkers({
               }}
               onMouseEnter={() => handleEnter(location)}
               onMouseLeave={() => handleLeave(location.id)}
-              onClick={handleActivate(location)}
+              onClick={handleTap(location)}
             >
               {/* Hidden once elevated, whether or not it's the one
                   currently hovered — the overlay renders the pin from
@@ -154,7 +180,7 @@ function SchoolMarkers({
               }}
               onMouseEnter={() => handleEnter(elevatedLocation)}
               onMouseLeave={() => handleLeave(elevatedLocation.id)}
-              onClick={handleActivate(elevatedLocation)}
+              onClick={handleTap(elevatedLocation)}
             >
               {renderPin()}
             </g>

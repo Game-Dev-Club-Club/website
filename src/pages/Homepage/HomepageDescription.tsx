@@ -1,8 +1,8 @@
-import { useEffect, useRef, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 
-const one = "We are a group of passionate student game developers from universities across the nation!";
-const two = "We hope to connect bridge the gap between collegiate game development clubs.";
-const three = "We are building a community of student game developers to share knowledge, resources, and opportunities!";
+const one = "We are student game developers from over 70 university clubs around the world!";
+const two = "We want to bridge gaps and bring collegiate game development clubs together!";
+const three = "We are building an awesome community through fun global events, jams, and collaborations!";
 
 type Panel = {
   id: number;
@@ -18,14 +18,28 @@ function InteractivePanel({ panel }: { panel: Panel }) {
   const target = useRef({ x: 0, y: 0, r: 0 });
   const current = useRef({ x: 0, y: 0, r: 0 });
 
+  // On touch devices there's no hover to trigger the reveal, so we skip the
+  // clip-path animation entirely and show the text unconditionally instead.
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mq.matches);
+    const handleChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handleChange);
+    return () => mq.removeEventListener("change", handleChange);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+
     let frame: number;
 
     const animate = () => {
-      // 1. Keep the mouse position tracking responsive
+      //Keep the mouse position tracking responsive
       const posLerp = 0.1;
 
-      // 2. Make the radius expansion much slower (0.03) than the shrinking (0.15)
+      // Make the radius expansion much slower (0.03) than the shrinking (0.15)
       const isGrowing = target.current.r > 0;
       const radiusLerp = isGrowing ? 0.03 : 0.15;
 
@@ -45,17 +59,17 @@ function InteractivePanel({ panel }: { panel: Panel }) {
 
     animate();
     return () => cancelAnimationFrame(frame);
-  }, []);
+  }, [isMobile]);
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    if (isMobile || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     target.current.x = e.clientX - rect.left;
     target.current.y = e.clientY - rect.top;
   };
 
   const handleMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    if (isMobile || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
 
     // Instantly snap the starting circle to the mouse position 
@@ -77,13 +91,26 @@ function InteractivePanel({ panel }: { panel: Panel }) {
     target.current.r = 0;
   };
 
+  if (isMobile) {
+    return (
+      <div className="relative overflow-hidden rounded-lg min-h-[150px] flex flex-col items-center justify-center gap-2 text-center bg-white px-5 py-8 shadow-md odd:-rotate-2 even:rotate-2">
+        <h2 className="text-2xl font-cascadia text-(--blackberry)">
+          {panel.title}
+        </h2>
+        <p className="text-sm font-cascadia text-(--blackberry) leading-relaxed">
+          {panel.text}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative overflow-hidden no-cursor rounded-lg min-h-[150px] 
+      className="relative overflow-hidden no-cursor rounded-lg min-h-[150px]
       flex items-center justify-center text-center bg-white
       transition-transform duration-200 ease-in-out odd:-rotate-2 even:rotate-2 hover:-translate-y-1 shadow-md hover:rotate-0"
     >

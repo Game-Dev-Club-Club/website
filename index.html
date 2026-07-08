@@ -3,21 +3,48 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" id="dynamic-favicon" type="image/png" href="/logo/GDCCLOGO_Square.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Game Dev Club Club</title>
+  <title> - GAME DEV CLUB CLUB</title>
 </head>
 
 <body>
   <style>
-    html,
-    body,
-    .no-cursor {
-      cursor: none !important;
+    @media (pointer: fine) and (min-width: 769px) {
+      html,
+      body,
+      .no-cursor {
+        cursor: none !important;
+      }
     }
   </style>
+
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
+
+  <script>
+    const frames = [
+      '/logo/GDCCLOGO_Square.png',
+      '/logo/GDCCLOGO_Square2.png'
+    ];
+
+    // Force the browser to cache the images in memory
+    const preloadedImages = [];
+    frames.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      preloadedImages.push(img);
+    });
+
+    let currentFrame = 0;
+    const favicon = document.getElementById('dynamic-favicon');
+
+    // Browsers handle 800ms to 1000ms much more consistently than 500ms.
+    setInterval(() => {
+      currentFrame = (currentFrame + 1) % frames.length;
+      favicon.href = preloadedImages[currentFrame].src;
+    }, 350); 
+  </script>
 </body>
 
 </html>

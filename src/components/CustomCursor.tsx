@@ -8,12 +8,24 @@ export default function CustomCursor() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // detect mobile / touch device
-    const checkMobile =
-      window.matchMedia("(pointer: coarse)").matches ||
-      window.matchMedia("(max-width: 768px)").matches;
+    // detect mobile / touch device — kept live (not just checked once on
+    // mount) so resizing across the breakpoint can't leave the native
+    // cursor hidden (by CSS) with no custom cursor mounted to replace it.
+    const coarseQuery = window.matchMedia("(pointer: coarse)");
+    const widthQuery = window.matchMedia("(max-width: 768px)");
 
-    setIsMobile(checkMobile);
+    const updateIsMobile = () => {
+      setIsMobile(coarseQuery.matches || widthQuery.matches);
+    };
+
+    updateIsMobile();
+
+    coarseQuery.addEventListener("change", updateIsMobile);
+    widthQuery.addEventListener("change", updateIsMobile);
+    return () => {
+      coarseQuery.removeEventListener("change", updateIsMobile);
+      widthQuery.removeEventListener("change", updateIsMobile);
+    };
   }, []);
 
   useEffect(() => {

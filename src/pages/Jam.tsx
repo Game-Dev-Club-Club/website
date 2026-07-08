@@ -336,7 +336,21 @@ function TimelineCard({
   const target = useRef({ x: 0, y: 0, r: 0 });
   const current = useRef({ x: 0, y: 0, r: 0 });
 
+  // On touch devices there's no hover to trigger the reveal, so we skip the
+  // clip-path animation entirely and show the extra detail line unconditionally.
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mq.matches);
+    const handleChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', handleChange);
+    return () => mq.removeEventListener('change', handleChange);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+
     let frame: number;
 
     const animate = () => {
@@ -360,17 +374,17 @@ function TimelineCard({
 
     animate();
     return () => cancelAnimationFrame(frame);
-  }, []);
+  }, [isMobile]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
+    if (isMobile || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     target.current.x = e.clientX - rect.left;
     target.current.y = e.clientY - rect.top;
   };
 
   const handleMouseEnter = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
+    if (isMobile || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const startX = e.clientX - rect.left;
     const startY = e.clientY - rect.top;
@@ -441,26 +455,38 @@ function TimelineCard({
             ? `${jam.joined} joined`
             : `${jam.stats!.submissions} games \u00b7 ${jam.stats!.participants} devs`}
         </p>
-      </div>
 
-      {/* Reveal layer (expands on hover) */}
-      <div
-        ref={revealRef}
-        className="absolute inset-0 flex items-center justify-center p-4 z-20 pointer-events-none"
-        style={{ clipPath: 'circle(0px at 0px 0px)', background: 'rgba(70, 40, 89, 0.95)' }}
-      >
-        <div className="text-center">
-          <p className="font-bebas text-sm text-(--pale) mb-2">#{pad(jam.number)}</p>
-          <p className="font-hiruko text-base text-(--ripe) leading-tight">{jam.theme}</p>
-          <p className="font-cascadia text-xs text-(--pale) mt-2">
+        {isMobile && (
+          <p className={`font-cascadia text-[0.7rem] mt-1 ${selected ? 'text-(--blueberry)/70' : 'text-(--pale)/70'}`}>
             {isUpcomingCard
               ? 'Coming soon'
               : isActiveCard
               ? `${jam.goal - jam.joined} spots left`
               : `${jam.stats!.participants} creators`}
           </p>
-        </div>
+        )}
       </div>
+
+      {/* Reveal layer (expands on hover, desktop only) */}
+      {!isMobile && (
+        <div
+          ref={revealRef}
+          className="absolute inset-0 flex items-center justify-center p-4 z-20 pointer-events-none"
+          style={{ clipPath: 'circle(0px at 0px 0px)', background: 'rgba(70, 40, 89, 0.95)' }}
+        >
+          <div className="text-center">
+            <p className="font-bebas text-sm text-(--pale) mb-2">#{pad(jam.number)}</p>
+            <p className="font-hiruko text-base text-(--ripe) leading-tight">{jam.theme}</p>
+            <p className="font-cascadia text-xs text-(--pale) mt-2">
+              {isUpcomingCard
+                ? 'Coming soon'
+                : isActiveCard
+                ? `${jam.goal - jam.joined} spots left`
+                : `${jam.stats!.participants} creators`}
+            </p>
+          </div>
+        </div>
+      )}
     </motion.button>
   );
 }

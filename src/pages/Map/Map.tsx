@@ -102,7 +102,7 @@ function Map() {
   };
 
   return (
-    <div className="mt-[-5rem] relative w-full aspect-[4/3] overflow-visible rounded-xl flex items-center justify-center">
+    <div className="mt-0 md:mt-[-5rem] relative w-full aspect-[4/3] overflow-visible rounded-xl flex items-center justify-center">
       <div className="w-full max-w-4xl aspect-[4/3] relative overflow-visible rounded-xl">
         <div
           ref={wrapperRef}
@@ -119,8 +119,7 @@ function Map() {
             projection="geoAlbersUsa"
             viewBox="0 0 800 600"
             className="w-full h-full overflow-visible"
-            onClick={(e) => {
-              const target = e.target as HTMLElement;
+            onClick={() => {
               if (activeState === null) return;
               resetZoom();
             }}

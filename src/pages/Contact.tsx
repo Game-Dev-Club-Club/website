@@ -1,6 +1,10 @@
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './Contact.css';
 import Sun from '../components/Sun'
+import DesktopEmailForm from '../components/DesktopEmailForm';
+import MobileEmailForm from '../components/MobileEmailForm';
+import { OrbitPlanet } from '../components/OrbitPlanets';
+import type { SocialLink } from '../components/OrbitPlanets';
 
 const DiscordIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
@@ -38,151 +42,73 @@ const ItchIcon = () => (
   </svg>
 );
 
-interface SocialLink {
-  name: string;
-  url: string;
-  color: string;
-  orbitRadius: number;
-  speed: number;
-  startAngle: number;
-  Icon: () => React.ReactElement;
-}
-
 const socials: SocialLink[] = [
-  { name: 'Discord',   url: '#', color: '#5865F2', orbitRadius: 165, speed: 12, startAngle: 30,  Icon: DiscordIcon   },
-  { name: 'X',         url: '#', color: '#2d3a4a', orbitRadius: 215, speed: 17, startAngle: 100, Icon: XIcon         },
-  { name: 'Instagram', url: '#', color: '#C13584', orbitRadius: 265, speed: 23, startAngle: 200, Icon: InstagramIcon },
-  { name: 'GitHub',    url: '#', color: '#23a468', orbitRadius: 315, speed: 30, startAngle: 260, Icon: GitHubIcon    },
-  { name: 'YouTube',   url: '#', color: '#FF0000', orbitRadius: 365, speed: 38, startAngle: 150, Icon: YouTubeIcon   },
-  { name: 'Itch.io',  url: '#', color: '#f08020', orbitRadius: 415, speed: 47, startAngle: 320, Icon: ItchIcon      },
+  { name: 'Discord', url: 'https://discord.gg/gamedevclubclub', color: '#5865F2', orbitRadius: 165, speed: 12, startAngle: 30, Icon: DiscordIcon, id: 0 },
+  { name: 'X', url: 'https://x.com/gamedevclubclub', color: '#2d3a4a', orbitRadius: 215, speed: 17, startAngle: 100, Icon: XIcon, id: 1 },
+  { name: 'Instagram', url: 'https://www.instagram.com/gamedevclubclub/', color: '#C13584', orbitRadius: 265, speed: 23, startAngle: 200, Icon: InstagramIcon, id: 2 },
+  { name: 'GitHub', url: 'https://github.com/Game-Dev-Club-Club', color: '#23a468', orbitRadius: 315, speed: 30, startAngle: 260, Icon: GitHubIcon, id: 3 },
+  { name: 'YouTube', url: '#', color: '#FF0000', orbitRadius: 365, speed: 38, startAngle: 150, Icon: YouTubeIcon, id: 4 },
+  { name: 'Itch.io', url: '#', color: '#f08020', orbitRadius: 415, speed: 47, startAngle: 320, Icon: ItchIcon, id: 5 },
 ];
 
-function OrbitPlanet({ social }: { social: SocialLink }) {
-  const ringRef  = useRef<HTMLDivElement>(null);
-  const planetRef = useRef<HTMLAnchorElement>(null);
-
-  const setPaused = (paused: boolean) => {
-    const state = paused ? 'paused' : 'running';
-    if (ringRef.current)   ringRef.current.style.animationPlayState   = state;
-    if (planetRef.current) planetRef.current.style.animationPlayState = state;
-  };
-
-  const delay = `-${(social.startAngle / 360) * social.speed}s`;
-
-  return (
-    <div
-      ref={ringRef}
-      className="orbit-ring"
-      style={{
-        width:  `${social.orbitRadius * 2}px`, 
-        height: `${social.orbitRadius * 2}px`, 
-        top:  `calc(50% - ${social.orbitRadius}px)`,
-        left: `calc(50% - ${social.orbitRadius}px)`,
-        animationDuration: `${social.speed}s`,
-        animationDelay: delay,
-      }}
-    >
-      <a
-        ref={planetRef}
-        href={social.url}
-        className="planet"
-        style={{
-          animationDuration: `${social.speed}s`,
-          animationDelay: delay,
-        }}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        aria-label={social.name}
-        title={social.name}
-      >
-        <div className="planet-bubble no-cursor" style={{ background: social.color }}>
-          <social.Icon />
-        </div>
-        <span className="planet-label">{social.name}</span>
-      </a>
-    </div>
-  );
-}
-
-type FormState = 'idle' | 'sending' | 'sent';
-
-function EmailForm() {
-  const [name, setName]       = useState('');
-  const [email, setEmail]     = useState('');
-  const [message, setMessage] = useState('');
-  const [status, setStatus]   = useState<FormState>('idle');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('sending');
-    setTimeout(() => {
-      setStatus('sent');
-      setName('');
-      setEmail('');
-      setMessage('');
-    }, 1000);
-  };
-
-  if (status === 'sent') {
-    return (
-      <div className="form-sent">
-        <span>✓</span>
-        <p>Message sent!</p>
-      </div>
-    );
-  }
-
-  return (
-    <form className="email-form" onSubmit={handleSubmit}>
-      <h2>Send us a message</h2>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={e => setName(e.target.value)}
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        required
-      />
-      <textarea
-        placeholder="Message"
-        value={message}
-        onChange={e => setMessage(e.target.value)}
-        rows={3}
-        required
-      />
-      <button type="submit" disabled={status === 'sending'}>
-        {status === 'sending' ? 'Sending…' : 'Send'}
-      </button>
-    </form>
-  );
-}
+let sunPos = { x: 0, y: 0 };
+let slopes = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+let planets: HTMLCollectionOf<HTMLElement>;
 
 function Contact() {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+
+    let sun = document.querySelector('.sun-container') as HTMLElement;
+    if (sun) {
+      const rect = sun.getBoundingClientRect();
+      sunPos = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    }
+
+    planets = document.getElementsByClassName('planet-bubble') as HTMLCollectionOf<HTMLElement>;
+
     return () => { document.body.style.overflow = ''; };
+
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (planets) {
+        for (let i = 0; i < planets.length; i++) {
+          const planet = planets[i];
+          const rect = planet.getBoundingClientRect();
+          const planetPos = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+          const slope = Math.atan2(planetPos.y - sunPos.y, planetPos.x - sunPos.x);
+          slopes[i] = slope;
+          for (let j = 0; j < i; j++) {
+            if (Math.abs(slopes[i] - slopes[j]) < 0.1 && Number.isFinite(slopes[i]) && Number.isFinite(slopes[j])) {
+              console.log(`Planet ${socials[i].name} and Planet ${socials[j].name} are aligned with the sun!`);
+            }
+          }
+        }
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  })
+
+  const [emailFormOpened, setEmailFormOpened] = useState(false);
+
+  function openEmailForm() {
+    setEmailFormOpened(!emailFormOpened);
+  }
 
   return (
     <div className="contact-page">
 
       {/* Desktop: planetary system */}
       <div className="solar-system">
-        <Sun />
-        {socials.map(s => <OrbitPlanet key={s.name} social={s} />)}
+        <Sun onClickEffect={openEmailForm} />
+        {socials.map(s => <OrbitPlanet key={s.name} social={s} sunPos={sunPos} slopes={slopes} />)}
+        <DesktopEmailForm opened={emailFormOpened} />
       </div>
 
       {/* Mobile: card grid */}
       <div className="contact-mobile">
-        <div className="mobile-form-card">
-          <EmailForm />
-        </div>
         <div className="mobile-grid">
           {socials.map(s => (
             <a
@@ -197,6 +123,7 @@ function Contact() {
               <span className="planet-label">{s.name}</span>
             </a>
           ))}
+          <MobileEmailForm />
         </div>
       </div>
     </div>
