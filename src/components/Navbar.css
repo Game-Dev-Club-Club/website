@@ -1,8 +1,8 @@
 /* Floating hamburger button */
 .hamburger {
     position: fixed;
-    top: 1.5rem;
-    left: 1.5rem;
+    top: calc(1.5rem + env(safe-area-inset-top));
+    left: calc(1.5rem + env(safe-area-inset-left));
 
     width: 50px;
     height: 50px;
@@ -94,8 +94,8 @@
     /* off screen */
     transform: translateX(-100%);
 
-    width: 350px;
-    height: 100vh;
+    width: min(350px, 85vw);
+    height: 100dvh;
 
     /* --- Liquid Glass Effect --- */
     background: rgba(255, 255, 255, 0.2);
@@ -109,7 +109,7 @@
     flex-direction: column;
     gap: 2rem;
 
-    padding: 100px 2rem 2rem calc(2rem + 100px);
+    padding: calc(100px + env(safe-area-inset-top)) 2rem calc(2rem + env(safe-area-inset-bottom)) calc(2rem + 100px);
     z-index: 1001;
 
     /* default out animation */

@@ -36,7 +36,7 @@ export default function NavigationArrows() {
       {prevPath && (
         <button
           onClick={goPrev}
-          className="fixed bottom-6 left-6 z-40 p-3 flex items-center gap-2 text-black rounded-full transition-transform hover:-translate-x-1 cursor-pointer"
+          className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] left-[calc(1.5rem+env(safe-area-inset-left))] z-40 p-3 flex items-center gap-2 text-black rounded-full transition-transform hover:-translate-x-1 cursor-pointer"
           aria-label="Previous Page"
         >
           <svg
@@ -62,7 +62,7 @@ export default function NavigationArrows() {
       {nextPath && (
         <button
           onClick={goNext}
-          className="fixed bottom-6 right-6 z-40 p-3 flex items-center gap-2 text-black rounded-full transition-transform hover:translate-x-1 cursor-pointer"
+          className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] right-[calc(1.5rem+env(safe-area-inset-right))] z-40 p-3 flex items-center gap-2 text-black rounded-full transition-transform hover:translate-x-1 cursor-pointer"
           aria-label="Next Page"
         >
           <span className="font-cascadia retro-pixel-text">
