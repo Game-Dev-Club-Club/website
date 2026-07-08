@@ -22,3 +22,51 @@
         transform: scale(1);
     }
 }
+
+
+.route-content {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 8rem;
+    padding-right: 8rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .route-content {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+}
+
+.route-content>* {
+    width: 100%;
+    /* Optional: Add a max-width so it doesn't stretch infinitely on massive ultrawide monitors */
+    max-width: 1200px;
+}
+
+/* MAP PAGE OVERRIDE */
+.route-content.route-map {
+    /* Needs a *definite* height (not just min-height) so the child's
+       height: 100% below actually resolves instead of collapsing to
+       content size — otherwise the map sits at the top instead of
+       being centered in the leftover space. */
+    height: 100dvh;
+    padding: 0;
+    align-items: stretch;
+    /* justify-content: stretch is invalid in Flexbox, use center instead */
+    justify-content: center;
+}
+
+/* Force intermediate wrappers (like PageTransition) to take full height/width */
+.route-content.route-map>* {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

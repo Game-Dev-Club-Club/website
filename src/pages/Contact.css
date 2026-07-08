@@ -302,7 +302,7 @@
 
 /* ── Breakpoints ────────────────────────────────────────── */
 
-@media (max-width: 680px) {
+@media (max-width: 768px) {
   .solar-system {
     display: none;
   }
@@ -312,7 +312,8 @@
   }
 
   .contact-page {
-    margin: -2rem;
+    /* Cancel .route-content's mobile padding (1.25rem horizontal, 2rem vertical) exactly */
+    margin: -2rem -1.25rem;
     height: auto;
     overflow: visible;
     padding: 2rem 0 4rem;

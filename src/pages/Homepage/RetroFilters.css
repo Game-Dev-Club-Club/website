@@ -26,7 +26,7 @@
     }
 }
 
-/* 2. The Slow Refresh Flicker - Now an Electric Glow */
+/* The Slow Refresh Flicker - Now an Electric Glow */
 .crt-flicker-line {
     position: absolute;
     top: 0;
@@ -71,20 +71,24 @@
 
     background: radial-gradient(circle,
             transparent 35%,
-            white 45.5%);
+            white 80%);
 }
 
-/* 4. Chromatic Aberration for Text */
+/* Chromatic Aberration for Text */
+@keyframes aberration-pulse {
+    0% {
+        text-shadow:
+            1px 0 0 rgba(255, 0, 0, 0.7),
+            -1px 0 0 rgba(0, 255, 255, 0.7);
+    }
+
+    100% {
+        text-shadow:
+            1.5px 0 0 rgba(255, 0, 0, 0.7),
+            -1.5px 0 0 rgba(0, 255, 255, 0.7);
+    }
+}
+
 .retro-pixel-text {
-    font-family: 'VT323', monospace;
-
-    /* This creates the classic RGB separation effect on any text inside the container */
-    text-shadow:
-        1.5px 0 0 rgba(255, 0, 0, 0.7),
-        -1.5px 0 0 rgba(0, 255, 255, 0.7);
-}
-
-/* Ensures any 2D images stay blocky */
-img {
-    image-rendering: pixelated;
+    animation: aberration-pulse 1s ease-in-out infinite alternate;
 }

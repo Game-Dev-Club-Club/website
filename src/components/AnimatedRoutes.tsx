@@ -8,14 +8,14 @@ export default function AnimatedRoutes() {
   const location = useLocation();
 
   return (
-    <div key={location.pathname} className="page-plop">
+    // Change location.pathname to location.key
+    <div key={location.key} className="page-plop">
       <Routes location={location}>
         <Route path="/" element={<Home />} />
         <Route path="/contact-us" element={<Contact />} />
-        <Route path="/jam" element={<Jam />} />
         <Route path="/map" element={<Map />} />
+        <Route path="/jam" element={<Jam />} />
       </Routes>
     </div>
   );
 }
-
