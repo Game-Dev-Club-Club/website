@@ -4,8 +4,8 @@ function HomepageFace() {
   const textRef = useRef<HTMLDivElement>(null);
   const highlightRef = useRef<HTMLHeadingElement>(null);
 
-  const targetPos = useRef({ x: 0, y: 0 });
-  const currentPos = useRef({ x: 0, y: 0 });
+  const targetPos = useRef({ x: -1000, y: -1000 });
+  const currentPos = useRef({ x: -1000, y: -1000 });
 
   const baseRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const highlightRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -97,34 +97,67 @@ function HomepageFace() {
     };
   }, []);
 
-  function renderLayer(
+function renderLayer(
     refs: React.MutableRefObject<(HTMLSpanElement | null)[]>
   ) {
     let index = 0;
 
-    return lines.map((line, lineIndex) => (
-      <div key={lineIndex}>
-        {line.split("").map((char) => {
-          const current = index++;
+    return lines.map((line, lineIndex) => {
+      const words = line.split(" ");
 
-          return (
-            <span
-              key={current}
-              ref={(el) => {
-                refs.current[current] = el;
-              }}
-              style={{
-                display: "inline-block",
-                transformOrigin: "center center",
-                willChange: "transform",
-              }}
-            >
-              {char === " " ? "\u00A0" : char}
-            </span>
-          );
-        })}
-      </div>
-    ));
+      return (
+        <div key={lineIndex}>
+          {words.map((word, wordIndex) => {
+            const isLastWord = wordIndex === words.length - 1;
+
+            return (
+              <span key={wordIndex}>
+                {/* 1. Keep the letters of the word together */}
+                <span className="whitespace-nowrap">
+                  {word.split("").map((char) => {
+                    const current = index++;
+                    return (
+                      <span
+                        key={current}
+                        ref={(el) => {
+                          refs.current[current] = el;
+                        }}
+                        style={{
+                          display: "inline-block",
+                          transformOrigin: "center center",
+                          willChange: "transform",
+                        }}
+                      >
+                        {char}
+                      </span>
+                    );
+                  })}
+                </span>
+
+                {/* 2. Render the animated space between words */}
+                {!isLastWord && (
+                  <span
+                    ref={(el) => {
+                      refs.current[index++] = el;
+                    }}
+                    style={{
+                      display: "inline-block",
+                      transformOrigin: "center center",
+                      willChange: "transform",
+                    }}
+                  >
+                    {"\u00A0"}
+                  </span>
+                )}
+
+                {/* 3. Tell the browser it is allowed to wrap here on mobile */}
+                {!isLastWord && <wbr />}
+              </span>
+            );
+          })}
+        </div>
+      );
+    });
   }
 
   return (

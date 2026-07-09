@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { useEffect, useRef, type MouseEvent, type TouchEvent } from "react";
 
 const one = "We are student game developers from over 70 university clubs around the world!";
 const two = "We want to bridge gaps and bring collegiate game development clubs together!";
@@ -9,7 +9,6 @@ type Panel = {
   title: string;
   text: string;
 };
-
 function InteractivePanel({ panel }: { panel: Panel }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const revealRef = useRef<HTMLDivElement>(null);
@@ -18,25 +17,11 @@ function InteractivePanel({ panel }: { panel: Panel }) {
   const target = useRef({ x: 0, y: 0, r: 0 });
   const current = useRef({ x: 0, y: 0, r: 0 });
 
-  // On touch devices there's no hover to trigger the reveal, so we skip the
-  // clip-path animation entirely and show the text unconditionally instead.
-  const [isMobile, setIsMobile] = useState(false);
-
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 768px)");
-    setIsMobile(mq.matches);
-    const handleChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener("change", handleChange);
-    return () => mq.removeEventListener("change", handleChange);
-  }, []);
-
-  useEffect(() => {
-    if (isMobile) return;
-
     let frame: number;
 
     const animate = () => {
-      //Keep the mouse position tracking responsive
+      //Keep the position tracking responsive
       const posLerp = 0.1;
 
       // Make the radius expansion much slower (0.03) than the shrinking (0.15)
@@ -59,23 +44,40 @@ function InteractivePanel({ panel }: { panel: Panel }) {
 
     animate();
     return () => cancelAnimationFrame(frame);
-  }, [isMobile]);
+  }, []);
 
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (isMobile || !containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    target.current.x = e.clientX - rect.left;
-    target.current.y = e.clientY - rect.top;
+  // Helper to grab coordinates from either a mouse or a touch event
+  const getCoordinates = (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>) => {
+    if ("touches" in e) {
+      return {
+        clientX: e.touches[0].clientX,
+        clientY: e.touches[0].clientY,
+      };
+    }
+    return {
+      clientX: e.clientX,
+      clientY: e.clientY,
+    };
   };
 
-  const handleMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
-    if (isMobile || !containerRef.current) return;
+  const handleMove = (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
+    const { clientX, clientY } = getCoordinates(e);
+    
+    target.current.x = clientX - rect.left;
+    target.current.y = clientY - rect.top;
+  };
 
-    // Instantly snap the starting circle to the mouse position 
+  const handleEnter = (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const { clientX, clientY } = getCoordinates(e);
+
+    // Instantly snap the starting circle to the touch/mouse position 
     // so it doesn't fly in from the top left corner (0,0)
-    const startX = e.clientX - rect.left;
-    const startY = e.clientY - rect.top;
+    const startX = clientX - rect.left;
+    const startY = clientY - rect.top;
 
     current.current.x = startX;
     current.current.y = startY;
@@ -86,30 +88,20 @@ function InteractivePanel({ panel }: { panel: Panel }) {
     target.current.r = 800; 
   };
 
-  const handleMouseLeave = () => {
+  const handleLeave = () => {
     // Shrink the circle back to nothing
     target.current.r = 0;
   };
 
-  if (isMobile) {
-    return (
-      <div className="relative overflow-hidden rounded-lg min-h-[150px] flex flex-col items-center justify-center gap-2 text-center bg-white px-5 py-8 shadow-md odd:-rotate-2 even:rotate-2">
-        <h2 className="text-2xl font-cascadia text-(--blackberry)">
-          {panel.title}
-        </h2>
-        <p className="text-sm font-cascadia text-(--blackberry) leading-relaxed">
-          {panel.text}
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div
       ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMove}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      onTouchStart={handleEnter}
+      onTouchMove={handleMove}
+      onTouchEnd={handleLeave}
       className="relative overflow-hidden no-cursor rounded-lg min-h-[150px]
       flex items-center justify-center text-center bg-white
       transition-transform duration-200 ease-in-out odd:-rotate-2 even:rotate-2 hover:-translate-y-1 shadow-md hover:rotate-0"
@@ -119,7 +111,13 @@ function InteractivePanel({ panel }: { panel: Panel }) {
         {panel.title}
       </h2>
 
-      {/* Reveal Layer (Expands on Hover) */}
+      {/* --- ADDED THIS SPAN HERE --- */}
+      {/* Tiny Hint Text */}
+      <span className="absolute bottom-2 text-[0.75rem] opacity-40 font-cascadia text-(--blackberry) pointer-events-none">
+        Hover or Tap to Reveal
+      </span>
+
+      {/* Reveal Layer (Expands on Hover/Touch) */}
       <div
         ref={revealRef}
         className="absolute inset-0 flex items-center justify-center text-center bg-white px-5 py-8 z-10 pointer-events-none"
