@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import '../pages/Contact.css';
 
 export interface SocialLink {
@@ -12,7 +12,7 @@ export interface SocialLink {
     id: number;
 }
 
-export function OrbitPlanet({ social, sunPos, slopes }: { social: SocialLink; sunPos: { x: number; y: number }; slopes: number[] }) {
+export function OrbitPlanet({ social }: { social: SocialLink; sunPos: { x: number; y: number }; slopes: number[] }) {
     const ringRef = useRef<HTMLDivElement>(null);
     const planetRef = useRef<HTMLAnchorElement>(null);
 

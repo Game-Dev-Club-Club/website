@@ -1,5 +1,5 @@
 
-import { useRef, useState, useEffect } from 'react';
+import { useState } from 'react';
 import '../pages/Contact.css';
 
 type FormState = 'idle' | 'sending' | 'sent';
