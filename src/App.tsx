@@ -13,6 +13,7 @@ import "./App.css";
 function AppContent() {
   const location = useLocation();
   const isMap = location.pathname === "/map";
+  const isContact = location.pathname === "/contact-us";
 
   useEffect(() => {
     if (isMap) {
@@ -42,7 +43,7 @@ function AppContent() {
       <PageTransition>
         <Navbar />
 
-        <div className={`route-content ${isMap ? "route-map" : ""}`}>
+        <div className={`route-content ${isMap ? "route-map" : ""} ${isContact ? "route-contact" : ""}`}>
             <AnimatedRoutes />
         </div>
       </PageTransition>

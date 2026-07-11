@@ -19,6 +19,9 @@
     justify-content: center;
     cursor: pointer;
     /* Makes it feel like a button */
+    /* Solar system's box is pointer-events: none (so its empty space
+       doesn't block the nav arrows underneath it); opt back in here. */
+    pointer-events: auto;
 
     /* 1. Add a transition for a smooth, slightly bouncy scale effect */
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -60,6 +63,30 @@
     line-height: 1.1;
     user-select: none;
     z-index: 15;
+}
+
+/* ── Click pulse ────────────────────────────────────────── */
+
+.sun-pulse-ring {
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 183, 77, 0.9);
+    opacity: 0;
+    pointer-events: none;
+    animation: sun-pulse-ring 0.6s ease-out;
+}
+
+@keyframes sun-pulse-ring {
+    0% {
+        transform: scale(0.7);
+        opacity: 0.9;
+    }
+
+    100% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
 }
 
 /* ── Animations ─────────────────────────────────────────── */
