@@ -43,12 +43,12 @@ const ItchIcon = () => (
 );
 
 const socials: SocialLink[] = [
-  { name: 'Discord', url: 'https://discord.gg/gamedevclubclub', color: '#5865F2', orbitRadius: 165, speed: 12, startAngle: 30, Icon: DiscordIcon, id: 0 },
+  { name: 'Discord', url: 'https://discord.gg/neS3kpkEuG', color: '#5865F2', orbitRadius: 165, speed: 12, startAngle: 30, Icon: DiscordIcon, id: 0 },
   { name: 'X', url: 'https://x.com/gamedevclubclub', color: '#2d3a4a', orbitRadius: 215, speed: 17, startAngle: 100, Icon: XIcon, id: 1 },
   { name: 'Instagram', url: 'https://www.instagram.com/gamedevclubclub/', color: '#C13584', orbitRadius: 265, speed: 23, startAngle: 200, Icon: InstagramIcon, id: 2 },
   { name: 'GitHub', url: 'https://github.com/Game-Dev-Club-Club', color: '#23a468', orbitRadius: 315, speed: 30, startAngle: 260, Icon: GitHubIcon, id: 3 },
   { name: 'YouTube', url: '#', color: '#FF0000', orbitRadius: 365, speed: 38, startAngle: 150, Icon: YouTubeIcon, id: 4 },
-  { name: 'Itch.io', url: '#', color: '#f08020', orbitRadius: 415, speed: 47, startAngle: 320, Icon: ItchIcon, id: 5 },
+  { name: 'Itch.io', url: 'https://game-dev-club-club.itch.io/', color: '#f08020', orbitRadius: 415, speed: 47, startAngle: 320, Icon: ItchIcon, id: 5 },
 ];
 
 let sunPos = { x: 0, y: 0 };
