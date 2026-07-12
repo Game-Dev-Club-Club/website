@@ -20,7 +20,7 @@ function Home() {
                 {/* CRT Effects */}
                 <div className="crt-scanlines pointer-events-none z-10 absolute inset-0"></div>
                 <div className="vignette pointer-events-none z-10 absolute inset-0"></div>
-                <div className="relative z-[9999] ml-[0.5rem] mt-[-3rem]">
+                <div className="relative z-[9999] w-full ml-[0.5rem] mt-[-3rem]">
                     <HomepageModel/>
                 </div>
               </div>
