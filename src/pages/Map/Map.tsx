@@ -52,6 +52,7 @@ function Map() {
           description: row.School,
           coordinates: row.coordinates,
           link: row["Club Info / Links"],
+          region: row.Region
         }))
         .filter((l) => l.coordinates[0] !== 0 || l.coordinates[1] !== 0),
     [rawLocations]
@@ -151,9 +152,12 @@ function Map() {
               cx={zoomParams.cx}
             />
           </ComposableMap>
+          <MapDirectory
+            locations={locations}
+            setHovered={setDirectoryHovered}
+          />
         </div>
       </div>
-      <MapDirectory locations={locations} setHovered={setDirectoryHovered} />
       <div
         className={`
           fixed top-8 left-1/2 -translate-x-1/2 z-50
