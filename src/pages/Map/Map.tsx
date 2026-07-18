@@ -11,7 +11,7 @@ import { MapDirectory } from "./MapDirectory";
 
 const DEFAULT_VIEWBOX = { x: 0, y: 0, width: 800, height: 600 };
 
-function Map({ numOfClubs, setNumOfClubs }: { numOfClubs: number; setNumOfClubs: (num: number) => void }) {
+function Map({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
   const navigate = useNavigate();
   const rawLocations = useSchools();
 
