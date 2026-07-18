@@ -32,7 +32,7 @@ export default function NavigationArrows() {
   };
 
   return (
-    <>
+    <div>
       {prevPath && (
         <button
           onClick={goPrev}
@@ -84,6 +84,6 @@ export default function NavigationArrows() {
           </svg>
         </button>
       )}
-    </>
+    </div>
   );
 }

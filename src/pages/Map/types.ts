@@ -4,6 +4,7 @@ export interface SchoolMarker {
     description: string;
     coordinates: [number, number];
     link: string;
+    region: string;
 }
 
 export interface TooltipState {
