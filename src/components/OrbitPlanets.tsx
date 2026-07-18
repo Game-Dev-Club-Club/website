@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import '../pages/Contact.css';
 
 export interface SocialLink {
@@ -15,6 +15,7 @@ export interface SocialLink {
 export function OrbitPlanet({ social }: { social: SocialLink; sunPos: { x: number; y: number }; slopes: number[] }) {
     const ringRef = useRef<HTMLDivElement>(null);
     const planetRef = useRef<HTMLAnchorElement>(null);
+    const [bounceKey, setBounceKey] = useState(0);
 
     const setPaused = (paused: boolean) => {
         const state = paused ? 'paused' : 'running';
@@ -36,7 +37,10 @@ export function OrbitPlanet({ social }: { social: SocialLink; sunPos: { x: numbe
                 animationDuration: `${social.speed}s`,
                 animationDelay: delay,
             }}
-            onClick={() => { window.location.href = social.url }}
+            onClick={() => {
+                setBounceKey(k => k + 1);
+                window.location.href = social.url;
+            }}
         >
             <a
                 ref={planetRef}
@@ -51,7 +55,7 @@ export function OrbitPlanet({ social }: { social: SocialLink; sunPos: { x: numbe
                 aria-label={social.name}
                 title={social.name}
             >
-                <div className="planet-bubble no-cursor" style={{ background: social.color }}>
+                <div key={bounceKey} className="planet-bubble bounce no-cursor" style={{ background: social.color }}>
                     <social.Icon />
                 </div>
                 <span className="planet-label">{social.name}</span>
