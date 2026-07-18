@@ -51,7 +51,7 @@ function Map({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
           name: row["Club Name"]?.trim() || `${row.School} Game Dev Club`,
           description: row.School,
           coordinates: row.coordinates,
-          link: row["Club Info / Links"],
+          link: row["Club Link"],
           region: row.Region
         }))
         .filter((l) => l.coordinates[0] !== 0 || l.coordinates[1] !== 0),
@@ -59,6 +59,8 @@ function Map({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
   );
 
   useEffect(() => {
+    console.log("Number of clubs:", locations.length);
+    console.log("Locations:", locations);
     setNumOfClubs(locations.length);
   }, [locations, setNumOfClubs]);
 

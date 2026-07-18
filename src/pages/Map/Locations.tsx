@@ -7,7 +7,7 @@ export type Row = {
   Region: string;
   School: string;
   "Club Name": string;
-  "Club Info / Links": string;
+  "Club Link": string;
   "Main Contact (Discord)": string;
   Status: string;
   coordinates: [number, number];
