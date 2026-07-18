@@ -45,7 +45,7 @@ function AppContent() {
         <Navbar />
 
         <div className={`route-content ${isMap ? "route-map" : ""} ${isContact ? "route-contact" : ""}`}>
-          <AnimatedRoutes numOfClubs={numOfClubs} setNumOfClubs={setNumOfClubs} />
+          <AnimatedRoutes setNumOfClubs={setNumOfClubs} />
         </div>
       </PageTransition>
     </>
