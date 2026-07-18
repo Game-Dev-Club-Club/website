@@ -11,7 +11,7 @@ import { MapDirectory } from "./MapDirectory";
 
 const DEFAULT_VIEWBOX = { x: 0, y: 0, width: 800, height: 600 };
 
-function Map() {
+function Map({ numOfClubs, setNumOfClubs }: { numOfClubs: number; setNumOfClubs: (num: number) => void }) {
   const navigate = useNavigate();
   const rawLocations = useSchools();
 
@@ -57,6 +57,10 @@ function Map() {
         .filter((l) => l.coordinates[0] !== 0 || l.coordinates[1] !== 0),
     [rawLocations]
   );
+
+  useEffect(() => {
+    setNumOfClubs(locations.length);
+  }, [locations, setNumOfClubs]);
 
   const handleTransitionEnd = useCallback(
     (e: React.TransitionEvent<HTMLDivElement>) => {
