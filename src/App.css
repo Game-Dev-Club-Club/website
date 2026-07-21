@@ -70,3 +70,24 @@
     align-items: center;
     justify-content: center;
 }
+
+/* CONTACT PAGE OVERRIDE
+   The solar system scales itself to 96dvw/96dvh (viewport-relative), but the
+   route-content it lives in is only #root's 80% width minus 8rem side padding —
+   so the outer orbit rings overflow that narrower box and get clipped, exposing
+   the fixed full-viewport grid behind them. On desktop we drop the horizontal
+   padding and full-bleed route-content to the real viewport width (margin trick,
+   no transform — a transform here would re-anchor the popup's position: fixed),
+   so 96dvw finally has the room it assumes. */
+@media (min-width: 769px) {
+    .route-content.route-contact {
+        padding-left: 0;
+        padding-right: 0;
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+    }
+
+    .route-content.route-contact>* {
+        max-width: none;
+    }
+}

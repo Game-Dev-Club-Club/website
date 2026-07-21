@@ -233,8 +233,8 @@ function HomepageModel() {
         ref={wrapperRef}
         className="logo-3d-wrapper"
         style={{
-          width: "100%",
-          maxWidth: 580,
+          width: 500,
+          maxWidth: 500,
           aspectRatio: "5 / 3",
           // Hide until ready, then fade in smoothly to mask any shader compilation frame
           opacity: isReady ? 1 : 0,
