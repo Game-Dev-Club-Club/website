@@ -6,6 +6,7 @@ interface Props {
   locations: SchoolMarker[];
   loaded: boolean;
   zoom: number;
+  directoryHovered: SchoolMarker | null;
   setTooltip: React.Dispatch<React.SetStateAction<TooltipState>>;
   setShowNoLink: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -14,6 +15,7 @@ function SchoolMarkers({
   locations,
   loaded,
   zoom,
+  directoryHovered,
   setTooltip,
   setShowNoLink,
 }: Props) {
@@ -49,6 +51,15 @@ function SchoolMarkers({
     }
     setPopIn(false);
   }, [hoveredId]);
+
+  useEffect(() => {
+    if (hoveredId != null) {
+      handleLeave(hoveredId);
+    }
+    if (directoryHovered) {
+      handleEnter(directoryHovered);
+    }
+  }, [directoryHovered]);
 
   const renderPin = (hidden = false) => (
     <>
@@ -136,7 +147,7 @@ function SchoolMarkers({
               style={{
                 pointerEvents: isOwnedByOverlay ? "none" : "auto",
                 transform: loaded
-                  ? `translateY(0px) scale(${1 / zoom})` 
+                  ? `translateY(0px) scale(${1 / zoom})`
                   : `translateY(-20px) scale(0.5)`,
                 opacity: loaded ? 1 : 0,
                 transition:

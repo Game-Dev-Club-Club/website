@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import Papa from "papaparse";
 import csvFile from "../../assets/Schools List - Main.csv?url";
-import coordsCsvFile from "../../assets/college_coordinates.csv?url"; 
+import coordsCsvFile from "../../assets/college_coordinates.csv?url";
 
-type Row = {
+export type Row = {
   Region: string;
   School: string;
   "Club Name": string;
-  "Club Info / Links": string;
+  "Club Link": string;
   "Main Contact (Discord)": string;
   Status: string;
   coordinates: [number, number];
@@ -33,7 +33,7 @@ export function useSchools() {
       fetch(csvFile).then((res) => res.text()),
       fetch(coordsCsvFile).then((res) => res.text()),
     ]).then(([mainText, coordsText]) => {
-      
+
       // 1. Parse the coordinates CSV
       const coordsResult = Papa.parse<CoordRow>(coordsText, {
         header: true,
@@ -42,7 +42,7 @@ export function useSchools() {
 
       // 2. Build a case-insensitive lookup dictionary
       const coordMap = new Map<string, [number, number]>();
-      
+
       // Load fallbacks first (lowercase)
       Object.entries(hardcodedCoords).forEach(([key, val]) => {
         coordMap.set(key.toLowerCase(), val);
@@ -55,7 +55,7 @@ export function useSchools() {
           const normalizedName = row.INSTNM.toLowerCase().trim();
           const lat = parseFloat(row.LATITUDE);
           const lon = parseFloat(row.LONGITUDE);
-          
+
           if (!isNaN(lat) && !isNaN(lon)) {
             // react-simple-maps REQUIRES [longitude, latitude] order!
             coordMap.set(normalizedName, [lon, lat]);

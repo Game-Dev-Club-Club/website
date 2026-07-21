@@ -7,10 +7,11 @@ import MapTooltip from "./MapTooltip";
 import type { SchoolMarker, TooltipState, ZoomParams } from "./types";
 import { useNavigate } from "react-router-dom";
 import { setZoomK } from "./zoomStore";
+import { MapDirectory } from "./MapDirectory";
 
 const DEFAULT_VIEWBOX = { x: 0, y: 0, width: 800, height: 600 };
 
-function Map() {
+function Map({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
   const navigate = useNavigate();
   const rawLocations = useSchools();
 
@@ -23,6 +24,7 @@ function Map() {
   const [showNoLink, setShowNoLink] = useState(false);
   const [zoomStage, setZoomStage] = useState(0);
   const [activeState, setActiveState] = useState<string | null>(null);
+  const [directoryHovered, setDirectoryHovered] = useState<SchoolMarker | null>(null);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -49,11 +51,18 @@ function Map() {
           name: row["Club Name"]?.trim() || `${row.School} Game Dev Club`,
           description: row.School,
           coordinates: row.coordinates,
-          link: row["Club Info / Links"],
+          link: row["Club Link"],
+          region: row.Region
         }))
         .filter((l) => l.coordinates[0] !== 0 || l.coordinates[1] !== 0),
     [rawLocations]
   );
+
+  useEffect(() => {
+    console.log("Number of clubs:", locations.length);
+    console.log("Locations:", locations);
+    setNumOfClubs(locations.length);
+  }, [locations, setNumOfClubs]);
 
   const handleTransitionEnd = useCallback(
     (e: React.TransitionEvent<HTMLDivElement>) => {
@@ -114,7 +123,7 @@ function Map() {
             transformOrigin: "0 0",
             willChange: isAnimating ? "transform" : "auto",
           }}
-        >        
+        >
           <ComposableMap
             projection="geoAlbersUsa"
             viewBox="0 0 800 600"
@@ -139,18 +148,22 @@ function Map() {
               zoom={zoomParams.k}
               setTooltip={setTooltip}
               setShowNoLink={setShowNoLink}
+              directoryHovered={directoryHovered}
             />
-            
+
             {/* Pass cx down to the tooltip */}
-            <MapTooltip 
-              tooltip={tooltip} 
-              zoom={zoomParams.k} 
-              cx={zoomParams.cx} 
+            <MapTooltip
+              tooltip={tooltip}
+              zoom={zoomParams.k}
+              cx={zoomParams.cx}
             />
           </ComposableMap>
+          <MapDirectory
+            locations={locations}
+            setHovered={setDirectoryHovered}
+          />
         </div>
       </div>
-
       <div
         className={`
           fixed top-8 left-1/2 -translate-x-1/2 z-50
