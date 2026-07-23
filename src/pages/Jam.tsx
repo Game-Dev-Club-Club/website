@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useId, useMemo, useState, useRef } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   JAM_EDITIONS,
   getStatus,
@@ -107,7 +107,7 @@ function Countdown({ target, doneLabel }: { target: number; doneLabel: string })
    A jam with no `goal` just shows the count.
 ------------------------------------------------------------------- */
 
-function JoinMeter({ joined, goal }: { joined: number; goal?: number }) {
+function JoinMeter({ joined, goal }: { joined: number; goal?: number | null }) {
   const pct = goal ? Math.min(100, Math.round((joined / goal) * 100)) : 0;
   const [width, setWidth] = useState(0);
 
@@ -171,6 +171,82 @@ function ThemeWord({ text }: { text: string }) {
 }
 
 /* ------------------------------------------------------------------
+   Detail card — one per `details` section, collapsed to its header until
+   the header is clicked (or tapped on mobile)
+------------------------------------------------------------------- */
+
+function DetailCard({
+  section,
+  rows,
+  delay,
+}: {
+  section: string;
+  rows: [string, string][];
+  delay: number;
+}) {
+  const [open, setOpen] = useState(false);
+  const reduceMotion = useReducedMotion();
+  const bodyId = `${useId()}-body`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-10% 0px' }}
+      transition={{ duration: 0.4, delay, ease: [0.34, 1.2, 0.64, 1] }}
+      className="rounded-2xl shadow-2xl overflow-hidden"
+      style={{ background: 'linear-gradient(160deg, #60a5fa, #5b9ff8)' }}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-controls={bodyId}
+        className="jam-detail-toggle no-cursor w-full flex items-center justify-between gap-4 px-6 py-5 sm:px-8 text-left"
+      >
+        <h3 className="font-bebas text-2xl sm:text-3xl tracking-wide text-(--blackberry)">
+          {section}
+        </h3>
+        <span
+          aria-hidden="true"
+          className={`jam-detail-chevron font-bebas text-xl text-(--blackberry)/60 ${open ? 'is-open' : ''}`}
+        >
+          &#9662;
+        </span>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            id={bodyId}
+            key="body"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <dl className="flex flex-col gap-3 px-6 pb-6 sm:px-8">
+              {rows.map(([label, text]) => (
+                <div key={label}>
+                  <dt className="inline font-cascadia text-sm font-bold text-(--blackberry)">
+                    {label}
+                  </dt>
+                  <dd className="inline font-cascadia text-sm text-(--blackberry)/80">
+                    {' — '}
+                    {text}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+/* ------------------------------------------------------------------
    Hero — adapts to announced / running vs finished editions
 ------------------------------------------------------------------- */
 
@@ -205,6 +281,10 @@ function Hero({ jam, status }: { jam: JamEdition; status: JamStatus }) {
       <span className="text-(--pale)/70"> by {stats.topAuthor}</span>
     </p>
   ) : null;
+  // one card per section, in the order written in jams.json
+  const detailSections = Object.entries(jam.details ?? {})
+    .map(([section, rows]) => [section, Object.entries(rows ?? {})] as [string, [string, string][]])
+    .filter(([, rows]) => rows.length > 0);
 
   return (
     <motion.div
@@ -281,6 +361,15 @@ function Hero({ jam, status }: { jam: JamEdition; status: JamStatus }) {
           </a>
         </div>
       </div>
+
+      {/* ---- collapsible detail sections ---- */}
+      {detailSections.length > 0 && (
+        <div className="mt-16 mb-12 flex flex-col gap-4">
+          {detailSections.map(([section, rows], i) => (
+            <DetailCard key={section} section={section} rows={rows} delay={i * 0.06} />
+          ))}
+        </div>
+      )}
     </motion.div>
   );
 }

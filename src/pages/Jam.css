@@ -84,6 +84,24 @@
     transform: translateY(-2px) scale(0.98);
 }
 
+/* --- collapsible detail sections --- */
+.jam-detail-toggle {
+    transition: background 0.2s ease;
+}
+
+.jam-detail-toggle:hover {
+    background: rgba(18, 14, 35, 0.1);
+    cursor: none;
+}
+
+.jam-detail-chevron {
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.jam-detail-chevron.is-open {
+    transform: rotate(180deg);
+}
+
 /* --- theme word letters pop in (reuses global popInChar) --- */
 .jam-theme-char {
     display: inline-block;
@@ -117,4 +135,5 @@
     }
     .jam-theme-char { opacity: 1; }
     .jam-meter-fill { transition: none; }
+    .jam-detail-chevron { transition: none; }
 }

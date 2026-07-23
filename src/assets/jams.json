@@ -8,6 +8,19 @@
     "goal": null,
     "itchUrl": "https://itch.io/jam/club-club-jam-jam",
     "startsAt": "2026-08-06T12:00:00-07:00",
-    "endsAt": "2026-08-10T00:00:00-07:00"
+    "endsAt": "2026-08-10T00:00:00-07:00",
+    "details": {
+      "AWARDS": {
+        "Category Winners ($50 each)": "The highest average score for each judging category",
+        "Best Overall ($75)": "The highest average score from all categories weighted equally."
+      },
+      "JUDGING": {
+        "Theme": "How well the game interprets and incorporates the theme through gameplay, story, mechanics, visuals, or other creative approaches.",
+        "Fun": "How enjoyable the game is to play. This includes the core gameplay loop, pacing, and overall entertainment value.",
+        "Innovation": "A broad category that evaluates the game's creativity and originality, as well as the execution of those ideas.",
+        "Art": "Overall visual representation of the game. This includes models, sprites, animations, UI, lighting, effects, and artistic cohesion/direction.",
+        "Sound": "How well the audio enhances the game’s experience. This includes sound effects, music, and voice work."
+      }
+    }
   }
 ]

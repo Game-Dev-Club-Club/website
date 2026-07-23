@@ -12,6 +12,7 @@ import jamsData from '../assets/jams.json';
   `stats` optional, fill it in once a jam is finished
   `goal` optional
   `startsAt` and `endsAt` in ISO date format, make sure to add timezone
+  `details` optional, each section becomes its own collapsible card
 
   Example:
   {
@@ -30,11 +31,25 @@ import jamsData from '../assets/jams.json';
       "ratings": 88,
       "topGame": "Final Exam Simulator",
       "topAuthor": "someone"
+    },
+    "details": {
+      "Judging": {
+        "Theme": "How well the game interprets the theme.",
+        "Fun": "How enjoyable the game is to play."
+      },
+      "Awards": {
+        "Best Overall ($100)": "The highest average score from judges.",
+        "Community Choice ($50)": "The highest average score from community scoring."
+      }
     }
   }
 ------------------------------------------------------------------- */
 
 export type JamStatus = 'announced' | 'in progress' | 'completed';
+
+/* section name -> the rows inside it, each a label and its explanation.
+   Both keep the order written in jams.json. */
+export type JamDetails = Record<string, Record<string, string>>;
 
 export interface JamStats {
   participants: number;
@@ -50,11 +65,12 @@ export interface JamEdition {
   title: string;
   theme: string;
   joined: number;
-  goal?: number;      // sign-up target, no progress bar shown if null
+  goal?: number | null;   // sign-up target, no progress bar shown if null
   itchUrl: string;
-  startsAt?: string;  // ISO date the jam opens
-  endsAt?: string;    // ISO date the submissions close
-  stats?: JamStats;   // stats, only applies to completed editions
+  startsAt?: string;      // ISO date the jam opens
+  endsAt?: string;        // ISO date the submissions close
+  stats?: JamStats;       // stats, only applies to completed editions
+  details?: JamDetails;   // extra sections, one collapsible card each
 }
 
 export const JAM_EDITIONS: JamEdition[] = (jamsData as JamEdition[])

@@ -12,7 +12,9 @@
 @font-face {
   font-family: "CascadiaCode-Regular";
   src: url("./assets/fonts/CascadiaCode-VariableFont_wght.ttf") format("truetype");
-  font-weight: 400;
+  /* the file is variable across this range — declaring it lets bold weights
+     come from the font instead of being faked by the browser */
+  font-weight: 200 700;
   font-style: normal;
 }
 
