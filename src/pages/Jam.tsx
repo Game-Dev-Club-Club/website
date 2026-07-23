@@ -1,73 +1,45 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import {
+  JAM_EDITIONS,
+  getStatus,
+  jamTime,
+  nextBoundary,
+  type JamEdition,
+  type JamStatus,
+} from './jams';
 import './Jam.css';
 
-/* ------------------------------------------------------------------
-   Data model
-   Each edition is one game jam. Status can be:
-   - 'upcoming': jam is being set up, not yet announced
-   - 'in progress': jam is active, show countdown + join
-   - 'past': jam is finished, show final stats
-
-   To run a real jam: replace `liveEndsAt` below with a fixed ISO date
-   (e.g. new Date('2026-07-15T23:59:00')) and update `joined`/`itchUrl`.
-------------------------------------------------------------------- */
-
-type JamStatus = 'upcoming' | 'in progress' | 'past';
-
-interface JamEdition {
-  id: string;
-  number: number;
-  title: string;
-  theme: string;
-  status: JamStatus;
-  joined: number;
-  goal: number;
-  itchUrl: string;
-  /* finished ('past') editions carry final numbers */
-  stats?: {
-    participants: number;
-    submissions: number;
-    ratings: number;
-    topGame: string;
-    topAuthor: string;
-  };
-}
-
-/* Keep the live countdown healthy in any session.
-   Anchored once on load — swap for a fixed date for a real jam. */
-const liveEndsAt = new Date(Date.now() + 1000 * 60 * 60 * 38 + 1000 * 60 * 23);
-
-const EDITIONS: JamEdition[] = [
-  {
-    id: 'gdcc-01',
-    number: 1,
-    title: 'Summer Jam',
-    theme: 'TBD',
-    status: 'upcoming',
-    joined: 0,
-    goal: 200,
-    itchUrl: 'https://itch.io/jams',
-  },
-];
+/* Jams are loaded from `assets/jams.json`,
+   read `jams.ts` for instructions on how to add/edit a jam */
 
 /* ------------------------------------------------------------------
    Helpers
 ------------------------------------------------------------------- */
 
-/* Active jams show countdown + join meter. */
-function isActive(jam: JamEdition): boolean {
-  return jam.status === 'in progress';
+// clock counts down to start time or submission end time
+function getCountdownTarget(jam: JamEdition, status: JamStatus): number | null {
+  return status === 'announced' ? jamTime(jam.startsAt) : jamTime(jam.endsAt);
 }
 
-function isUpcoming(jam: JamEdition): boolean {
-  return jam.status === 'upcoming';
+// re-renders when jam starts or finishes
+function useBoundaryRefresh(jam: JamEdition | undefined) {
+  const [tick, bump] = useState(0);
+
+  useEffect(() => {
+    if (!jam) return;
+    const next = nextBoundary(jam);
+    if (next === null) return;
+    const delay = Math.min(next - Date.now() + 1000, 2 ** 31 - 1);
+    const id = window.setTimeout(() => bump((n) => n + 1), delay);
+    return () => window.clearTimeout(id);
+  }, [jam, tick]);
 }
 
 interface TimeLeft { days: number; hours: number; mins: number; secs: number; done: boolean; }
 
-function getTimeLeft(target: Date): TimeLeft {
-  const diff = target.getTime() - Date.now();
+function getTimeLeft(target: number): TimeLeft {
+  const diff = target - Date.now();
   if (diff <= 0) return { days: 0, hours: 0, mins: 0, secs: 0, done: true };
   const secs = Math.floor(diff / 1000) % 60;
   const mins = Math.floor(diff / 1000 / 60) % 60;
@@ -84,7 +56,7 @@ function pad(n: number): string {
    Countdown
 ------------------------------------------------------------------- */
 
-function Countdown({ target }: { target: Date }) {
+function Countdown({ target, doneLabel }: { target: number; doneLabel: string }) {
   const [left, setLeft] = useState<TimeLeft>(() => getTimeLeft(target));
 
   useEffect(() => {
@@ -104,7 +76,7 @@ function Countdown({ target }: { target: Date }) {
   if (left.done) {
     return (
       <div className="font-bebas text-3xl tracking-widest text-(--pale)">
-        SUBMISSIONS CLOSED
+        {doneLabel}
       </div>
     );
   }
@@ -131,17 +103,27 @@ function Countdown({ target }: { target: Date }) {
 }
 
 /* ------------------------------------------------------------------
-   Join meter — animates toward the goal on mount / selection
+   Join meter — animates toward the goal on mount / selection.
+   A jam with no `goal` just shows the count.
 ------------------------------------------------------------------- */
 
-function JoinMeter({ joined, goal }: { joined: number; goal: number }) {
-  const pct = Math.min(100, Math.round((joined / goal) * 100));
+function JoinMeter({ joined, goal }: { joined: number; goal?: number }) {
+  const pct = goal ? Math.min(100, Math.round((joined / goal) * 100)) : 0;
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
     const id = window.setTimeout(() => setWidth(pct), 120);
     return () => window.clearTimeout(id);
   }, [pct]);
+
+  if (!goal) {
+    return (
+      <p className="font-bebas text-2xl text-(--pale) tracking-wide">
+        {joined}
+        <span className="text-(--pale)/60"> joined</span>
+      </p>
+    );
+  }
 
   return (
     <div className="w-full">
@@ -189,12 +171,40 @@ function ThemeWord({ text }: { text: string }) {
 }
 
 /* ------------------------------------------------------------------
-   Hero — adapts to upcoming / active vs finished editions
+   Hero — adapts to announced / running vs finished editions
 ------------------------------------------------------------------- */
 
-function Hero({ jam }: { jam: JamEdition }) {
-  const active = isActive(jam);
-  const upcoming = isUpcoming(jam);
+function Hero({ jam, status }: { jam: JamEdition; status: JamStatus }) {
+  const announced = status === 'announced';
+  const active = status === 'in progress';
+  // announced and running jams both count down and take sign-ups
+  const counting = announced || active;
+  const target = getCountdownTarget(jam, status);
+  // only show second part when there is a time to count down to
+  const statusLabel = announced
+    ? target !== null
+      ? 'Upcoming — the jam starts in'
+      : 'Upcoming'
+    : active
+    ? target !== null
+      ? 'Live now — submissions close in'
+      : 'Live now'
+    : 'Wrapped — the results are in';
+  // only show stats if data is filled in
+  const stats = jam.stats;
+  const statGrid = stats ? (
+    <div className="grid grid-cols-3 gap-6 sm:gap-10">
+      <Stat value={stats.participants} label="DEVS" />
+      <Stat value={stats.submissions} label="GAMES" />
+      <Stat value={stats.ratings} label="RATINGS" />
+    </div>
+  ) : null;
+  const winner = stats ? (
+    <p className="font-cascadia text-sm text-(--pale)">
+      Winner: <span className="font-bebas text-xl text-(--pale) tracking-wide">{stats.topGame}</span>
+      <span className="text-(--pale)/70"> by {stats.topAuthor}</span>
+    </p>
+  ) : null;
 
   return (
     <motion.div
@@ -209,52 +219,32 @@ function Hero({ jam }: { jam: JamEdition }) {
         style={{ background: 'linear-gradient(135deg, var(--verdant), var(--leaf))' }}
       >
         <div className="flex items-center gap-2">
-          {upcoming ? (
-            <span className="font-cascadia text-sm uppercase tracking-[0.25em] text-(--pale)">
-              Coming soon
-            </span>
-          ) : active ? (
-            <>
-              <span className="jam-live-dot h-3 w-3 rounded-full bg-(--strawberry2)" />
-              <span className="font-cascadia text-sm uppercase tracking-[0.25em] text-(--pale)">
-                Live now — submissions close in
-              </span>
-            </>
-          ) : (
-            <span className="font-cascadia text-sm uppercase tracking-[0.25em] text-(--pale)">
-              Wrapped — the results are in
-            </span>
-          )}
+          {active && <span className="jam-live-dot h-3 w-3 rounded-full bg-(--strawberry2)" />}
+          <span className="font-cascadia text-sm uppercase tracking-[0.25em] text-(--pale)">
+            {statusLabel}
+          </span>
         </div>
 
-        {upcoming ? (
-          <div className="font-capriola text-2xl text-(--pale) tracking-wide">
-            Details coming soon
-          </div>
-        ) : active ? (
-          <Countdown target={liveEndsAt} />
+        {counting ? (
+          target !== null ? (
+            <Countdown
+              target={target}
+              doneLabel={announced ? 'STARTING NOW' : 'SUBMISSIONS CLOSED'}
+            />
+          ) : (
+            <div className="font-capriola text-2xl text-(--pale) tracking-wide">
+              Dates coming soon
+            </div>
+          )
         ) : (
-          <div className="grid grid-cols-3 gap-6 sm:gap-10">
-            <Stat value={jam.stats!.participants} label="DEVS" />
-            <Stat value={jam.stats!.submissions} label="GAMES" />
-            <Stat value={jam.stats!.ratings} label="RATINGS" />
-          </div>
+          statGrid
         )}
 
-        <div className="w-full max-w-xl mt-1">
-          {upcoming ? (
-            <p className="font-cascadia text-sm text-(--pale)">
-              Theme, dates, and submission details will be announced here.
-            </p>
-          ) : active ? (
-            <JoinMeter joined={jam.joined} goal={jam.goal} />
-          ) : (
-            <p className="font-cascadia text-sm text-(--pale)">
-              Winner: <span className="font-bebas text-xl text-(--pale) tracking-wide">{jam.stats!.topGame}</span>
-              <span className="text-(--pale)/70"> by {jam.stats!.topAuthor}</span>
-            </p>
-          )}
-        </div>
+        {(counting || winner) && (
+          <div className="w-full max-w-xl mt-1">
+            {counting ? <JoinMeter joined={jam.joined} goal={jam.goal} /> : winner}
+          </div>
+        )}
       </div>
 
       {/* ---- orange THEME hero + straddling join pill ---- */}
@@ -263,35 +253,33 @@ function Hero({ jam }: { jam: JamEdition }) {
         style={{ background: 'linear-gradient(160deg, var(--orange), #ffb347)' }}
       >
         <span className="font-cascadia text-sm uppercase tracking-[0.3em] text-(--blackberry)/70 mb-4">
-          {upcoming ? 'The first jam' : active ? 'This jam\u2019s theme' : 'The theme was'}
+          {counting ? 'This jam\u2019s theme' : 'The theme was'}
         </span>
 
         <ThemeWord text={jam.theme} />
 
         <p className="font-capriola text-(--blackberry)/80 text-center max-w-xl mt-6 text-sm sm:text-base">
-          {upcoming
-            ? 'We\u2019re putting together our first game jam. Stay tuned!'
+          {announced
+            ? 'Sign up on itch now so you\u2019re ready when the clock starts.'
             : active
             ? 'Make a game in 48 hours.'
             : 'See what the game devs were able to make on our itch.'}
         </p>
 
-        {/* itch CTA — only show when active or past */}
-        {!upcoming && (
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 z-20">
-            <a
-              href={jam.itchUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="jam-join-btn no-cursor block rounded-2xl px-8 py-5 text-center"
-              style={{ background: 'linear-gradient(180deg, var(--ripe), #c9e04a)' }}
-            >
-              <span className="font-bebas text-2xl sm:text-3xl tracking-wide text-(--blackberry)">
-                {active ? 'JOIN ON ITCH' : 'PLAY THE ENTRIES'}
-              </span>
-            </a>
-          </div>
-        )}
+        {/* itch CTA - "join" while announced or running, "play" once wrapped */}
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 z-20">
+          <a
+            href={jam.itchUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="jam-join-btn no-cursor block rounded-2xl px-8 py-5 text-center"
+            style={{ background: 'linear-gradient(180deg, var(--ripe), #c9e04a)' }}
+          >
+            <span className="font-bebas text-2xl sm:text-3xl tracking-wide text-(--blackberry)">
+              {counting ? 'JOIN ON ITCH' : 'PLAY THE ENTRIES'}
+            </span>
+          </a>
+        </div>
       </div>
     </motion.div>
   );
@@ -317,27 +305,38 @@ function Stat({ value, label }: { value: number; label: string }) {
 interface TimelineCardProps {
   jam: JamEdition;
   selected: boolean;
-  isUpcomingCard: boolean;
-  isActiveCard: boolean;
+  status: JamStatus;
   onSelect: () => void;
   delay: number;
 }
 
-function TimelineCard({
-  jam,
-  selected,
-  isUpcomingCard,
-  isActiveCard,
-  onSelect,
-  delay,
-}: TimelineCardProps) {
+function TimelineCard({ jam, selected, status, onSelect, delay }: TimelineCardProps) {
+  // announced and running jams show sign-up numbers, completed ones show results
+  const counting = status !== 'completed';
+  // a completed jam with no stats does not render results
+  const stats = jam.stats;
+  // first line under the theme
+  const summary = counting
+    ? `${jam.joined} joined`
+    : stats
+    ? `${stats.submissions} games · ${stats.participants} devs`
+    : null;
+  // second line, shown under the theme on mobile and inside the hover reveal
+  const spotsLeft = jam.goal ? Math.max(0, jam.goal - jam.joined) : 0;
+  const detail = counting
+    ? !jam.goal
+      ? 'Sign-ups open'
+      : spotsLeft > 0
+      ? `${spotsLeft} spots left`
+      : 'Goal reached!'
+    : stats
+    ? `${stats.participants} creators`
+    : null;
   const containerRef = useRef<HTMLButtonElement>(null);
   const revealRef = useRef<HTMLDivElement>(null);
   const target = useRef({ x: 0, y: 0, r: 0 });
   const current = useRef({ x: 0, y: 0, r: 0 });
 
-  // On touch devices there's no hover to trigger the reveal, so we skip the
-  // clip-path animation entirely and show the extra detail line unconditionally.
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -426,11 +425,11 @@ function TimelineCard({
           >
             #{pad(jam.number)}
           </span>
-          {isUpcomingCard ? (
+          {status === 'announced' ? (
             <span className={`font-cascadia text-[0.6rem] uppercase tracking-widest ${selected ? 'text-(--grape)' : 'text-(--pale)/60'}`}>
               soon
             </span>
-          ) : isActiveCard ? (
+          ) : status === 'in progress' ? (
             <span className="flex items-center gap-1">
               <span className="jam-live-dot h-2 w-2 rounded-full bg-(--strawberry2)" />
               <span className={`font-cascadia text-[0.6rem] uppercase tracking-widest ${selected ? 'text-(--strawberry1)' : 'text-(--strawberry3)'}`}>
@@ -448,21 +447,15 @@ function TimelineCard({
           {jam.theme}
         </p>
 
-        <p className={`font-cascadia text-[0.7rem] mt-3 ${selected ? 'text-(--blueberry)/70' : 'text-(--pale)/70'}`}>
-          {isUpcomingCard
-            ? 'Announcement coming'
-            : isActiveCard
-            ? `${jam.joined} joined`
-            : `${jam.stats!.submissions} games \u00b7 ${jam.stats!.participants} devs`}
-        </p>
+        {summary && (
+          <p className={`font-cascadia text-[0.7rem] mt-3 ${selected ? 'text-(--blueberry)/70' : 'text-(--pale)/70'}`}>
+            {summary}
+          </p>
+        )}
 
-        {isMobile && (
+        {isMobile && detail && (
           <p className={`font-cascadia text-[0.7rem] mt-1 ${selected ? 'text-(--blueberry)/70' : 'text-(--pale)/70'}`}>
-            {isUpcomingCard
-              ? 'Coming soon'
-              : isActiveCard
-              ? `${jam.goal - jam.joined} spots left`
-              : `${jam.stats!.participants} creators`}
+            {detail}
           </p>
         )}
       </div>
@@ -477,13 +470,7 @@ function TimelineCard({
           <div className="text-center">
             <p className="font-bebas text-sm text-(--pale) mb-2">#{pad(jam.number)}</p>
             <p className="font-hiruko text-base text-(--ripe) leading-tight">{jam.theme}</p>
-            <p className="font-cascadia text-xs text-(--pale) mt-2">
-              {isUpcomingCard
-                ? 'Coming soon'
-                : isActiveCard
-                ? `${jam.goal - jam.joined} spots left`
-                : `${jam.stats!.participants} creators`}
-            </p>
+            {detail && <p className="font-cascadia text-xs text-(--pale) mt-2">{detail}</p>}
           </div>
         </div>
       )}
@@ -519,22 +506,16 @@ function Timeline({
       </div>
 
       <div className="jam-timeline-scroll flex gap-4 overflow-x-auto pb-3 -mx-1 px-1">
-        {editions.map((jam, i) => {
-          const selected = jam.id === selectedId;
-          const isUpcomingCard = isUpcoming(jam);
-          const isActiveCard = isActive(jam);
-          return (
-            <TimelineCard
-              key={jam.id}
-              jam={jam}
-              selected={selected}
-              isUpcomingCard={isUpcomingCard}
-              isActiveCard={isActiveCard}
-              onSelect={() => onSelect(jam.id)}
-              delay={i * 0.06}
-            />
-          );
-        })}
+        {editions.map((jam, i) => (
+          <TimelineCard
+            key={jam.id}
+            jam={jam}
+            selected={jam.id === selectedId}
+            status={getStatus(jam)}
+            onSelect={() => onSelect(jam.id)}
+            delay={i * 0.06}
+          />
+        ))}
       </div>
     </div>
   );
@@ -545,33 +526,51 @@ function Timeline({
 ------------------------------------------------------------------- */
 
 function Jam() {
-  const liveJam = EDITIONS.find(isActive) ?? EDITIONS.find(isUpcoming) ?? EDITIONS[0];
-  const [selectedId, setSelectedId] = useState(liveJam.id);
-  const selected = EDITIONS.find((j) => j.id === selectedId) ?? liveJam;
+  // null until an edition is picked, live jam is the default
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  // default view: whatever is running, or next one announced, or most recent edition
+  const liveJam =
+    JAM_EDITIONS.find((j) => getStatus(j) === 'in progress') ??
+    JAM_EDITIONS.find((j) => getStatus(j) === 'announced') ??
+    JAM_EDITIONS[JAM_EDITIONS.length - 1];
+  const selected = JAM_EDITIONS.find((j) => j.id === selectedId) ?? liveJam;
+
+  useBoundaryRefresh(selected);
 
   return (
     <div className="relative z-10 w-full flex justify-center">
       <div className="w-full max-w-screen-4xl bg-(--verdant-faded) py-8 px-4 sm:px-8 shadow-2xl overflow-hidden">
         <div className="relative z-10 w-full flex flex-col bg-white py-8 px-4 sm:px-8 shadow-2xl">
 
-          {/* header */}
-          <div className="flex flex-col items-center text-center mb-6">
-            <span className="font-cascadia text-xs uppercase tracking-[0.35em] text-(--grape)">
-              game dev club club presents
-            </span>
-            <h1 className="jam-heading-main font-hiruko text-4xl sm:text-6xl text-(--blackberry) mt-2">
-              GDCC JAM #{pad(selected.number)}
-            </h1>
-            <p className="font-capriola text-(--blueberry) mt-1">{selected.title}</p>
-          </div>
+          {!selected ? (
+            <div className="flex flex-col items-center text-center py-24">
+              <p className="font-capriola text-(--blueberry)">
+                No jams to show yet, check back soon!
+              </p>
+            </div>
+          ) : (
+            <>
+              {/* header */}
+              <div className="flex flex-col items-center text-center mb-6">
+                <span className="font-cascadia text-xs uppercase tracking-[0.35em] text-(--grape)">
+                  game dev club club presents
+                </span>
+                <h1 className="jam-heading-main font-hiruko text-4xl sm:text-6xl text-(--blackberry) mt-2">
+                  GDCC JAM #{pad(selected.number)}
+                </h1>
+                <p className="font-capriola text-(--blueberry) mt-1">{selected.title}</p>
+              </div>
 
-          <Hero jam={selected} />
+              <Hero jam={selected} status={getStatus(selected)} />
 
-          <Timeline editions={EDITIONS} selectedId={selectedId} onSelect={setSelectedId} />
+              <Timeline editions={JAM_EDITIONS} selectedId={selected.id} onSelect={setSelectedId} />
 
-          <p className="font-cascadia text-xs sm:text-sm text-(--grape)/80 text-center mt-5 max-w-2xl mx-auto">
-            Scroll the timeline to see all the game jams brought to you by GDCC.
-          </p>
+              <p className="font-cascadia text-xs sm:text-sm text-(--grape)/80 text-center mt-5 max-w-2xl mx-auto">
+                Scroll the timeline to see all the game jams brought to you by GDCC.
+              </p>
+            </>
+          )}
         </div>
       </div>
     </div>
