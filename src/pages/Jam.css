@@ -76,7 +76,7 @@
 
 .jam-edition-card:hover {
     transform: translateY(-6px) rotate(-1deg);
-    box-shadow: 0 16px 28px rgba(18, 14, 35, 0.35);
+    box-shadow: var(--tw-ring-shadow, 0 0 #0000), 0 16px 28px rgba(18, 14, 35, 0.35);
     cursor: none;
 }
 

@@ -553,7 +553,7 @@ function TimelineCard({ jam, selected, status, onSelect, delay }: TimelineCardPr
       {!isMobile && (
         <div
           ref={revealRef}
-          className="absolute inset-0 flex items-center justify-center p-4 z-20 pointer-events-none"
+          className="absolute -inset-px rounded-[13px] flex items-center justify-center p-4 z-20 pointer-events-none"
           style={{ clipPath: 'circle(0px at 0px 0px)', background: 'rgba(70, 40, 89, 0.95)' }}
         >
           <div className="text-center">
@@ -594,7 +594,7 @@ function Timeline({
         </span>
       </div>
 
-      <div className="jam-timeline-scroll flex gap-4 overflow-x-auto pb-3 -mx-1 px-1">
+      <div className="jam-timeline-scroll flex gap-4 overflow-x-auto -mt-3 pt-3 pb-3 -mx-1 px-1">
         {editions.map((jam, i) => (
           <TimelineCard
             key={jam.id}
