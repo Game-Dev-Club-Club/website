@@ -1,5 +1,5 @@
 import { ComposableMap } from "react-simple-maps";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 import { useSchools } from "./Locations";
 import MapStates from "./MapStates";
 import SchoolMarkers from "./SchoolMarkers";
@@ -8,10 +8,17 @@ import type { SchoolMarker, TooltipState, ZoomParams } from "./types";
 import { useNavigate } from "react-router-dom";
 import { setZoomK } from "./zoomStore";
 import { MapDirectory } from "./MapDirectory";
+import "./Map.css";
 
 const DEFAULT_VIEWBOX = { x: 0, y: 0, width: 800, height: 600 };
 
-function Map({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
+function Map({
+  setNumOfClubs,
+  setMapSidebar,
+}: {
+  setNumOfClubs: (num: number) => void;
+  setMapSidebar: Dispatch<SetStateAction<ReactNode>>;
+}) {
   const navigate = useNavigate();
   const rawLocations = useSchools();
 
@@ -36,10 +43,20 @@ function Map({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
   });
 
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(() =>
+    window.matchMedia("(min-width: 768px)").matches
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 300);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const handleChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handleChange);
+    return () => mq.removeEventListener("change", handleChange);
   }, []);
 
   const locations = useMemo<SchoolMarker[]>(
@@ -63,6 +80,17 @@ function Map({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
     console.log("Locations:", locations);
     setNumOfClubs(locations.length);
   }, [locations, setNumOfClubs]);
+
+  useEffect(() => {
+    if (!isDesktop) {
+      setMapSidebar(null);
+      return;
+    }
+    setMapSidebar(
+      <MapDirectory locations={locations} setHovered={setDirectoryHovered} />
+    );
+    return () => setMapSidebar(null);
+  }, [isDesktop, locations, setMapSidebar]);
 
   const handleTransitionEnd = useCallback(
     (e: React.TransitionEvent<HTMLDivElement>) => {
@@ -158,12 +186,20 @@ function Map({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
               cx={zoomParams.cx}
             />
           </ComposableMap>
-          <MapDirectory
-            locations={locations}
-            setHovered={setDirectoryHovered}
-          />
         </div>
       </div>
+      {!isDesktop && (
+        <div
+          className="
+            md:hidden fixed z-40 overflow-y-auto max-h-50 map-club-list-scroll
+            bottom-[calc(1.5rem+env(safe-area-inset-bottom))]
+            left-[calc(1.5rem+env(safe-area-inset-left))]
+            right-[calc(1.5rem+env(safe-area-inset-right))]
+          "
+        >
+          <MapDirectory locations={locations} setHovered={setDirectoryHovered} />
+        </div>
+      )}
       <div
         className={`
           fixed top-8 left-1/2 -translate-x-1/2 z-50
