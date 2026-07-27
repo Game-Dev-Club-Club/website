@@ -20,15 +20,15 @@ export function MapDirectory({ locations, setHovered }: { locations: SchoolMarke
     }
 
     return (
-        <div className="overflow-auto h-[20vh] w-full">
+        <>
             {locations.map((school) => (
                 <a href={school.link} target="_blank" rel="noopener noreferrer" key={school.id}>
-                    <div className={`font-cascadia pb-8 border-b border-gray-300 ${getDefaultColor(school.region)}`} onMouseEnter={() => setHovered(school)} onMouseLeave={() => setHovered(null)}>
+                    <div className={`font-cascadia p-2 border-b border-gray-300 ${getDefaultColor(school.region)}`} onMouseEnter={() => setHovered(school)} onMouseLeave={() => setHovered(null)}>
                         <h2 className="font-bold">{school.name}</h2>
                         <p className="text-gray-300 text-xs">{school.description}</p>
                     </div>
                 </a>
             ))}
-        </div>
+        </>
     );
 }

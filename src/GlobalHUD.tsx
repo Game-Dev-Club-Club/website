@@ -1,8 +1,15 @@
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { subscribeZoom } from "./pages/Map/zoomStore";
+import "./pages/Map/Map.css";
 
-export default function GlobalHUD() {
+export default function GlobalHUD({
+  numOfClubs,
+  mapSidebar,
+}: {
+  numOfClubs: number;
+  mapSidebar: ReactNode;
+}) {
   const location = useLocation();
   const isMap = location.pathname === "/map";
   const isContact = location.pathname === "/contact-us";
@@ -55,7 +62,13 @@ export default function GlobalHUD() {
   return (
     <div
       className={`
-        fixed top-[calc(1.5rem+env(safe-area-inset-top))] right-[calc(1.5rem+env(safe-area-inset-right))] z-50
+        fixed
+        top-[calc(1.5rem+env(safe-area-inset-top))]
+        right-0
+        bottom-[calc(4.75rem+env(safe-area-inset-bottom))]
+        z-50
+        flex flex-col items-stretch gap-2
+        w-full max-w-xs
         text-right
         transition-all duration-500 ease-out
         pointer-events-none
@@ -65,26 +78,48 @@ export default function GlobalHUD() {
         }
       `}
     >
-      <h1 className="text-2xl font-bold text-black drop-shadow font-hiruko">
-        Game Dev Clubs
-      </h1>
+      <div className="shrink-0 pr-[calc(1.5rem+env(safe-area-inset-right))]">
+        <h1 className="text-2xl font-bold text-black drop-shadow font-hiruko">
+          Game Dev Clubs
+        </h1>
 
-      {!isMobile && (
-        <>
-          <p className="text-sm text-black/80 max-w-xs font-cascadia">
-            Hover over pins for info about a game dev club. Click to visit their site!
+        {!isMobile && (
+          <>
+            <p className="text-sm text-black/80 max-w-xs font-cascadia">
+              Hover over pins for info about a game dev club. Click to visit their site!
+            </p>
+
+            <p className="text-sm text-black/80 max-w-xs font-cascadia">
+              Click a state to zoom in, and click again to zoom out.
+            </p>
+            <p className="text-sm text-black/80 max-w-xs font-cascadia">Total number of clubs: {numOfClubs}</p>
+          </>
+        )}
+
+        {isMobile && (
+          <p className="text-xs retro-pixel-text text-black/80 max-w-40 font-cascadia">
+            Tap a pin for info, tap again to visit. Tap a state to zoom.
           </p>
+        )}
+      </div>
 
-          <p className="text-sm text-black/80 max-w-xs font-cascadia">
-            Click a state to zoom in, and click again to zoom out.
-          </p >
-        </>
-      )}
-
-      {isMobile && (
-        <p className="text-xs retro-pixel-text text-black/80 max-w-40 font-cascadia">
-          Tap a pin for info, tap again to visit. Tap a state to zoom.
-        </p>
+      {mapSidebar && (
+        /* the sidebar club list */
+        <div
+          className="
+            hidden md:flex flex-1 min-h-0 w-full flex-col
+            pointer-events-auto mt-1 overflow-hidden rounded-l-xl
+          "
+        >
+          <div
+            className="
+              map-club-list-scroll
+              flex-1 min-h-0 w-full overflow-y-auto
+            "
+          >
+            {mapSidebar}
+          </div>
+        </div>
       )}
     </div>
   );
