@@ -68,7 +68,6 @@ export default function NavigationArrows() {
           <span className="font-cascadia retro-pixel-text">
             {PAGE_NAMES[nextPath]}
           </span>
-
           <svg
             className="w-5 h-5"
             fill="none"

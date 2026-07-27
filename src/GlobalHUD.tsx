@@ -4,10 +4,8 @@ import { subscribeZoom } from "./pages/Map/zoomStore";
 import "./pages/Map/Map.css";
 
 export default function GlobalHUD({
-  numOfClubs,
   mapSidebar,
 }: {
-  numOfClubs: number;
   mapSidebar: ReactNode;
 }) {
   const location = useLocation();
@@ -92,12 +90,11 @@ export default function GlobalHUD({
             <p className="text-sm text-black/80 max-w-xs font-cascadia">
               Click a state to zoom in, and click again to zoom out.
             </p>
-            <p className="text-sm text-black/80 max-w-xs font-cascadia">Total number of clubs: {numOfClubs}</p>
           </>
         )}
 
         {isMobile && (
-          <p className="text-xs retro-pixel-text text-black/80 max-w-40 font-cascadia">
+          <p className="text-xs retro-pixel-text text-black/80 max-w-40 font-cascadia ml-auto">
             Tap a pin for info, tap again to visit. Tap a state to zoom.
           </p>
         )}

@@ -6,10 +6,8 @@ import Jam from "../pages/Jam";
 import Map from "../pages/Map/Map";
 
 export default function AnimatedRoutes({
-  setNumOfClubs,
   setMapSidebar,
 }: {
-  setNumOfClubs: (num: number) => void;
   setMapSidebar: Dispatch<SetStateAction<ReactNode>>;
 }) {
   const location = useLocation();
@@ -20,7 +18,7 @@ export default function AnimatedRoutes({
       <Routes location={location}>
         <Route path="/" element={<Home />} />
         <Route path="/contact-us" element={<Contact />} />
-        <Route path="/map" element={<Map setNumOfClubs={setNumOfClubs} setMapSidebar={setMapSidebar} />} />
+        <Route path="/map" element={<Map setMapSidebar={setMapSidebar} />} />
         <Route path="/jam" element={<Jam />} />
       </Routes>
     </div>

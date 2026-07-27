@@ -13,10 +13,8 @@ import "./Map.css";
 const DEFAULT_VIEWBOX = { x: 0, y: 0, width: 800, height: 600 };
 
 function Map({
-  setNumOfClubs,
   setMapSidebar,
 }: {
-  setNumOfClubs: (num: number) => void;
   setMapSidebar: Dispatch<SetStateAction<ReactNode>>;
 }) {
   const navigate = useNavigate();
@@ -76,12 +74,6 @@ function Map({
   );
 
   useEffect(() => {
-    console.log("Number of clubs:", locations.length);
-    console.log("Locations:", locations);
-    setNumOfClubs(locations.length);
-  }, [locations, setNumOfClubs]);
-
-  useEffect(() => {
     if (!isDesktop) {
       setMapSidebar(null);
       return;
@@ -139,7 +131,10 @@ function Map({
   };
 
   return (
-    <div className="mt-0 md:mt-[-5rem] relative w-full aspect-[4/3] overflow-visible rounded-xl flex items-center justify-center">
+    <div className="mt-0 md:mt-[-5rem] relative w-full aspect-[4/3] overflow-visible rounded-xl flex items-center justify-center flex-col">
+      <h1 className="text-2xl font-bold text-black drop-shadow font-cascadia">
+        Total Number of Clubs: {locations.length}
+      </h1>
       <div className="w-full max-w-4xl aspect-[4/3] relative overflow-visible rounded-xl">
         <div
           ref={wrapperRef}

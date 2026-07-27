@@ -8,7 +8,7 @@ interface PageTransitionProps {
 export default function PageTransition({ children }: PageTransitionProps) {
   // Synchronously check if our flag exists before rendering
   const skipIntro = typeof window !== "undefined" && sessionStorage.getItem("skipMapLoad") === "true";
-  
+
   useEffect(() => {
     // If we skipped the intro, immediately delete the flag. 
     // This ensures if they navigate to other pages later, the intro plays normally.
@@ -29,16 +29,16 @@ export default function PageTransition({ children }: PageTransitionProps) {
   // Otherwise, render your normal animated loading screen!
   return (
     <div className="relative w-full min-h-screen">
-      
+
       {/* 1. THE OVERLAY */}
       <motion.div
         className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[var(--blackberry)]"
         initial={{ y: 0 }}
         animate={{ y: "-100vh" }}
-        transition={{ 
-          duration: 0.8, 
-          ease: "easeInOut", 
-          delay: 1.5 
+        transition={{
+          duration: 0.8,
+          ease: "easeInOut",
+          delay: 1.5
         }}
       >
         <motion.div
@@ -64,7 +64,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
       >
         {children}
       </motion.div>
-      
+
     </div>
   );
 }
