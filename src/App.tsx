@@ -14,7 +14,6 @@ function AppContent() {
   const location = useLocation();
   const isMap = location.pathname === "/map";
   const isContact = location.pathname === "/contact-us";
-  const [numOfClubs, setNumOfClubs] = useState(0);
   const [mapSidebar, setMapSidebar] = useState<ReactNode>(null);
 
   useEffect(() => {
@@ -43,7 +42,7 @@ function AppContent() {
       <div className="fixed inset-0 -z-10 diagonal-bg" />
       <CustomCursor />
 
-      <GlobalHUD numOfClubs={numOfClubs} mapSidebar={mapSidebar} />
+      <GlobalHUD mapSidebar={mapSidebar} />
 
       {/* 2. Place the arrows here so they float globally over everything */}
       <NavigationArrows />
@@ -52,7 +51,7 @@ function AppContent() {
         <Navbar />
 
         <div className={`route-content ${isMap ? "route-map" : ""} ${isContact ? "route-contact" : ""}`}>
-          <AnimatedRoutes setNumOfClubs={setNumOfClubs} setMapSidebar={setMapSidebar} />
+          <AnimatedRoutes setMapSidebar={setMapSidebar} />
         </div>
       </PageTransition>
     </>
