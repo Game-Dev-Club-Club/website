@@ -62,7 +62,7 @@ function AppContent() {
 const App = () => {
   return (
     <Router>
-      <div className={`app-background overflow-auto`}>
+      <div className={`app-background`}>
         <AppContent />
       </div>
     </Router>
