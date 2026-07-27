@@ -14,7 +14,6 @@ function AppContent() {
   const location = useLocation();
   const isMap = location.pathname === "/map";
   const isContact = location.pathname === "/contact-us";
-  const [numOfClubs, setNumOfClubs] = useState(0);
 
   useEffect(() => {
     if (isMap) {
@@ -36,7 +35,7 @@ function AppContent() {
       <div className="fixed inset-0 -z-10 diagonal-bg" />
       <CustomCursor />
 
-      <GlobalHUD numOfClubs={numOfClubs} />
+      <GlobalHUD />
 
       {/* 2. Place the arrows here so they float globally over everything */}
       <NavigationArrows />
@@ -45,7 +44,7 @@ function AppContent() {
         <Navbar />
 
         <div className={`route-content ${isMap ? "route-map" : ""} ${isContact ? "route-contact" : ""}`}>
-          <AnimatedRoutes setNumOfClubs={setNumOfClubs} />
+          <AnimatedRoutes />
         </div>
       </PageTransition>
     </>
@@ -55,7 +54,7 @@ function AppContent() {
 const App = () => {
   return (
     <Router>
-      <div className={`app-background`}>
+      <div className={`app-background overflow-auto`}>
         <AppContent />
       </div>
     </Router>

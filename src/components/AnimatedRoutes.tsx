@@ -4,7 +4,7 @@ import Contact from "../pages/Contact";
 import Jam from "../pages/Jam";
 import Map from "../pages/Map/Map";
 
-export default function AnimatedRoutes({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
+export default function AnimatedRoutes() {
   const location = useLocation();
 
   return (
@@ -13,7 +13,7 @@ export default function AnimatedRoutes({ setNumOfClubs }: { setNumOfClubs: (num:
       <Routes location={location}>
         <Route path="/" element={<Home />} />
         <Route path="/contact-us" element={<Contact />} />
-        <Route path="/map" element={<Map setNumOfClubs={setNumOfClubs} />} />
+        <Route path="/map" element={<Map />} />
         <Route path="/jam" element={<Jam />} />
       </Routes>
     </div>

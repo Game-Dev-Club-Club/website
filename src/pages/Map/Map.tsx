@@ -11,7 +11,7 @@ import { MapDirectory } from "./MapDirectory";
 
 const DEFAULT_VIEWBOX = { x: 0, y: 0, width: 800, height: 600 };
 
-function Map({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
+function Map() {
   const navigate = useNavigate();
   const rawLocations = useSchools();
 
@@ -58,11 +58,6 @@ function Map({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
     [rawLocations]
   );
 
-  useEffect(() => {
-    console.log("Number of clubs:", locations.length);
-    console.log("Locations:", locations);
-    setNumOfClubs(locations.length);
-  }, [locations, setNumOfClubs]);
 
   const handleTransitionEnd = useCallback(
     (e: React.TransitionEvent<HTMLDivElement>) => {
@@ -111,8 +106,9 @@ function Map({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
   };
 
   return (
-    <div className="mt-0 md:mt-[-5rem] relative w-full aspect-[4/3] overflow-visible rounded-xl flex items-center justify-center">
+    <div className="mt-0 md:mt-[-5rem] relative w-full aspect-[4/3] overflow-auto rounded-xl flex items-center justify-center flex-col h-screen">
       <div className="w-full max-w-4xl aspect-[4/3] relative overflow-visible rounded-xl">
+        <h1 className="font-cascadia text-2xl text-center mb-4">Total Number of Clubs is: {locations.length}</h1>
         <div
           ref={wrapperRef}
           className="absolute inset-0 w-full h-full"
@@ -158,10 +154,6 @@ function Map({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
               cx={zoomParams.cx}
             />
           </ComposableMap>
-          <MapDirectory
-            locations={locations}
-            setHovered={setDirectoryHovered}
-          />
         </div>
       </div>
       <div
@@ -175,6 +167,10 @@ function Map({ setNumOfClubs }: { setNumOfClubs: (num: number) => void }) {
       >
         No link yet
       </div>
+      <MapDirectory
+        locations={locations}
+        setHovered={setDirectoryHovered}
+      />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { subscribeZoom } from "./pages/Map/zoomStore";
 
-export default function GlobalHUD({ numOfClubs }: { numOfClubs: number }) {
+export default function GlobalHUD() {
   const location = useLocation();
   const isMap = location.pathname === "/map";
   const isContact = location.pathname === "/contact-us";
@@ -78,7 +78,6 @@ export default function GlobalHUD({ numOfClubs }: { numOfClubs: number }) {
           <p className="text-sm text-black/80 max-w-xs font-cascadia">
             Click a state to zoom in, and click again to zoom out.
           </p >
-          <p className="text-sm text-black/80 max-w-xs font-cascadia">Total number of clubs: {numOfClubs}</p>
         </>
       )}
 
