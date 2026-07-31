@@ -27,11 +27,11 @@ function SponsorInfo({ sponsorInfo, selectedIndex, setSelectedIndex }: SponsorIn
   const listLength = sponsorInfo.length;
 
   return (
-    <div className="sponsor-card flex flex-row items-center justify-center gap-10 p-12 pl-3 pr-3 rounded-4xl">
+    <div className="sponsor-card flex flex-row items-center justify-center gap-10 pt-12 pb-12 rounded-4xl">
       <div className="text-5xl select-none text-gray-600" onClick={() => setSelectedIndex((selectedIndex-1+listLength) % listLength)}>〈</div>
       <div className="flex flex-col items-center justify-center gap-10">
         <div className="w-full rounded-4xl">
-          <h2 className="text-6xl font-hiruko">{selectedSponsor?.info.name}</h2>
+          <h2 className="text-4xl font-hiruko">{selectedSponsor?.info.name}</h2>
           <h4 className="text-2xl font-capriola">{selectedSponsor?.info.role}</h4>
           <br />
           <p className="text-xl font-capriola">{selectedSponsor?.info.description}</p>
