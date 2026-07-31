@@ -174,12 +174,20 @@ const attachPointer = (engine: Matter.Engine, element: HTMLElement) => {
   element.removeEventListener('wheel', mouse.mousewheel);
   element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
 
+  // Matter only listens for mouseup on the jar, so a separate listener is needed
+  // to detach the mouse when it leaves the jar
+  const release = () => {
+    mouse.button = -1;
+  };
+  element.addEventListener('mouseleave', release);
+
   return {
     // Matter reads raw element coordinates so this is needed to recenter drag
     setScale(scale: number) {
       Mouse.setScale(mouse, { x: 1 / scale, y: 1 / scale });
     },
     detach() {
+      element.removeEventListener('mouseleave', release);
       for (const [event, handler] of MOUSE_EVENTS) {
         element.removeEventListener(event, mouse[handler]);
       }
