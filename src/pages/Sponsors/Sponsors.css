@@ -2,8 +2,8 @@
 .pit {
   position: relative;
   width: 100%;
-  height: 60vh;
-  border-radius: 93px;
+  aspect-ratio: 2 / 3;
+  border-radius: 10%;
 
   overflow: hidden;
   touch-action: none;
@@ -23,8 +23,6 @@
   will-change: transform;
   user-select: none;
   -webkit-user-drag: none;
-
-  /* background-color: #fff; */
 }
 
 .sponsor-page {
@@ -39,26 +37,19 @@
 .sponsor-jar {
   position: relative;
 
-  background-color: rgba(173, 216, 230, 0.5);
-  border: 7px solid rgb(62, 136, 161);
-  box-sizing: content-box;
-  border-radius: 100px;
-
+  background: linear-gradient(rgba(208, 232, 236, 0.4), rgba(154, 211, 217, 0.6));
+  outline: 7px solid rgb(61, 130, 162);
+  border-radius: 10%;
 }
 
-/* Jar lid */
-.sponsor-jar::after {
-  content: "";
+.sponsor-jar-lid {
   position: absolute;
-
-  top: -10%;
-
-  height: 15%;
-  width: 100%;
-  background-color: palevioletred;
+  top: -18%;
+  width: 300%;
+  user-select: none;
 }
 
 
 .sponsor-card {
-  background-color: #d67890;
+  background-color: #EF8C8B;
 }
