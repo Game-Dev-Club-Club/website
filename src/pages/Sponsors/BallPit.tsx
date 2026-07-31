@@ -37,7 +37,7 @@ export default function BallPit({ logos, selectedIndex, setSelectedIndex }: Ball
             ref={(el) => {
               elRefs.current[i] = el;
             }}
-            className="pit_logo"
+            className={`pit_logo ${selectedIndex === i ? "selected" : ""}`}
             src={logo.src}
             alt={logo.alt}
             draggable={false}
