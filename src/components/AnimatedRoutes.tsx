@@ -4,6 +4,7 @@ import Home from "../pages/Homepage/Home";
 import Contact from "../pages/Contact";
 import Jam from "../pages/Jam";
 import Map from "../pages/Map/Map";
+import Sponsors from "../pages/Sponsors/Sponsors";
 
 export default function AnimatedRoutes({
   setMapSidebar,
@@ -20,6 +21,7 @@ export default function AnimatedRoutes({
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/map" element={<Map setMapSidebar={setMapSidebar} />} />
         <Route path="/jam" element={<Jam />} />
+        <Route path="/sponsors" element={<Sponsors />} />
       </Routes>
     </div>
   );

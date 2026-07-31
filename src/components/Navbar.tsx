@@ -42,6 +42,10 @@ const Navbar = () => {
                     Jam
                 </Link>
 
+                <Link to="/sponsors" onClick={closeMenu} className="mt-2">
+                    Sponsors
+                </Link>
+
 
             </div>
         </>
