@@ -73,16 +73,16 @@ function Map({
     [rawLocations]
   );
 
-  useEffect(() => {
-    if (!isDesktop) {
-      setMapSidebar(null);
-      return;
-    }
-    setMapSidebar(
-      <MapDirectory locations={locations} setHovered={setDirectoryHovered} />
-    );
-    return () => setMapSidebar(null);
-  }, [isDesktop, locations, setMapSidebar]);
+  // useEffect(() => {
+  //   if (!isDesktop) {
+  //     setMapSidebar(null);
+  //     return;
+  //   }
+  //   setMapSidebar(
+  //     <MapDirectory locations={locations} setHovered={setDirectoryHovered} />
+  //   );
+  //   return () => setMapSidebar(null);
+  // }, [isDesktop, locations, setMapSidebar]);
 
   const handleTransitionEnd = useCallback(
     (e: React.TransitionEvent<HTMLDivElement>) => {
@@ -131,80 +131,94 @@ function Map({
   };
 
   return (
-    <div className="mt-0 md:mt-[-5rem] relative w-full aspect-[4/3] overflow-visible rounded-xl flex items-center justify-center flex-col">
-      <h1 className="text-2xl font-bold text-black drop-shadow font-cascadia">
-        Total Number of Clubs: {locations.length}
-      </h1>
-      <div className="w-full max-w-4xl aspect-[4/3] relative overflow-visible rounded-xl">
-        <div
-          ref={wrapperRef}
-          className="absolute inset-0 w-full h-full"
-          onTransitionEnd={handleTransitionEnd}
-          style={{
-            transform: `translate3d(${zoomParams.x}px, ${zoomParams.y}px, 0) scale3d(${zoomParams.k}, ${zoomParams.k}, 1)`,
-            transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)",
-            transformOrigin: "0 0",
-            willChange: isAnimating ? "transform" : "auto",
-          }}
-        >
-          <ComposableMap
-            projection="geoAlbersUsa"
-            viewBox="0 0 800 600"
-            className="w-full h-full overflow-visible"
-            onClick={() => {
-              if (activeState === null) return;
-              resetZoom();
+    <div>
+      <div className="mt-0 md:mt-[calc(5rem-10vh)] h-[50vh] relative w-screen overflow-visible rounded-xl flex items-center justify-center flex-row">
+        <div className="w-[50vw] max-w-6xl aspect-[4/3] relative overflow-visible rounded-xl ml-auto mr-auto">
+          <h1 className="text-2xl font-bold text-black drop-shadow font-cascadia block text-center">
+            Total Number of Clubs: {locations.length}
+          </h1>
+          <div
+            ref={wrapperRef}
+            className="absolute inset-0 w-full h-full"
+            onTransitionEnd={handleTransitionEnd}
+            style={{
+              transform: `translate3d(${zoomParams.x}px, ${zoomParams.y}px, 0) scale3d(${zoomParams.k}, ${zoomParams.k}, 1)`,
+              transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)",
+              transformOrigin: "0 0",
+              willChange: isAnimating ? "transform" : "auto",
             }}
           >
-            <MapStates
-              activeState={activeState}
-              setActiveState={setActiveState}
-              zoomStage={zoomStage}
-              setZoomStage={setZoomStage}
-              zoomTo={zoomTo}
-              resetZoom={resetZoom}
-            />
+            <ComposableMap
+              projection="geoAlbersUsa"
+              viewBox="0 0 800 600"
+              className="w-full h-full overflow-visible"
+              onClick={() => {
+                if (activeState === null) return;
+                resetZoom();
+              }}
+            >
+              <MapStates
+                activeState={activeState}
+                setActiveState={setActiveState}
+                zoomStage={zoomStage}
+                setZoomStage={setZoomStage}
+                zoomTo={zoomTo}
+                resetZoom={resetZoom}
+              />
 
-            <SchoolMarkers
-              locations={locations}
-              loaded={loaded}
-              zoom={zoomParams.k}
-              setTooltip={setTooltip}
-              setShowNoLink={setShowNoLink}
-              directoryHovered={directoryHovered}
-            />
+              <SchoolMarkers
+                locations={locations}
+                loaded={loaded}
+                zoom={zoomParams.k}
+                setTooltip={setTooltip}
+                setShowNoLink={setShowNoLink}
+                directoryHovered={directoryHovered}
+              />
 
-            {/* Pass cx down to the tooltip */}
-            <MapTooltip
-              tooltip={tooltip}
-              zoom={zoomParams.k}
-              cx={zoomParams.cx}
-            />
-          </ComposableMap>
+              {/* Pass cx down to the tooltip */}
+              <MapTooltip
+                tooltip={tooltip}
+                zoom={zoomParams.k}
+                cx={zoomParams.cx}
+              />
+            </ComposableMap>
+          </div>
         </div>
-      </div>
-      {!isDesktop && (
-        <div
-          className="
+        {
+          isDesktop && (
+            < div
+              className="
+            overflow-y-auto max-h-[40vh] map-club-list-scroll right-0 max-w-[40vh]
+            ml-auto
+            w-[50vw]
+          "
+            >
+              <MapDirectory locations={locations} setHovered={setDirectoryHovered} />
+            </div>)
+        }
+        {!isDesktop && (
+          <div
+            className="
             md:hidden fixed z-40 overflow-y-auto max-h-50 map-club-list-scroll
             bottom-[calc(1.5rem+env(safe-area-inset-bottom))]
             left-[calc(1.5rem+env(safe-area-inset-left))]
             right-[calc(1.5rem+env(safe-area-inset-right))]
           "
-        >
-          <MapDirectory locations={locations} setHovered={setDirectoryHovered} />
-        </div>
-      )}
-      <div
-        className={`
+          >
+            <MapDirectory locations={locations} setHovered={setDirectoryHovered} />
+          </div>
+        )}
+        <div
+          className={`
           fixed top-8 left-1/2 -translate-x-1/2 z-50
           bg-[var(--blackberry)] text-white px-4 py-2
           rounded-full shadow-lg pointer-events-none
           transition-all duration-300 font-cascadia
           ${showNoLink ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}
         `}
-      >
-        No link yet
+        >
+          No link yet
+        </div>
       </div>
     </div>
   );
