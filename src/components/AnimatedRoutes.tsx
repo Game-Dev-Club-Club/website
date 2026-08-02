@@ -6,11 +6,7 @@ import Jam from "../pages/Jam";
 import Map from "../pages/Map/Map";
 import Sponsors from "../pages/Sponsors/Sponsors";
 
-export default function AnimatedRoutes({
-  setMapSidebar,
-}: {
-  setMapSidebar: Dispatch<SetStateAction<ReactNode>>;
-}) {
+export default function AnimatedRoutes() {
   const location = useLocation();
 
   return (
@@ -19,7 +15,7 @@ export default function AnimatedRoutes({
       <Routes location={location}>
         <Route path="/" element={<Home />} />
         <Route path="/contact-us" element={<Contact />} />
-        <Route path="/map" element={<Map setMapSidebar={setMapSidebar} />} />
+        <Route path="/map" element={<Map />} />
         <Route path="/jam" element={<Jam />} />
         <Route path="/sponsors" element={<Sponsors />} />
       </Routes>

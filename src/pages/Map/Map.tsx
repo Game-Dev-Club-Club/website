@@ -12,11 +12,7 @@ import "./Map.css";
 
 const DEFAULT_VIEWBOX = { x: 0, y: 0, width: 800, height: 600 };
 
-function Map({
-  setMapSidebar,
-}: {
-  setMapSidebar: Dispatch<SetStateAction<ReactNode>>;
-}) {
+function Map() {
   const navigate = useNavigate();
   const rawLocations = useSchools();
 
@@ -72,17 +68,6 @@ function Map({
         .filter((l) => l.coordinates[0] !== 0 || l.coordinates[1] !== 0),
     [rawLocations]
   );
-
-  // useEffect(() => {
-  //   if (!isDesktop) {
-  //     setMapSidebar(null);
-  //     return;
-  //   }
-  //   setMapSidebar(
-  //     <MapDirectory locations={locations} setHovered={setDirectoryHovered} />
-  //   );
-  //   return () => setMapSidebar(null);
-  // }, [isDesktop, locations, setMapSidebar]);
 
   const handleTransitionEnd = useCallback(
     (e: React.TransitionEvent<HTMLDivElement>) => {

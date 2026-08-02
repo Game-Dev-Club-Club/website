@@ -1,13 +1,9 @@
 import { useLocation } from "react-router-dom";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { subscribeZoom } from "./pages/Map/zoomStore";
 import "./pages/Map/Map.css";
 
-export default function GlobalHUD({
-  mapSidebar,
-}: {
-  mapSidebar: ReactNode;
-}) {
+export default function GlobalHUD() {
   const location = useLocation();
   const isMap = location.pathname === "/map";
   const isContact = location.pathname === "/contact-us";
@@ -99,25 +95,6 @@ export default function GlobalHUD({
           </p>
         )}
       </div>
-
-      {mapSidebar && (
-        /* the sidebar club list */
-        <div
-          className="
-            hidden md:flex flex-1 min-h-0 w-full flex-col
-            pointer-events-auto mt-1 overflow-hidden rounded-l-xl
-          "
-        >
-          <div
-            className="
-              map-club-list-scroll
-              flex-1 min-h-0 w-full overflow-y-auto
-            "
-          >
-            {mapSidebar}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
@@ -14,13 +14,6 @@ function AppContent() {
   const location = useLocation();
   const isMap = location.pathname === "/map";
   const isContact = location.pathname === "/contact-us";
-  const [mapSidebar, setMapSidebar] = useState<ReactNode>(null);
-
-  useEffect(() => {
-    if (!isMap) {
-      setMapSidebar(null);
-    }
-  }, [isMap]);
 
   useEffect(() => {
     if (isMap) {
@@ -42,7 +35,7 @@ function AppContent() {
       <div className="fixed inset-0 -z-10 diagonal-bg" />
       <CustomCursor />
 
-      <GlobalHUD mapSidebar={mapSidebar} />
+      <GlobalHUD />
 
       {/* 2. Place the arrows here so they float globally over everything */}
       <NavigationArrows />
@@ -51,7 +44,7 @@ function AppContent() {
         <Navbar />
 
         <div className={`route-content ${isMap ? "route-map" : ""} ${isContact ? "route-contact" : ""}`}>
-          <AnimatedRoutes setMapSidebar={setMapSidebar} />
+          <AnimatedRoutes />
         </div>
       </PageTransition>
     </>
