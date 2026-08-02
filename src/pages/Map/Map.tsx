@@ -1,5 +1,5 @@
 import { ComposableMap } from "react-simple-maps";
-import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSchools } from "./Locations";
 import MapStates from "./MapStates";
 import SchoolMarkers from "./SchoolMarkers";

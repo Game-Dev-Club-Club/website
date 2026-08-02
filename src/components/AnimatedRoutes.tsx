@@ -1,5 +1,4 @@
 import { useLocation, Routes, Route } from "react-router-dom";
-import type { Dispatch, ReactNode, SetStateAction } from "react";
 import Home from "../pages/Homepage/Home";
 import Contact from "../pages/Contact";
 import Jam from "../pages/Jam";
