@@ -3,16 +3,17 @@
     "id": "gdcc-01",
     "number": 1,
     "title": "Summer Jam",
-    "theme": "TBD",
-    "joined": 30,
+    "theme": "Shell",
+    "joined": 343,
     "goal": null,
     "itchUrl": "https://itch.io/jam/club-club-jam-jam",
     "startsAt": "2026-08-06T12:00:00-07:00",
     "endsAt": "2026-08-10T00:00:00-07:00",
     "details": {
       "AWARDS": {
-        "Category Winners ($50 each)": "The highest average score for each judging category",
-        "Best Overall ($75)": "The highest average score from all categories weighted equally."
+        "Category Winners ($60 each)": "The game with the highest average score for each judging category (Theme, Fun, Innovation, Art, Sound).",
+        "Best Overall ($100)": "The game with the highest average score from all categories weighted equally.",
+        "Judge Favorites ($10 each)": "Each judge will also designate a submission as their favorite, as well as other superlatives as they see fit. The \"judge favorite\" gets an extra $10!"
       },
       "JUDGING": {
         "Theme": "How well the game interprets and incorporates the theme through gameplay, story, mechanics, visuals, or other creative approaches.",

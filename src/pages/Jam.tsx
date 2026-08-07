@@ -342,7 +342,7 @@ function Hero({ jam, status }: { jam: JamEdition; status: JamStatus }) {
           {announced
             ? 'Sign up on itch now so you\u2019re ready when the clock starts.'
             : active
-            ? 'Make a game in 48 hours.'
+            ? 'Interpret it however you like!'
             : 'See what the game devs were able to make on our itch.'}
         </p>
 
