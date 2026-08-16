@@ -1,0 +1,55 @@
+
+.pit {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 10%;
+
+  overflow: hidden;
+  touch-action: none;
+} 
+
+.pit_world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+}
+ 
+.pit_logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.sponsor-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+
+  gap: 50px;
+}
+
+/* Jar body */
+.sponsor-jar {
+  position: relative;
+
+  background: linear-gradient(rgba(208, 232, 236, 0.4), rgba(154, 211, 217, 0.6));
+  outline: 7px solid rgb(61, 130, 162);
+  border-radius: 10%;
+}
+
+.sponsor-jar-lid {
+  position: absolute;
+  top: -18%;
+  width: 300%;
+  user-select: none;
+}
+
+
+.sponsor-card {
+  background-color: #EF8C8B;
+}

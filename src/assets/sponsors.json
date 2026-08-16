@@ -1,0 +1,65 @@
+[
+  {
+    "id": "scorespace",
+    "file": "scorespace.png",
+    "alt": "ScoreSpace",
+    "scale": 0.5,
+    "aspect": 1.728,
+    "shapes": [
+      {
+        "type": "rectangle",
+        "x": 0.5,
+        "y": 0.29,
+        "w": 0.85,
+        "h": 0.44,
+        "rx": 0.05
+      }
+    ],
+    "info": {
+      "name": "ScoreSpace",
+      "role": "Sponsor",
+      "description": "A community-first games publisher that helps game jammers turn their submissions into a full-scale title. They published the Discord Blackjack game, which has reached millions of players worldwide!"
+    }
+  },
+  {
+    "id": "benbonk",
+    "file": "benbonk.png",
+    "alt": "BenBonk",
+    "scale": 0.3,
+    "aspect": 1,
+    "shapes": [
+      {
+        "type": "circle",
+        "cx": 0.5,
+        "cy": 0.5,
+        "r": 0.5
+      }
+    ],
+    "info": {
+      "name": "BenBonk",
+      "role": "Jam Judge",
+      "description": "An awesome game development YouTuber with ~80k subscribers. He is the developer of several amazing games including Slimekeep, a rogue-like with many cute and squishy slimes! "
+    }
+  },
+  {
+    "id": "jerbob",
+    "file": "jerbob.png",
+    "alt": "Jerbob",
+    "scale": 0.3,
+    "aspect": 1,
+    "shapes": [
+      {
+        "type": "circle",
+        "cx": 0.5,
+        "cy": 0.5,
+        "r": 0.5
+      }
+    ],
+    "info": {
+      "name": "Jerbob",
+      "role": "Jam Judge",
+      "description": "Jerbob is a super cool game dev YouTuber with ~80k subscribers, and a developer of many fun and goofy games!"
+    }
+  }
+
+]

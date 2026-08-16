@@ -1,12 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
 
-const PAGE_ORDER = ["/", "/contact-us", "/map", "/jam"] as const;
+const PAGE_ORDER = ["/", "/contact-us", "/map", "/jam", "/sponsors"] as const;
 
 const PAGE_NAMES: Record<string, string> = {
   "/": "Home",
   "/contact-us": "Contact Us",
   "/map": "Map",
   "/jam": "Jam",
+  "/sponsors": "Sponsors",
 };
 
 export default function NavigationArrows() {
@@ -68,7 +69,6 @@ export default function NavigationArrows() {
           <span className="font-cascadia retro-pixel-text">
             {PAGE_NAMES[nextPath]}
           </span>
-
           <svg
             className="w-5 h-5"
             fill="none"
