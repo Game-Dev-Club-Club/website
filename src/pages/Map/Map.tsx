@@ -120,7 +120,7 @@ function Map() {
       <div className="mt-0 md:mt-[calc(5rem-10vh)] h-[50vh] relative w-screen overflow-visible rounded-xl flex items-center justify-center flex-row">
         <div className="w-[50vw] max-w-6xl aspect-[4/3] relative overflow-visible rounded-xl ml-auto mr-auto">
           <h1 className="text-2xl font-bold text-black drop-shadow font-cascadia block text-center">
-            Total Number of Clubs: {locations.length}
+            Number of Clubs in the US: {locations.length}
           </h1>
           <div
             ref={wrapperRef}
