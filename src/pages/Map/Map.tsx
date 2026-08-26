@@ -118,9 +118,9 @@ function Map() {
   return (
     <div>
       <div className="mt-0 md:mt-[calc(5rem-10vh)] h-[50vh] relative w-screen overflow-visible rounded-xl flex items-center justify-center flex-row">
-        <div className="w-[50vw] max-w-6xl aspect-[4/3] relative overflow-visible rounded-xl ml-auto mr-auto">
-          <h1 className="text-2xl font-bold text-black drop-shadow font-cascadia block text-center">
-            Number of Clubs in the US: {locations.length}
+        <div className="w-[90vw] md:w-[50vw] max-w-6xl aspect-[4/3] relative overflow-visible rounded-xl ml-auto mr-auto">
+          <h1 className="text-2xl font-bold text-black drop-shadow font-cascadia block text-center absolute left-1/2 -translate-x-1/2 z-10 pointer-events-none bottom-full mb-2 w-full md:bottom-auto md:top-0 md:mb-0">
+            GDCC's Club Count in the US: {locations.length}
           </h1>
           <div
             ref={wrapperRef}
