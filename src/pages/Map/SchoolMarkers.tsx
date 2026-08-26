@@ -1,5 +1,6 @@
 import { memo, useEffect, useRef, useState } from "react";
 import { Marker } from "react-simple-maps";
+import { getRegionClasses } from "./regionColors";
 import type { SchoolMarker, TooltipState } from "./types";
 
 interface Props {
@@ -61,7 +62,7 @@ function SchoolMarkers({
     }
   }, [directoryHovered]);
 
-  const renderPin = (hidden = false) => (
+  const renderPin = (location: SchoolMarker, hidden = false) => (
     <>
       <circle
         cx="0"
@@ -73,13 +74,13 @@ function SchoolMarkers({
 
       <path
         d="M0 -15 C3.5 -15 6 -12.5 6 -9 C6 -5 0 0 0 0 C0 0 -6 -5 -6 -9 C-6 -12.5 -3.5 -15 0 -15Z"
-        className="
-        fill-red-500
+        className={`
+        ${getRegionClasses(location.region).fill}
         stroke-white
         stroke-2
         transition-transform
         group-hover:scale-125
-        clickable"
+        clickable`}
         style={hidden ? { opacity: 0 } : undefined}
       />
     </>
@@ -162,7 +163,7 @@ function SchoolMarkers({
               {/* Hidden once elevated, whether or not it's the one
                   currently hovered — the overlay renders the pin from
                   here on. */}
-              {renderPin(location.id === elevatedId)}
+              {renderPin(location, location.id === elevatedId)}
             </g>
           </Marker>
         );
@@ -193,7 +194,7 @@ function SchoolMarkers({
               onMouseLeave={() => handleLeave(elevatedLocation.id)}
               onClick={handleTap(elevatedLocation)}
             >
-              {renderPin()}
+              {renderPin(elevatedLocation)}
             </g>
           </g>
         </Marker>
