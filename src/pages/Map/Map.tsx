@@ -5,7 +5,6 @@ import MapStates from "./MapStates";
 import SchoolMarkers from "./SchoolMarkers";
 import MapTooltip from "./MapTooltip";
 import type { SchoolMarker, TooltipState, ZoomParams } from "./types";
-import { useNavigate } from "react-router-dom";
 import { setZoomK } from "./zoomStore";
 import { MapDirectory } from "./MapDirectory";
 import "./Map.css";
@@ -13,7 +12,6 @@ import "./Map.css";
 const DEFAULT_VIEWBOX = { x: 0, y: 0, width: 800, height: 600 };
 
 function Map() {
-  const navigate = useNavigate();
   const rawLocations = useSchools();
 
   const [loaded, setLoaded] = useState(false);
@@ -121,7 +119,6 @@ function Map() {
 
   const resetZoom = () => {
     sessionStorage.setItem("skipMapLoad", "true");
-    setZoomStage(0);
     setZoomParams({
       x: 0,
       y: 0,
