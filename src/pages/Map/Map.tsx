@@ -126,7 +126,7 @@ function Map() {
       x: 0,
       y: 0,
       k: 1,
-      cx: DEFAULT_VIEWBOX.width / 2, //self-reminder: cx is short for center x
+      cx: DEFAULT_VIEWBOX.width / 2,
     });
   };
 
