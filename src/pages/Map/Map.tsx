@@ -121,7 +121,13 @@ function Map() {
 
   const resetZoom = () => {
     sessionStorage.setItem("skipMapLoad", "true");
-    navigate(".", { replace: true });
+    setZoomStage(0);
+    setZoomParams({
+      x: 0,
+      y: 0,
+      k: 1,
+      cx: DEFAULT_VIEWBOX.width / 2, //self-reminder: cx is short for center x
+    });
   };
 
   return (
