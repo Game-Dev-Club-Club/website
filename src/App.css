@@ -75,12 +75,6 @@
     justify-content: center;
 }
 
-/* prevents the club list from blocking prev/next nav (4.25rem inset) */
-@media (max-width: 768px) {
-    .route-content.route-map .page-plop {
-        transform: translateY(-4.25rem);
-    }
-}
 
 /* CONTACT PAGE OVERRIDE
    The solar system scales itself to 96dvw/96dvh (viewport-relative), but the

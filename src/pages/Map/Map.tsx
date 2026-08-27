@@ -185,7 +185,7 @@ function Map() {
           <div
             className="
             md:hidden fixed z-40 overflow-y-auto max-h-50 map-club-list-scroll
-            bottom-[calc(1.5rem+env(safe-area-inset-bottom))]
+            bottom-[calc(4.75rem+env(safe-area-inset-bottom))]
             left-[calc(1.5rem+env(safe-area-inset-left))]
             right-[calc(1.5rem+env(safe-area-inset-right))]
           "
