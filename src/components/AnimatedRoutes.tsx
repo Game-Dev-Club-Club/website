@@ -1,7 +1,7 @@
 import { useLocation, Routes, Route } from "react-router-dom";
 import Home from "../pages/Homepage/Home";
-import Contact from "../pages/Contact";
-import Jam from "../pages/Jam";
+import Contact from "../pages/Contact/Contact";
+import Jam from "../pages/Jam/Jam";
 import Map from "../pages/Map/Map";
 import Sponsors from "../pages/Sponsors/Sponsors";
 

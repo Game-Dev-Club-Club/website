@@ -120,7 +120,7 @@
 }
 
 .planet:hover .planet-bubble {
-  transform: scale(1.22);
+  transform: scale(1.5);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
 }
 
@@ -164,8 +164,14 @@
 }
 
 .planet:hover .planet-label {
+  transition: 0.2s ease;
   opacity: 1;
+  font-size: 1.5em;
   color: var(--text-h);
+}
+
+.planet:not(:hover) .planet-label {
+  transition: 0.2s ease;
 }
 
 /* ── Email form (mobile only) ───────────────────────────── */

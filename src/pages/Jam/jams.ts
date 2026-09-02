@@ -1,4 +1,4 @@
-import jamsData from '../assets/jams.json';
+import jamsData from '../../assets/jams.json';
 
 /* ------------------------------------------------------------------
   Data model
