@@ -1,6 +1,6 @@
 import { useEffect, useRef, type MouseEvent, type TouchEvent } from "react";
 
-const one = "We are student game developers from over 100 university clubs around the world!";
+const one = "We are a collective of student game developers from over 100 university clubs around the world!";
 const two = "We want to bridge gaps and bring collegiate game development clubs together!";
 const three = "We are building an awesome community through fun global events, jams, and collaborations!";
 
