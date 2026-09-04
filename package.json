@@ -15,6 +15,7 @@
     "@tailwindcss/vite": "^4.3.1",
     "d3-geo": "^3.1.1",
     "framer-motion": "^12.42.0",
+    "matter-js": "^0.20.0",
     "papaparse": "^5.5.4",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/d3-geo": "^3.1.0",
+    "@types/matter-js": "^0.20.2",
     "@types/node": "^24.12.3",
     "@types/papaparse": "^5.5.2",
     "@types/react": "^19.2.14",

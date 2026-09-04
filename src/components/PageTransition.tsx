@@ -8,7 +8,7 @@ interface PageTransitionProps {
 export default function PageTransition({ children }: PageTransitionProps) {
   // Synchronously check if our flag exists before rendering
   const skipIntro = typeof window !== "undefined" && sessionStorage.getItem("skipMapLoad") === "true";
-  
+
   useEffect(() => {
     // If we skipped the intro, immediately delete the flag. 
     // This ensures if they navigate to other pages later, the intro plays normally.
@@ -17,10 +17,15 @@ export default function PageTransition({ children }: PageTransitionProps) {
     }
   }, [skipIntro]);
 
+  //min-h-dvh matches .route-content.route-map's 100dvh. min-h-screen
+  // (100vh) is taller than the visible mobile viewport and reflows
+  // descendant transforms when toggled
+  const testClass = "relative w-full min-h-dvh";
+
   // If the flag is present, render the content immediately with NO animations
   if (skipIntro) {
     return (
-      <div className="relative w-full min-h-screen">
+      <div className={testClass}>
         {children}
       </div>
     );
@@ -28,17 +33,17 @@ export default function PageTransition({ children }: PageTransitionProps) {
 
   // Otherwise, render your normal animated loading screen!
   return (
-    <div className="relative w-full min-h-screen">
-      
+    <div className={testClass}>
+
       {/* 1. THE OVERLAY */}
       <motion.div
         className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[var(--blackberry)]"
         initial={{ y: 0 }}
         animate={{ y: "-100vh" }}
-        transition={{ 
-          duration: 0.8, 
-          ease: "easeInOut", 
-          delay: 1.5 
+        transition={{
+          duration: 0.8,
+          ease: "easeInOut",
+          delay: 1.5
         }}
       >
         <motion.div
@@ -56,15 +61,16 @@ export default function PageTransition({ children }: PageTransitionProps) {
         </motion.div>
       </motion.div>
 
-      {/* 2. THE PAGE CONTENT */}
+      {/* opacity only: a scale transform here would re-anchor
+          position:fixed descendants (e.g. hamburger, club list)*/}
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 1.6 }}
       >
         {children}
       </motion.div>
-      
+
     </div>
   );
 }

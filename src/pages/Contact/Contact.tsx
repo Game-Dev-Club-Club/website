@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import './Contact.css';
-import Sun from '../components/Sun'
-import DesktopEmailForm from '../components/DesktopEmailForm';
-import MobileEmailForm from '../components/MobileEmailForm';
-import { OrbitPlanet } from '../components/OrbitPlanets';
-import type { SocialLink } from '../components/OrbitPlanets';
+import Sun from '../../components/Sun'
+import DesktopEmailForm from '../../components/DesktopEmailForm';
+import MobileEmailForm from '../../components/MobileEmailForm';
+import { OrbitPlanet } from '../../components/OrbitPlanets';
+import type { SocialLink } from '../../components/OrbitPlanets';
 
 const DiscordIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">

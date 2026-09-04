@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import '../pages/Contact.css';
+import '../pages/Contact/Contact.css';
 
 export interface SocialLink {
     name: string;

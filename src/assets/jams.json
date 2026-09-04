@@ -1,0 +1,27 @@
+[
+  {
+    "id": "gdcc-01",
+    "number": 1,
+    "title": "Summer Jam",
+    "theme": "Shell",
+    "joined": 343,
+    "goal": null,
+    "itchUrl": "https://itch.io/jam/club-club-jam-jam",
+    "startsAt": "2026-08-06T12:00:00-07:00",
+    "endsAt": "2026-08-10T00:00:00-07:00",
+    "details": {
+      "AWARDS": {
+        "Category Winners ($60 each)": "The game with the highest average score for each judging category (Theme, Fun, Innovation, Art, Sound).",
+        "Best Overall ($100)": "The game with the highest average score from all categories weighted equally.",
+        "Judge Favorites ($10 each)": "Each judge will also designate a submission as their favorite, as well as other superlatives as they see fit. The \"judge favorite\" gets an extra $10!"
+      },
+      "JUDGING": {
+        "Theme": "How well the game interprets and incorporates the theme through gameplay, story, mechanics, visuals, or other creative approaches.",
+        "Fun": "How enjoyable the game is to play. This includes the core gameplay loop, pacing, and overall entertainment value.",
+        "Innovation": "A broad category that evaluates the game's creativity and originality, as well as the execution of those ideas.",
+        "Art": "Overall visual representation of the game. This includes models, sprites, animations, UI, lighting, effects, and artistic cohesion/direction.",
+        "Sound": "How well the audio enhances the game’s experience. This includes sound effects, music, and voice work."
+      }
+    }
+  }
+]

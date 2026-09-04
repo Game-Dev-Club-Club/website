@@ -15,6 +15,18 @@
     transform-origin: left bottom;
 }
 
+.map-club-list-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: transparent;
+}
+.map-club-list-scroll > a:first-child > div {
+    border-top-left-radius: 0.75rem;
+}
+
+.map-club-list-scroll > a:last-child > div {
+    border-bottom-left-radius: 0.75rem;
+}
+
 /* Hide horizontal scrollbar for Chrome, Safari, and Opera */
 .body::-webkit-scrollbar:horizontal {
     display: none;

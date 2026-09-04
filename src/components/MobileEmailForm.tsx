@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import '../pages/Contact.css';
+import '../pages/Contact/Contact.css';
 
 type FormState = 'idle' | 'sending' | 'sent' | 'leaving';
 

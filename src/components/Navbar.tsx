@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -26,21 +26,25 @@ const Navbar = () => {
             </button>
 
             <div className={`ml-5 font-cascadia side-menu ${isOpen ? 'open' : ''}`}>
-                <Link to="/" onClick={closeMenu} className="mt-2">
+                <NavLink to="/" end onClick={closeMenu} className="mt-2">
                     Home
-                </Link>
+                </NavLink>
 
-                <Link to="/contact-us" onClick={closeMenu} className="mt-2">
+                <NavLink to="/contact-us" onClick={closeMenu} className="mt-2">
                     Contact Us
-                </Link>
+                </NavLink>
 
-                <Link to="/map" onClick={closeMenu} className="mt-2">
+                <NavLink to="/map" onClick={closeMenu} className="mt-2">
                     Map
-                </Link>
+                </NavLink>
 
-                <Link to="/jam" onClick={closeMenu} className="mt-2">
+                <NavLink to="/jam" onClick={closeMenu} className="mt-2">
                     Jam
-                </Link>
+                </NavLink>
+
+                <NavLink to="/sponsors" onClick={closeMenu} className="mt-2">
+                    Sponsors
+                </NavLink>
 
 
             </div>
