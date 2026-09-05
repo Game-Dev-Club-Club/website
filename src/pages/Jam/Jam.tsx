@@ -9,7 +9,7 @@ import {
   type JamStatus,
 } from './jams';
 import './Jam.css';
-import themeArt from './GDCC_Gamejam_Theme2.png';
+import themeArt from './GDCC_Gamejam_Theme.png';
 
 /* Jams are loaded from `assets/jams.json`,
    read `jams.ts` for instructions on how to add/edit a jam */
