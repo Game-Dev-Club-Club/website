@@ -9,6 +9,7 @@ import {
   type JamStatus,
 } from './jams';
 import './Jam.css';
+import themeArt from './GDCC_Gamejam_Theme2.png';
 
 /* Jams are loaded from `assets/jams.json`,
    read `jams.ts` for instructions on how to add/edit a jam */
@@ -337,6 +338,13 @@ function Hero({ jam, status }: { jam: JamEdition; status: JamStatus }) {
         </span>
 
         <ThemeWord text={jam.theme} />
+
+        <img
+          src={themeArt}
+          alt=""
+          aria-hidden="true"
+          className="jam-theme-art w-3/4"
+        />
 
         <p className="font-capriola text-(--blackberry)/80 text-center max-w-xl mt-6 text-sm sm:text-base">
           {announced

@@ -109,6 +109,15 @@
     animation: popInChar 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
+.jam-theme-art {
+    animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
 /* --- heading hover effects --- */
 .jam-heading-main {
     transition: color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -130,7 +139,8 @@
 @media (prefers-reduced-motion: reduce) {
     .jam-live-dot,
     .jam-meter-fill,
-    .jam-theme-char {
+    .jam-theme-char,
+    .jam-theme-art {
         animation: none;
     }
     .jam-theme-char { opacity: 1; }
