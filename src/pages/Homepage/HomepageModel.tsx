@@ -254,8 +254,12 @@ function HomepageModel() {
 
           {/* Suspense prevents the models from trying to render before GLTFs are fully parsed */}
           <Suspense fallback={null}>
-            <Jar wrapperRef={wrapperRef} />
-            <InteractiveStrawberry wrapperRef={wrapperRef} />
+            {/* nudge the model so that it's visually centered 
+               (the jar previously leaned right of its origin) */}
+            <group position={[1.1, 0, 0]}>
+              <Jar wrapperRef={wrapperRef} />
+              <InteractiveStrawberry wrapperRef={wrapperRef} />
+            </group>
           </Suspense>
         </Canvas>
       </div>
