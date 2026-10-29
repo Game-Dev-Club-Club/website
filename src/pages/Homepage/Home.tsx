@@ -1,7 +1,7 @@
 import HomepageFace from './HomepageFace';
 import HomepageDescription from './HomepageDescription';
 import HomepageModel from './HomepageModel';
-import gdcLogo from '../../assets/logos/GDC Festival of Gaming Logo_Chilli_RGB.png';
+import gdcLogo from '../../assets/logos/GDC_Logo_Chilli.png';
 import './RetroFilters.css';
 import '../../index.css'
 
