@@ -86,6 +86,17 @@
   background-color: var(--strawberry4);
 }
 
+.sponsor-card-slide {
+  animation: sponsor-card-slide-in 0.3s ease-out;
+}
+
+@keyframes sponsor-card-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(3rem);
+  }
+}
+
 .sponsor-card-logo {
   max-width: 18rem;
   max-height: 6rem;

@@ -39,13 +39,16 @@ function SponsorInfo({ sponsorInfo, selectedIndex, setSelectedIndex }: SponsorIn
     <div className="sponsor-card flex flex-row items-center justify-center gap-10 pt-12 pb-12 rounded-4xl">
       <div className="text-5xl select-none text-gray-600" onClick={() => setSelectedIndex((selectedIndex-1+listLength) % listLength)}>〈</div>
       <div className="flex flex-col items-center justify-center gap-10">
-        <div className="w-full rounded-4xl">
-          <h2 className="text-4xl font-hiruko">{selectedSponsor?.info.name}</h2>
-          <h4 className="text-2xl font-capriola">{selectedSponsor?.info.role}</h4>
-          <br />
-          <p className="text-xl font-capriola">{selectedSponsor?.info.description}</p>
+        {/* for the slide anims */}
+        <div key={selectedIndex} className="sponsor-card-slide flex flex-col items-center justify-center gap-10">
+          <div className="w-full rounded-4xl">
+            <h2 className="text-4xl font-hiruko">{selectedSponsor?.info.name}</h2>
+            <h4 className="text-2xl font-capriola">{selectedSponsor?.info.role}</h4>
+            <br />
+            <p className="text-xl font-capriola">{selectedSponsor?.info.description}</p>
+          </div>
+          {selectedSponsor && <SponsorLogo sponsor={selectedSponsor} />}
         </div>
-        {selectedSponsor && <SponsorLogo sponsor={selectedSponsor} />}
         <IndicatorDots sponsorInfo={sponsorInfo} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
       </div>
       <div className="text-5xl select-none text-gray-600" onClick={() => setSelectedIndex((selectedIndex+1) % listLength)}>〉</div>
