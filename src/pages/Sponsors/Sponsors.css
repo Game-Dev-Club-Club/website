@@ -93,7 +93,7 @@
 @keyframes sponsor-card-slide-in {
   from {
     opacity: 0;
-    transform: translateX(3rem);
+    transform: translateX(5rem);
   }
 }
 
