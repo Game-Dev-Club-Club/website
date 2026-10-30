@@ -13,6 +13,8 @@ import jamsData from '../../assets/jams.json';
   `goal` optional
   `startsAt` and `endsAt` in ISO date format, make sure to add timezone
   `details` optional, each section becomes its own collapsible card
+  `themeArt` optional, file name of any image in src/pages/Jam/
+    defaults to Shell art if missing
 
   Example:
   {
@@ -71,6 +73,21 @@ export interface JamEdition {
   endsAt?: string;        // ISO date the submissions close
   stats?: JamStats;       // stats, only applies to completed editions
   details?: JamDetails;   // extra sections, one collapsible card each
+  themeArt?: string;      // from src/pages/Jam/, falls back to epic Shell art
+}
+
+import defaultThemeArt from './GDCC_Gamejam_01_Theme.png';
+
+// i can probably get away with not including jpg or jpeg, but just in case..
+const themeArtFiles = import.meta.glob<string>('./*.{png,jpg,jpeg,webp,svg}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+
+export function getThemeArt(jam: JamEdition): string {
+  if (!jam.themeArt) return defaultThemeArt;
+  return themeArtFiles[`./${jam.themeArt}`] ?? defaultThemeArt;
 }
 
 export const JAM_EDITIONS: JamEdition[] = (jamsData as JamEdition[])
