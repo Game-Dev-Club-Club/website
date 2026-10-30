@@ -18,7 +18,8 @@
     "info": {
       "name": "ScoreSpace",
       "role": "Sponsor",
-      "description": "A community-first games publisher that helps game jammers turn their submissions into a full-scale title. They published the Discord Blackjack game, which has reached millions of players worldwide!"
+      "description": "A community-first games publisher that helps game jammers turn their submissions into a full-scale title. They published the Discord Blackjack game, which has reached millions of players worldwide!",
+      "url": "https://scorespace.net/"
     }
   },
   {
@@ -38,7 +39,8 @@
     "info": {
       "name": "BenBonk",
       "role": "Jam Judge",
-      "description": "An awesome game development YouTuber with ~80k subscribers. He is the developer of several amazing games including Slimekeep, a rogue-like with many cute and squishy slimes! "
+      "description": "An awesome game development YouTuber with ~80k subscribers. He is the developer of several amazing games including Slimekeep, a rogue-like with many cute and squishy slimes! ",
+      "url": "https://www.youtube.com/@BenBonk"
     }
   },
   {
@@ -58,7 +60,22 @@
     "info": {
       "name": "Jerbob",
       "role": "Jam Judge",
-      "description": "Jerbob is a super cool game dev YouTuber with ~80k subscribers, and a developer of many fun and goofy games!"
+      "description": "Jerbob is a super cool game dev YouTuber with ~80k subscribers, and a developer of many fun and goofy games!",
+      "url": "https://www.youtube.com/@Jerbob"
+    }
+  },
+  {
+    "id": "gdc",
+    "file": "GDC_Logo_Chilli.png",
+    "alt": "GDC Festival of Gaming",
+    "scale": 0.5,
+    "aspect": 2,
+    "rigid": true,
+    "info": {
+      "name": "GDC Festival of Gaming",
+      "role": "Community Partner",
+      "description": "The global gathering of the game industry, uniting developers and publishers from around the world.",
+      "url": "https://gdconf.com/"
     }
   }
 

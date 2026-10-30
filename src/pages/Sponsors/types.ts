@@ -27,6 +27,7 @@ export interface Logo extends LogoPhysics {
   id: string;
   src: string;
   alt: string;
+  rigid?: boolean;  // static in the jar's shelf/banner instead of falling around :()
 }
 
 // The info shown beside the jar
@@ -34,6 +35,7 @@ export interface SponsorDetails {
   name: string;
   role: string;
   description: string;
+  url?: string;  // sponsor's site
 }
 
 export interface SponsorSpec extends Omit<Logo, 'src'> {

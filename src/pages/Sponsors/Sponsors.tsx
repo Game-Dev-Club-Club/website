@@ -22,6 +22,15 @@ function IndicatorDots({ sponsorInfo, selectedIndex, setSelectedIndex }: Sponsor
   </div>
 }
 
+function SponsorLogo({ sponsor }: { sponsor: Sponsor }) {
+  const logo = <img className="sponsor-card-logo" src={sponsor.src} alt={sponsor.alt} draggable={false} />;
+  const { url } = sponsor.info;
+
+  return url
+    ? <a href={url} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${sponsor.info.name}`}>{logo}</a>
+    : logo;
+}
+
 function SponsorInfo({ sponsorInfo, selectedIndex, setSelectedIndex }: SponsorInfoProps) {
   const selectedSponsor = sponsorInfo.at(selectedIndex);
   const listLength = sponsorInfo.length;
@@ -36,6 +45,7 @@ function SponsorInfo({ sponsorInfo, selectedIndex, setSelectedIndex }: SponsorIn
           <br />
           <p className="text-xl font-capriola">{selectedSponsor?.info.description}</p>
         </div>
+        {selectedSponsor && <SponsorLogo sponsor={selectedSponsor} />}
         <IndicatorDots sponsorInfo={sponsorInfo} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
       </div>
       <div className="text-5xl select-none text-gray-600" onClick={() => setSelectedIndex((selectedIndex+1) % listLength)}>〉</div>
@@ -44,12 +54,35 @@ function SponsorInfo({ sponsorInfo, selectedIndex, setSelectedIndex }: SponsorIn
 }
 
 
+// module evel so the logo list stays across renders
+const RIGID_SPONSORS = SPONSOR_INFO.filter((sponsor) => sponsor.rigid);
+const PIT_SPONSORS = SPONSOR_INFO.filter((sponsor) => !sponsor.rigid);
+
 function Sponsors() {
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const selectedSponsor = SPONSOR_INFO.at(selectedIndex)
 
   return <div className="sponsor-page">
     <div className="sponsor-jar">
-      <BallPit logos={SPONSOR_INFO} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
+      <div className="sponsor-jar-body">
+        <div className="sponsor-jar-shelf">
+          {RIGID_SPONSORS.map((sponsor) => (
+            <img
+              key={sponsor.id}
+              className={`sponsor-jar-shelf-logo ${sponsor === selectedSponsor ? "selected" : ""}`}
+              src={sponsor.src}
+              alt={sponsor.alt}
+              draggable={false}
+              onClick={() => setSelectedIndex(SPONSOR_INFO.indexOf(sponsor))}
+            />
+          ))}
+        </div>
+        <BallPit
+          logos={PIT_SPONSORS}
+          selectedIndex={selectedSponsor ? PIT_SPONSORS.indexOf(selectedSponsor) : -1}
+          onSelect={(i) => setSelectedIndex(SPONSOR_INFO.indexOf(PIT_SPONSORS[i]))}
+        />
+      </div>
       <img className="sponsor-jar-lid" src={jarLid} />
     </div>
     <SponsorInfo 
