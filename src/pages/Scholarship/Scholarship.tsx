@@ -18,7 +18,8 @@ function Scholarship() {
 
           {/* content */}
           <section className="font-cascadia text-(--blackberry)">
-            {/* TODO: scholarship description, eligibility, deadlines, apply link */}
+            {/* TODO: scholarship description etc*/}
+            {/* This might be a google form or something idk */}
           </section>
 
           {/* GDC Festival of Gaming partnership! */}
