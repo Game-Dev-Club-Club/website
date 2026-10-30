@@ -76,7 +76,7 @@ export interface JamEdition {
   themeArt?: string;      // from src/pages/Jam/, falls back to epic Shell art
 }
 
-import defaultThemeArt from './GDCC_Gamejam_01_Theme.png';
+import defaultThemeArt from './ThemeArt/GDCC_Gamejam_01_Theme.png';
 
 // i can probably get away with not including jpg or jpeg, but just in case..
 const themeArtFiles = import.meta.glob<string>('./*.{png,jpg,jpeg,webp,svg}', {
