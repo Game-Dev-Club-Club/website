@@ -7,6 +7,7 @@
     "joined": 343,
     "goal": null,
     "itchUrl": "https://itch.io/jam/club-club-jam-jam",
+    "themeArt": "GDCC_Gamejam_01_Theme.png",
     "startsAt": "2026-08-06T12:00:00-07:00",
     "endsAt": "2026-08-10T00:00:00-07:00",
     "details": {
@@ -23,5 +24,16 @@
         "Sound": "How well the audio enhances the game’s experience. This includes sound effects, music, and voice work."
       }
     }
+  },
+  {
+    "id": "gdcc-02",
+    "number": 2,
+    "title": "Winter Jam",
+    "theme": "TBA",
+    "joined": 0,
+    "goal": null,
+    "itchUrl": "https://itch.io/jams",
+    "startsAt": "2027-01-03T12:00:00-08:00",
+    "endsAt": "2027-01-07T00:00:00-08:00"
   }
 ]
