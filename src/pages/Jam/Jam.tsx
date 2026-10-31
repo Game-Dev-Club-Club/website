@@ -357,17 +357,33 @@ function Hero({ jam, status }: { jam: JamEdition; status: JamStatus }) {
 
         {/* itch CTA - "join" while announced or running, "play" once wrapped */}
         <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 z-20">
-          <a
-            href={jam.itchUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="jam-join-btn no-cursor block rounded-2xl px-8 py-5 text-center"
-            style={{ background: 'linear-gradient(180deg, var(--ripe), #c9e04a)' }}
-          >
-            <span className="font-bebas text-2xl sm:text-3xl tracking-wide text-(--blackberry)">
-              {counting ? 'JOIN ON ITCH' : 'PLAY THE ENTRIES'}
-            </span>
-          </a>
+          {(() => {
+            const label = (
+              <span className="font-bebas text-2xl sm:text-3xl tracking-wide text-(--blackberry)">
+                {counting ? 'JOIN ON ITCH' : 'PLAY THE ENTRIES'}
+              </span>
+            );
+            return jam.itchUrl ? (
+              <a
+                href={jam.itchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="jam-join-btn no-cursor block rounded-2xl px-8 py-5 text-center"
+                style={{ background: 'linear-gradient(180deg, var(--ripe), #c9e04a)' }}
+              >
+                {label}
+              </a>
+            ) : (
+              <span
+                role="link"
+                aria-disabled="true"
+                title="The itch.io page isn't up yet"
+                className="jam-join-btn-disabled block rounded-2xl px-8 py-5 text-center"
+              >
+                {label}
+              </span>
+            );
+          })()}
         </div>
       </div>
 
