@@ -73,13 +73,13 @@ export interface JamEdition {
   endsAt?: string;        // ISO date the submissions close
   stats?: JamStats;       // stats, only applies to completed editions
   details?: JamDetails;   // extra sections, one collapsible card each
-  themeArt?: string;      // from src/pages/Jam/, falls back to epic Shell art
+  themeArt?: string;      // falls back to mitosis strawberry placeholder
 }
 
-import defaultThemeArt from './ThemeArt/GDCC_Gamejam_01_Theme.png';
+import defaultThemeArt from './ThemeArt/Theme_Placeholder.png';
 
 // i can probably get away with not including jpg or jpeg, but just in case..
-const themeArtFiles = import.meta.glob<string>('./*.{png,jpg,jpeg,webp,svg}', {
+const themeArtFiles = import.meta.glob<string>('./ThemeArt/*.{png,jpg,jpeg,webp,svg}', {
   eager: true,
   query: '?url',
   import: 'default',
@@ -87,7 +87,7 @@ const themeArtFiles = import.meta.glob<string>('./*.{png,jpg,jpeg,webp,svg}', {
 
 export function getThemeArt(jam: JamEdition): string {
   if (!jam.themeArt) return defaultThemeArt;
-  return themeArtFiles[`./${jam.themeArt}`] ?? defaultThemeArt;
+  return themeArtFiles[`./ThemeArt/${jam.themeArt}`] ?? defaultThemeArt;
 }
 
 export const JAM_EDITIONS: JamEdition[] = (jamsData as JamEdition[])
