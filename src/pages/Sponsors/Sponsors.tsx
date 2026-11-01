@@ -23,7 +23,7 @@ function IndicatorDots({ sponsorInfo, selectedIndex, setSelectedIndex }: Sponsor
 }
 
 function SponsorLogo({ sponsor }: { sponsor: Sponsor }) {
-  const logo = <img className="sponsor-card-logo" src={sponsor.src} alt={sponsor.alt} draggable={false} />;
+  const logo = <img className="sponsor-card-logo" src={sponsor.cardSrc ?? sponsor.src} alt={sponsor.alt} draggable={false} />;
   const { url } = sponsor.info;
 
   return url

@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 
-const PAGE_ORDER = ["/", "/contact-us", "/map", "/jam", "/sponsors"] as const;
+const PAGE_ORDER = ["/", "/contact-us", "/map", "/jam", "/sponsors", "/scholarship"] as const;
 
 const PAGE_NAMES: Record<string, string> = {
   "/": "Home",
@@ -8,6 +8,7 @@ const PAGE_NAMES: Record<string, string> = {
   "/map": "Map",
   "/jam": "Jam",
   "/sponsors": "Sponsors",
+  "/scholarship": "Scholarship",
 };
 
 export default function NavigationArrows() {

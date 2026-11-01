@@ -67,6 +67,7 @@
   {
     "id": "gdc",
     "file": "GDC_Logo_Chilli.png",
+    "cardFile": "GDC_Logo_White.png",
     "alt": "GDC Festival of Gaming",
     "scale": 0.5,
     "aspect": 2,

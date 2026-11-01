@@ -40,9 +40,11 @@ export interface SponsorDetails {
 
 export interface SponsorSpec extends Omit<Logo, 'src'> {
   file: string;          // file name inside src/assets/logos/, case-sensitive
+  cardFile?: string;     //alt image for the sponsor card, defaults to file
   info: SponsorDetails;
 }
 
 export interface Sponsor extends Logo {
+  cardSrc?: string;      // alt image for the sponsor card, defaults to `rc
   info: SponsorDetails;
 }

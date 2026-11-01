@@ -46,6 +46,10 @@ const Navbar = () => {
                     Sponsors
                 </NavLink>
 
+                <NavLink to="/scholarship" onClick={closeMenu} className="mt-2">
+                    Scholarship
+                </NavLink>
+
 
             </div>
         </>

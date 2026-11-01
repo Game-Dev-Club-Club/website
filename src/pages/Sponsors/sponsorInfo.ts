@@ -18,9 +18,10 @@ const urlByFile = new Map<string, string>(
 
 const SPONSOR_SPECS = sponsorData as SponsorSpec[];
 
-export const SPONSOR_INFO: Sponsor[] = SPONSOR_SPECS.flatMap(({ file, ...rest }) => {
+export const SPONSOR_INFO: Sponsor[] = SPONSOR_SPECS.flatMap(({ file, cardFile, ...rest }) => {
   const src = urlByFile.get(file);
-  return src ? [{ ...rest, src }] : [];
+  const cardSrc = cardFile ? urlByFile.get(cardFile) : undefined;
+  return src ? [{ ...rest, src, cardSrc }] : [];
 });
 
 if (import.meta.env.DEV) {
@@ -36,9 +37,14 @@ if (import.meta.env.DEV) {
         `sponsors.json: ${spec.id} points at "${spec.file}", which is not in src/assets/logos/ — the sponsor is skipped`,
       );
     }
+    if (spec.cardFile && !urlByFile.has(spec.cardFile)) {
+      console.warn(
+        `sponsors.json: ${spec.id} has cardFile "${spec.cardFile}", which is not in src/assets/logos/ — the card falls back to "${spec.file}"`,
+      );
+    }
   }
 
-  const claimed = new Set(SPONSOR_SPECS.map((spec) => spec.file));
+  const claimed = new Set(SPONSOR_SPECS.flatMap((spec) => [spec.file, spec.cardFile ?? spec.file]));
   for (const file of urlByFile.keys()) {
     if (!claimed.has(file)) {
       console.warn(

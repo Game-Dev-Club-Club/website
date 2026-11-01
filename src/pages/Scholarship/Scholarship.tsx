@@ -8,9 +8,23 @@ function Scholarship() {
 
           {/* header */}
           <div className="flex flex-col items-center text-center mb-6">
-            <h1 className="font-hiruko text-xl sm:text-6xl text-(--blackberry)">
-              SCHOLARSHIP
-            </h1>
+            <div className="flex items-center justify-center gap-3 sm:gap-6">
+              <img
+                src="/logo/GDCCLOGO_Strawberry.png"
+                alt=""
+                aria-hidden="true"
+                className="h-8 sm:h-16 w-auto"
+              />
+              <h1 className="font-hiruko text-xl sm:text-6xl text-(--blackberry)">
+                GDCC Scholarship
+              </h1>
+              <img
+                src="/logo/GDCCLOGO_Strawberry.png"
+                alt=""
+                aria-hidden="true"
+                className="h-8 sm:h-16 w-auto -scale-x-100"
+              />
+            </div>
             <p className="font-capriola text-(--blueberry) mt-1">
               Game Dev Club Club x GDC 2027
             </p>
@@ -31,15 +45,13 @@ function Scholarship() {
             </div>
 
             <div>
-              <h2 className="text-2xl mb-3">Save the date: January 3rd</h2>
+              <h2 className="text-2xl mb-3">Save the date: <b>Early January</b></h2>
               <p className="text-sm sm:text-base leading-relaxed">
                 Thanks to our partnership with GDC, we will host another game jam
-                 on January 3rd with Festival passes as rewards! This game jam will support students from
+                 in early January with Festival passes as rewards! This game jam and its passes will support students from
                 underrepresented backgrounds and provide a safe space to learn new skills
-                in game development. We will award X passes to the winners of the game
-                jam, and distribute the rest via an application-based raffle to other
-                participants. We'll prioritize participants who need support attending
-                GDC and can bring a diverse perspective to the conference.
+                in game development. We'll prioritize participants who need support attending
+                GDC and can bring a diverse perspective to the conference. <b>Stay tuned!</b>
               </p>
             </div>
             {/* TODO: application link (google form?) */}
