@@ -26,7 +26,7 @@ function Scholarship() {
               />
             </div>
             <p className="font-capriola text-(--blueberry) mt-1">
-              Game Dev Club Club x GDC 2027
+              GDC 2027 x Game Dev Club Club
             </p>
           </div>
 
