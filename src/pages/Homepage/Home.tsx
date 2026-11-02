@@ -17,7 +17,7 @@ function Home() {
               href="https://gdconf.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="relative z-[10000] block mx-auto max-w-full"
+              className="relative z-[10000] block mx-auto max-w-full mb-12"
             >
               <img
                 src={gdcBanner}
