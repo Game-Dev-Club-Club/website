@@ -64,11 +64,18 @@ function Scholarship() {
             rel="noopener noreferrer"
             className="mt-8 flex justify-center relative z-10"
           >
-            <img
-              src={gdcLogo}
-              alt="GDC Festival of Gaming"
-              className="h-24 w-auto transition-transform duration-300 ease-out hover:scale-110"
-            />
+            <div className="flex items-center gap-3 sm:gap-6 transition-transform duration-300 ease-out hover:scale-110">
+              <img
+                src={gdcLogo}
+                alt="GDC Festival of Gaming"
+                className="h-14 sm:h-24 w-auto"
+              />
+              <div className="self-stretch my-3 sm:my-5 w-px bg-(--blackberry)" aria-hidden="true"></div>
+              <div className="font-figtree font-medium uppercase text-(--blackberry) text-xs sm:text-xl leading-snug sm:leading-normal">
+                <p>1 - 4 March 2027</p>
+                <p>San Francisco</p>
+              </div>
+            </div>
           </a>
         </div>
       </div>
