@@ -1,7 +1,6 @@
 import HomepageFace from './HomepageFace';
 import HomepageDescription from './HomepageDescription';
 import HomepageModel from './HomepageModel';
-import gdcLogo from '../../assets/logos/GDC_Logo_Chilli.png';
 import gdcBanner from '../../assets/banners/GDC27 Community Web Ad 728x90.gif';
 import './RetroFilters.css';
 import '../../index.css'
@@ -18,7 +17,7 @@ function Home() {
               href="https://gdconf.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="block mx-auto max-w-full"
+              className="relative z-[10000] block mx-auto max-w-full"
             >
               <img
                 src={gdcBanner}
