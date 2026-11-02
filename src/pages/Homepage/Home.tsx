@@ -2,6 +2,7 @@ import HomepageFace from './HomepageFace';
 import HomepageDescription from './HomepageDescription';
 import HomepageModel from './HomepageModel';
 import gdcLogo from '../../assets/logos/GDC_Logo_Chilli.png';
+import gdcBanner from '../../assets/banners/GDC27 Community Web Ad 728x90.gif';
 import './RetroFilters.css';
 import '../../index.css'
 
@@ -12,7 +13,20 @@ function Home() {
       <div className="w-full max-w-screen-4xl bg-(--verdant-faded) py-8 px-8 shadow-2xl overflow-hidden">
           {/* --- INNER WHITE PANEL --- */}
           <div className="relative z-10 w-full max-w-screen-2xl flex flex-col items-center bg-white py-6 px-6 shadow-2xl">
-            
+            {/* GDC27 Banner */}
+            <a
+              href="https://gdconf.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block mx-auto max-w-full"
+            >
+              <img
+                src={gdcBanner}
+                alt="GDC27 Community Web Ad"
+                className="block mx-auto max-w-full h-auto transition-transform duration-300 ease-out hover:scale-110"
+              />
+            </a>
+
             <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-7xl mx-auto gap-10 mt-4">
               
               {/* Model Wrapper */}
@@ -37,26 +51,7 @@ function Home() {
               <HomepageDescription />
             </div>
 
-            {/* GDC Festival of Gaming partnership! */}
-            <a
-              href="https://gdconf.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-0 flex justify-center relative z-10"
-            >
-              <div className="flex items-center gap-3 sm:gap-6 transition-transform duration-300 ease-out hover:scale-110">
-                <img
-                  src={gdcLogo}
-                  alt="GDC Festival of Gaming"
-                  className="h-14 sm:h-24 w-auto"
-                />
-                <div className="self-stretch my-3 sm:my-5 w-px bg-(--blackberry)" aria-hidden="true"></div>
-                <div className="font-figtree font-medium uppercase text-(--blackberry) text-xs sm:text-xl leading-snug sm:leading-normal">
-                  <p>1 - 4 March 2027</p>
-                  <p>San Francisco</p>
-                </div>
-              </div>
-            </a>
+            
 
           </div>
       </div>
