@@ -26,11 +26,7 @@ function MapTooltip({ tooltip, zoom, cx }: Props) {
   return (
     <Marker
       coordinates={tooltip.location.coordinates}
-      style={{
-        default: { pointerEvents: "none" },
-        hover: { pointerEvents: "none" },
-        pressed: { pointerEvents: "none" },
-      }}
+      style={{ pointerEvents: "none" }}
     >
       <g
         style={{

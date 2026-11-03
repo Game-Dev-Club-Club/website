@@ -10,18 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@react-three/drei": "^9.122.0",
-    "@react-three/fiber": "^8.18.0",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
     "@tailwindcss/vite": "^4.3.1",
     "d3-geo": "^3.1.1",
     "framer-motion": "^12.42.0",
     "matter-js": "^0.20.0",
     "papaparse": "^5.5.4",
-    "prop-types": "^15.8.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.0",
-    "react-simple-maps": "^3.0.0",
+    "react-simple-maps": "^5.0.5",
     "tailwindcss": "^4.3.1",
     "three": "^0.185.0"
   },
@@ -33,7 +32,6 @@
     "@types/papaparse": "^5.5.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@types/react-simple-maps": "^3.0.6",
     "@types/three": "^0.185.0",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^10.3.0",
@@ -43,5 +41,8 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12"
+  },
+  "overrides": {
+    "minimatch": "^11.0.1"
   }
 }
