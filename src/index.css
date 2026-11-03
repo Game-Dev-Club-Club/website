@@ -39,12 +39,21 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Figtree";
+  src: url("./assets/fonts/Figtree-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-capriola: "Capriola", sans-serif;
   --font-cascadia: "CascadiaCode-Regular", monospace;
   --font-cascadia-italic: "CascadiaCode-Italic", monospace;
   --font-bebas: "BebasNeue-Regular", sans-serif;
   --font-hiruko: "Hiruko-Black", sans-serif;
+  --font-figtree: "Figtree", sans-serif;
 }
 
 :root {

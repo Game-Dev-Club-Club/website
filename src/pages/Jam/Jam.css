@@ -20,6 +20,11 @@
         0 8px 18px rgba(18, 14, 35, 0.4);
 }
 
+.jam-join-btn-disabled {
+    background:#bdbdbd;
+    opacity: 0.75;
+}
+
 /* --- pulsing LIVE indicator --- */
 .jam-live-dot {
     animation: jamPulse 1.3s ease-in-out infinite;

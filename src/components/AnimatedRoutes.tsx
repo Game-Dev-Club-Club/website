@@ -4,6 +4,7 @@ import Contact from "../pages/Contact/Contact";
 import Jam from "../pages/Jam/Jam";
 import Map from "../pages/Map/Map";
 import Sponsors from "../pages/Sponsors/Sponsors";
+import Scholarship from "../pages/Scholarship/Scholarship";
 
 export default function AnimatedRoutes() {
   const location = useLocation();
@@ -17,6 +18,7 @@ export default function AnimatedRoutes() {
         <Route path="/map" element={<Map />} />
         <Route path="/jam" element={<Jam />} />
         <Route path="/sponsors" element={<Sponsors />} />
+        <Route path="/scholarship" element={<Scholarship />} />
       </Routes>
     </div>
   );

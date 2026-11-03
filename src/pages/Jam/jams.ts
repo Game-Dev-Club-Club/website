@@ -11,8 +11,11 @@ import jamsData from '../../assets/jams.json';
 
   `stats` optional, fill it in once a jam is finished
   `goal` optional
+  `itchUrl` "Join on itch" is grayed without a link set up yet
   `startsAt` and `endsAt` in ISO date format, make sure to add timezone
   `details` optional, each section becomes its own collapsible card
+  `themeArt` optional, file name of any image in src/pages/Jam/
+    defaults to Shell art if missing
 
   Example:
   {
@@ -66,11 +69,26 @@ export interface JamEdition {
   theme: string;
   joined: number;
   goal?: number | null;   // sign-up target, no progress bar shown if null
-  itchUrl: string;
+  itchUrl?: string;       // itch.io page, the join button is disabled until set
   startsAt?: string;      // ISO date the jam opens
   endsAt?: string;        // ISO date the submissions close
   stats?: JamStats;       // stats, only applies to completed editions
   details?: JamDetails;   // extra sections, one collapsible card each
+  themeArt?: string;      // falls back to mitosis strawberry placeholder
+}
+
+import defaultThemeArt from './ThemeArt/Theme_Placeholder.png';
+
+// i can probably get away with not including jpg or jpeg, but just in case..
+const themeArtFiles = import.meta.glob<string>('./ThemeArt/*.{png,jpg,jpeg,webp,svg}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+
+export function getThemeArt(jam: JamEdition): string {
+  if (!jam.themeArt) return defaultThemeArt;
+  return themeArtFiles[`./ThemeArt/${jam.themeArt}`] ?? defaultThemeArt;
 }
 
 export const JAM_EDITIONS: JamEdition[] = (jamsData as JamEdition[])

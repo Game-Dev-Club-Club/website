@@ -1,7 +1,7 @@
 import HomepageFace from './HomepageFace';
 import HomepageDescription from './HomepageDescription';
 import HomepageModel from './HomepageModel';
-import gdcLogo from '../../assets/logos/GDC_Logo_Chilli.png';
+import gdcBanner from '../../assets/banners/GDC27 Community Web Ad 728x90.gif';
 import './RetroFilters.css';
 import '../../index.css'
 
@@ -9,10 +9,23 @@ function Home() {
   return (
     <>
     <div className="relative z-10 w-full flex justify-center align-center">
-      <div className="w-full max-w-screen-4xl bg-(--verdant-faded) py-8 px-8 shadow-2xl overflow-hidden">
+      <div className="w-full max-w-screen-4xl bg-(--verdant-faded) py-6 px-6 shadow-2xl overflow-hidden">
           {/* --- INNER WHITE PANEL --- */}
           <div className="relative z-10 w-full max-w-screen-2xl flex flex-col items-center bg-white py-6 px-6 shadow-2xl">
-            
+            {/* GDC27 Banner */}
+            <a
+              href="https://gdconf.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative z-[10000] block self-stretch -mx-6 -mt-6 md:self-auto md:mx-auto md:mt-0 md:max-w-full mb-12"
+            >
+              <img
+                src={gdcBanner}
+                alt="GDC27 Community Web Ad"
+                className="block w-full md:w-auto mx-auto max-w-full h-auto transition-transform duration-300 ease-out md:hover:scale-110"
+              />
+            </a>
+
             <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-7xl mx-auto gap-10 mt-4">
               
               {/* Model Wrapper */}
@@ -37,19 +50,7 @@ function Home() {
               <HomepageDescription />
             </div>
 
-            {/* GDC Festival of Gaming partnership! */}
-            <a
-              href="https://gdconf.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-0 flex justify-center relative z-10"
-            >
-              <img
-                src={gdcLogo}
-                alt="GDC Festival of Gaming"
-                className="h-24 w-auto transition-transform duration-300 ease-out hover:scale-110"
-              />
-            </a>
+            
 
           </div>
       </div>

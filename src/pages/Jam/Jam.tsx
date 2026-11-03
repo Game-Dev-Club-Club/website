@@ -1,15 +1,16 @@
-import { useEffect, useId, useMemo, useState, useRef } from 'react';
+import { useCallback, useEffect, useId, useMemo, useState, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   JAM_EDITIONS,
   getStatus,
+  getThemeArt,
   jamTime,
   nextBoundary,
   type JamEdition,
   type JamStatus,
 } from './jams';
 import './Jam.css';
-import themeArt from './GDCC_Gamejam_Theme.png';
 
 /* Jams are loaded from `assets/jams.json`,
    read `jams.ts` for instructions on how to add/edit a jam */
@@ -340,7 +341,7 @@ function Hero({ jam, status }: { jam: JamEdition; status: JamStatus }) {
         <ThemeWord text={jam.theme} />
 
         <img
-          src={themeArt}
+          src={getThemeArt(jam)}
           alt=""
           aria-hidden="true"
           className="jam-theme-art w-3/4"
@@ -356,17 +357,33 @@ function Hero({ jam, status }: { jam: JamEdition; status: JamStatus }) {
 
         {/* itch CTA - "join" while announced or running, "play" once wrapped */}
         <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 z-20">
-          <a
-            href={jam.itchUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="jam-join-btn no-cursor block rounded-2xl px-8 py-5 text-center"
-            style={{ background: 'linear-gradient(180deg, var(--ripe), #c9e04a)' }}
-          >
-            <span className="font-bebas text-2xl sm:text-3xl tracking-wide text-(--blackberry)">
-              {counting ? 'JOIN ON ITCH' : 'PLAY THE ENTRIES'}
-            </span>
-          </a>
+          {(() => {
+            const label = (
+              <span className="font-bebas text-2xl sm:text-3xl tracking-wide text-(--blackberry)">
+                {counting ? 'JOIN ON ITCH' : 'PLAY THE ENTRIES'}
+              </span>
+            );
+            return jam.itchUrl ? (
+              <a
+                href={jam.itchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="jam-join-btn no-cursor block rounded-2xl px-8 py-5 text-center"
+                style={{ background: 'linear-gradient(180deg, var(--ripe), #c9e04a)' }}
+              >
+                {label}
+              </a>
+            ) : (
+              <span
+                role="link"
+                aria-disabled="true"
+                title="The itch.io page isn't up yet"
+                className="jam-join-btn-disabled block rounded-2xl px-8 py-5 text-center"
+              >
+                {label}
+              </span>
+            );
+          })()}
         </div>
       </div>
 
@@ -430,6 +447,12 @@ function TimelineCard({ jam, selected, status, onSelect, delay }: TimelineCardPr
     ? `${stats.participants} creators`
     : null;
   const containerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!selected) return;
+    containerRef.current?.scrollIntoView({ block: 'nearest', inline: 'center' });
+  }, [selected]);
+
   const revealRef = useRef<HTMLDivElement>(null);
   const target = useRef({ x: 0, y: 0, r: 0 });
   const current = useRef({ x: 0, y: 0, r: 0 });
@@ -623,8 +646,21 @@ function Timeline({
 ------------------------------------------------------------------- */
 
 function Jam() {
-  // null until an edition is picked, live jam is the default
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  // `?jam=<id>` picks an edition so past jams can be linked. live jam is the default
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedId = searchParams.get('jam');
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  const handleSelect = useCallback(
+    (id: string) => {
+      setSearchParams({ jam: id }, { preventScrollReset: true });
+      heroRef.current?.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        block: 'start',
+      });
+    },
+    [setSearchParams],
+  );
 
   // default view: whatever is running, or next one announced, or most recent edition
   const liveJam =
@@ -649,7 +685,7 @@ function Jam() {
           ) : (
             <>
               {/* header */}
-              <div className="flex flex-col items-center text-center mb-6">
+              <div ref={heroRef} className="scroll-mt-24 flex flex-col items-center text-center mb-6">
                 <span className="font-cascadia text-xs uppercase tracking-[0.35em] text-(--grape)">
                   game dev club club presents
                 </span>
@@ -661,7 +697,7 @@ function Jam() {
 
               <Hero jam={selected} status={getStatus(selected)} />
 
-              <Timeline editions={JAM_EDITIONS} selectedId={selected.id} onSelect={setSelectedId} />
+              <Timeline editions={JAM_EDITIONS} selectedId={selected.id} onSelect={handleSelect} />
 
               <p className="font-cascadia text-xs sm:text-sm text-(--grape)/80 text-center mt-5 max-w-2xl mx-auto">
                 Scroll the timeline to see all the game jams brought to you by GDCC.

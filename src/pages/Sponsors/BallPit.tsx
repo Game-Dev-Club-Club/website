@@ -1,4 +1,4 @@
-import { useRef, useEffect, type Dispatch, type SetStateAction } from "react"
+import { useRef, useEffect } from "react"
 
 import { createBallPit } from "./createBallPit"
 import type { Logo } from "./types"
@@ -6,10 +6,10 @@ import type { Logo } from "./types"
 interface BallPitProps {
   logos: Logo[];
   selectedIndex: number,
-  setSelectedIndex: Dispatch<SetStateAction<number>>
+  onSelect: (index: number) => void
 }
 
-export default function BallPit({ logos, selectedIndex, setSelectedIndex }: BallPitProps) {
+export default function BallPit({ logos, selectedIndex, onSelect }: BallPitProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const worldRef = useRef<HTMLDivElement>(null);
   const elRefs = useRef<(HTMLImageElement | null)[]>([]);
@@ -41,7 +41,7 @@ export default function BallPit({ logos, selectedIndex, setSelectedIndex }: Ball
             src={logo.src}
             alt={logo.alt}
             draggable={false}
-            onMouseDown={() => setSelectedIndex(i)}
+            onMouseDown={() => onSelect(i)}
           />
         ))}
       </div>

@@ -27,6 +27,7 @@ export interface Logo extends LogoPhysics {
   id: string;
   src: string;
   alt: string;
+  rigid?: boolean;  // static in the jar's shelf/banner instead of falling around :()
 }
 
 // The info shown beside the jar
@@ -34,13 +35,16 @@ export interface SponsorDetails {
   name: string;
   role: string;
   description: string;
+  url?: string;  // sponsor's site
 }
 
 export interface SponsorSpec extends Omit<Logo, 'src'> {
   file: string;          // file name inside src/assets/logos/, case-sensitive
+  cardFile?: string;     //alt image for the sponsor card, defaults to file
   info: SponsorDetails;
 }
 
 export interface Sponsor extends Logo {
+  cardSrc?: string;      // alt image for the sponsor card, defaults to `rc
   info: SponsorDetails;
 }

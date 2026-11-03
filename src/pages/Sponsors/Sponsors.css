@@ -2,8 +2,8 @@
 .pit {
   position: relative;
   width: 100%;
-  aspect-ratio: 2 / 3;
-  border-radius: 10%;
+  flex: 1;
+  min-height: 0;
 
   overflow: hidden;
   touch-action: none;
@@ -42,6 +42,38 @@
   border-radius: 10%;
 }
 
+/* clips shelf to jar's rounded corners (the lid sticks out so  jar itself cant clip) */
+.sponsor-jar-body {
+  aspect-ratio: 2 / 3;  /* jar size */
+  display: flex;
+  flex-direction: column;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+/* White rectangle at the top of the jar for thos with strict branding guidelines */
+.sponsor-jar-shelf {
+  width: 100%;
+  aspect-ratio: 5 / 1;
+  flex: none;
+  background: white;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 5%;
+  padding: 0 5% 2%;
+}
+
+/* Rigid logos */
+.sponsor-jar-shelf-logo {
+  max-width: 100%;
+  height: 65%;
+  object-fit: contain;
+  cursor: pointer;
+  user-select: none;
+}
+
 .sponsor-jar-lid {
   position: absolute;
   top: -18%;
@@ -51,5 +83,32 @@
 
 
 .sponsor-card {
-  background-color: #EF8C8B;
+  background-color: var(--strawberry4);
+}
+
+.sponsor-card-slide {
+  animation: sponsor-card-slide-in 0.3s ease-out;
+}
+
+@keyframes sponsor-card-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(5rem);
+  }
+}
+
+.sponsor-card-logo {
+  max-width: 18rem;
+  max-height: 6rem;
+  object-fit: contain;
+  user-select: none;
+}
+
+a > .sponsor-card-logo {
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+a > .sponsor-card-logo:hover {
+  transform: scale(1.05);
 }
