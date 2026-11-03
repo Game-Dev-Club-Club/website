@@ -17,12 +17,12 @@ function Home() {
               href="https://gdconf.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="relative z-[10000] block mx-auto max-w-full mb-12"
+              className="relative z-[10000] block self-stretch -mx-6 -mt-6 md:self-auto md:mx-auto md:mt-0 md:max-w-full mb-12"
             >
               <img
                 src={gdcBanner}
                 alt="GDC27 Community Web Ad"
-                className="block mx-auto max-w-full h-auto transition-transform duration-300 ease-out hover:scale-110"
+                className="block w-full md:w-auto mx-auto max-w-full h-auto transition-transform duration-300 ease-out md:hover:scale-110"
               />
             </a>
 
