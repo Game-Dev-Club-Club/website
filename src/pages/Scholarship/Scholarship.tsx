@@ -45,13 +45,13 @@ function Scholarship() {
             </div>
 
             <div>
-              <h2 className="text-2xl mb-3">Save the date: <b>Early January</b></h2>
+              {/* <h2 className="text-2xl mb-3">Save the date: <b>Early January</b></h2> */}
               <p className="text-sm sm:text-base leading-relaxed">
-                Thanks to our partnership with GDC, we will host another game jam
+                Thanks to our partnership with GDC Festival of Gaming, we will host another game jam
                  in early January with Festival passes as rewards! This game jam and its passes will support students from
                 underrepresented backgrounds and provide a safe space to learn new skills
                 in game development. We'll prioritize participants who need support attending
-                GDC and can bring a diverse perspective to the conference. <b>Stay tuned!</b>
+                GDC Festival of Gaming and can bring a diverse perspective to the conference. <b>Stay tuned!</b>
               </p>
             </div>
             {/* TODO: application link (google form?) */}
