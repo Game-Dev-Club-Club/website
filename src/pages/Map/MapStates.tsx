@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo, type ComponentProps } from "react";
 import { Geographies, Geography } from "react-simple-maps";
 import type { ZoomParams } from "./types";
 
@@ -100,7 +100,7 @@ const geoClass = useMemo(
   );
 
   return (
-    <Geographies geography={statesTopology}>
+    <Geographies geography={statesTopology as unknown as ComponentProps<typeof Geographies>["geography"]}>
       {({ geographies }) =>
         geographies.map((geo) => {
           const isActive = activeState === geo.rsmKey;
