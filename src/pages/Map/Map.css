@@ -15,6 +15,21 @@
     transform-origin: left bottom;
 }
 
+/* end anim*/
+@keyframes clubCountPulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+}
+
+.club-count-pulse {
+    animation: clubCountPulse 500ms ease-in-out 1;
+}
+
 .map-club-list-scroll {
     scrollbar-width: thin;
     scrollbar-color: transparent;
