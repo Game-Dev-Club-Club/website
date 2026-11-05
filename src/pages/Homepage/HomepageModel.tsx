@@ -4,27 +4,20 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
 
-interface InteractivePlaceholderProps {
+interface ModelProps {
   wrapperRef: React.RefObject<HTMLDivElement | null>;
 }
 
-function InteractiveStrawberry({
-  wrapperRef,
-  ...props
-}: InteractivePlaceholderProps) {
-  const groupRef = useRef<THREE.Group>(null);
-
-  const { scene } = useGLTF("/logo/JamJam_strawberries.glb");
-
-  // Deep clone so this instance is independent
-  const clonedScene = useMemo(() => SkeletonUtils.clone(scene), [scene]);
-
-  const globalMouse = useRef({ x: 0, y: 0 });
-
+function useMouseTilt(
+  wrapperRef: React.RefObject<HTMLDivElement | null>,
+  groupRef: React.RefObject<THREE.Group | null>,
+  baseRotation: THREE.Euler,
+  maxTiltX: number,
+  maxTiltY: number
+) {
+  const mouse = useRef({ x: 0, y: 0 });
   const targetRotation = useRef(new THREE.Euler());
   const targetQuaternion = useRef(new THREE.Quaternion());
-
-  const baseRotation = useMemo(() => new THREE.Euler(-0.6, 0, -0.1), []);
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
@@ -32,21 +25,42 @@ function InteractiveStrawberry({
 
       const rect = wrapperRef.current.getBoundingClientRect();
 
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-
-      const dx = event.clientX - centerX;
-      const dy = event.clientY - centerY;
+      const dx = event.clientX - (rect.left + rect.width / 2);
+      const dy = event.clientY - (rect.top + rect.height / 2);
 
       const radius = Math.max(rect.width, rect.height) * 1.5;
 
-      globalMouse.current.x = THREE.MathUtils.clamp(dx / radius, -1, 1);
-      globalMouse.current.y = THREE.MathUtils.clamp(-dy / radius, -1, 1);
+      mouse.current.x = THREE.MathUtils.clamp(dx / radius, -1, 1);
+      mouse.current.y = THREE.MathUtils.clamp(-dy / radius, -1, 1);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [wrapperRef]);
+
+  useFrame((_, delta) => {
+    if (!groupRef.current) return;
+    const { x, y } = mouse.current;
+    targetRotation.current.set(
+      baseRotation.x - y * maxTiltX,
+      baseRotation.y + x * maxTiltY,
+      baseRotation.z
+    );
+    targetQuaternion.current.setFromEuler(targetRotation.current);
+    groupRef.current.quaternion.slerp(
+      targetQuaternion.current,
+      1 - Math.exp(-5 * delta)
+    );
+  });
+}
+
+function InteractiveStrawberry({ wrapperRef, ...props }: ModelProps) {
+  const groupRef = useRef<THREE.Group>(null);
+  const { scene } = useGLTF("/logo/JamJam_strawberries.glb");
+  //deep clone so this instance is independent
+  const clonedScene = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+  const baseRotation = useMemo(() => new THREE.Euler(-0.6, 0, -0.1), []);
+  useMouseTilt(wrapperRef, groupRef, baseRotation, 0.2, 0.2);
 
   useEffect(() => {
     clonedScene.traverse((child) => {
@@ -65,31 +79,12 @@ function InteractiveStrawberry({
     });
   }, [clonedScene]);
 
-  useFrame((_, delta) => {
+  useFrame(({ clock }) => {
     if (!groupRef.current) return;
 
-    const { x, y } = globalMouse.current;
-
-    const maxTiltX = 0.2;
-    const maxTiltY = 0.2;
-
-    targetRotation.current.set(
-      baseRotation.x - y * maxTiltX,
-      baseRotation.y + x * maxTiltY,
-      baseRotation.z
-    );
-
-    targetQuaternion.current.setFromEuler(targetRotation.current);
-
-    groupRef.current.quaternion.slerp(
-      targetQuaternion.current,
-      1 - Math.exp(-5 * delta)
-    );
-
+    const time = clock.elapsedTime;
     // Floating animation (doesn't drift)
-    const time = performance.now() * 0.001;
     groupRef.current.position.y = -1 + Math.sin(time * 2.0) * 0.09;
-
     groupRef.current.position.x = Math.sin(time * 0.5) * 0.1;
   });
 
@@ -98,45 +93,19 @@ function InteractiveStrawberry({
   );
 }
 
-function Jar({ wrapperRef, ...props }: InteractivePlaceholderProps) {
+function Jar({ wrapperRef, ...props }: ModelProps) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF("/logo/JamJam_jar.glb");
 
   // Deep clone
   const clonedScene = useMemo(() => SkeletonUtils.clone(scene), [scene]);
 
-  // Mouse tracking refs
-  const globalMouse = useRef({ x: 0, y: 0 });
-  const targetRotation = useRef(new THREE.Euler());
-  const targetQuaternion = useRef(new THREE.Quaternion());
-
-  // Use the original hardcoded rotation as the base
   const baseRotation = useMemo(
     () => new THREE.Euler(0, Math.PI + 0.2, -0.2),
     []
   );
 
-  useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      if (!wrapperRef.current) return;
-
-      const rect = wrapperRef.current.getBoundingClientRect();
-
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-
-      const dx = event.clientX - centerX;
-      const dy = event.clientY - centerY;
-
-      const radius = Math.max(rect.width, rect.height) * 1.5;
-
-      globalMouse.current.x = THREE.MathUtils.clamp(dx / radius, -1, 1);
-      globalMouse.current.y = THREE.MathUtils.clamp(-dy / radius, -1, 1);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [wrapperRef]);
+  useMouseTilt(wrapperRef, groupRef, baseRotation, 0.03, 0.08);
 
   useEffect(() => {
     clonedScene.traverse((child) => {
@@ -183,30 +152,10 @@ function Jar({ wrapperRef, ...props }: InteractivePlaceholderProps) {
     });
   }, [clonedScene]);
 
-  useFrame((_, delta) => {
+  useFrame(({ clock }) => {
     if (!groupRef.current) return;
 
-    const { x, y } = globalMouse.current;
-
-    const maxTiltX = 0.03;
-    const maxTiltY = 0.08;
-
-    targetRotation.current.set(
-      baseRotation.x - y * maxTiltX,
-      baseRotation.y + x * maxTiltY,
-      baseRotation.z
-    );
-
-    targetQuaternion.current.setFromEuler(targetRotation.current);
-
-    groupRef.current.quaternion.slerp(
-      targetQuaternion.current,
-      1 - Math.exp(-5 * delta)
-    );
-
-    // Floating animation (doesn't drift)
-    const time = performance.now() * 0.001;
-    groupRef.current.position.y = -0.5 + Math.sin(time * 2.0) * 0.09;
+    groupRef.current.position.y = -0.5 + Math.sin(clock.elapsedTime * 2.0) * 0.09;
   });
 
   return (
@@ -254,7 +203,7 @@ function HomepageModel() {
 
           {/* Suspense prevents the models from trying to render before GLTFs are fully parsed */}
           <Suspense fallback={null}>
-            {/* nudge the model so that it's visually centered 
+            {/* nudge the model so that it's visually centered
                (the jar previously leaned right of its origin) */}
             <group position={[1.1, 0, 0]}>
               <Jar wrapperRef={wrapperRef} />
@@ -271,4 +220,3 @@ useGLTF.preload("/logo/JamJam_jar.glb");
 useGLTF.preload("/logo/JamJam_strawberries.glb");
 
 export default HomepageModel;
-
