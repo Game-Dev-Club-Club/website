@@ -51,7 +51,7 @@ function Scholarship() {
                  in early January with Festival passes as rewards! This game jam and its passes will support students from
                 underrepresented backgrounds and provide a safe space to learn new skills
                 in game development. We'll prioritize participants who need support attending
-                GDC Festival of Gaming and can bring a diverse perspective to the conference. <b>Stay tuned!</b>
+                GDC Festival of Gaming and can bring a diverse perspective to the conference in March. <b>Stay tuned!</b>
               </p>
             </div>
             {/* TODO: application link (google form?) */}
