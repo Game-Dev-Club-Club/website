@@ -79,17 +79,75 @@ function InteractiveStrawberry({ wrapperRef, ...props }: ModelProps) {
     });
   }, [clonedScene]);
 
-  useFrame(({ clock }) => {
-    if (!groupRef.current) return;
+  // i chose to make the strawberry spin rather than the jar since they're separate
+  // strawberry renders in front of jar
+  const outerRef = useRef<THREE.Group>(null);
+
+  const spin = useRef({ angle: 0, target: 0, velocity: 0 });
+  const SPIN_ACCEL = 32;
+  const SPIN_MAX_SPEED = 16; // rad
+  const SPIN_SETTLE = 6;
+
+  const baseScale = useRef(1);
+  const pulseProgress = useRef<number | null>(null);
+  useEffect(() => () => void (document.body.style.cursor = ""), []);
+
+  useFrame(({ clock }, delta) => {
+    if (!outerRef.current) return;
+    // Srink to 0.8x while spinning
+    const targetScale = spin.current.target > 0 ? 0.8 : 1;
+    baseScale.current = THREE.MathUtils.damp(baseScale.current, targetScale, 5, delta);
+    //this is the quick hover pulse
+    let pulse = 1;
+    if (pulseProgress.current !== null) {
+      pulseProgress.current = Math.min(1, pulseProgress.current + delta / 0.3);
+      pulse = 1 + 0.03 * Math.sin(Math.PI * pulseProgress.current);
+      if (pulseProgress.current >= 1) pulseProgress.current = null;
+    }
+    outerRef.current.scale.setScalar(baseScale.current * pulse);
 
     const time = clock.elapsedTime;
     // Floating animation (doesn't drift)
-    groupRef.current.position.y = -1 + Math.sin(time * 2.0) * 0.09;
-    groupRef.current.position.x = Math.sin(time * 0.5) * 0.1;
+    outerRef.current.position.y = -1 + Math.sin(time * 2.0) * 0.09;
+    outerRef.current.position.x = Math.sin(time * 0.5) * 0.1;
+
+    // Full 360 around Y
+    const s = spin.current;
+    if (s.target > 0) {
+      const remaining = s.target - s.angle; //slows based on remaining angle
+      const rem = Math.max(remaining, 0);
+      const desired = Math.min(SPIN_MAX_SPEED, SPIN_SETTLE * rem);
+      s.velocity = Math.min(desired, s.velocity + SPIN_ACCEL * delta);
+      s.angle += s.velocity * delta;
+
+      // in case there are hanging floats
+      if (s.angle >= s.target - 0.01) {
+        s.angle = 0;
+        s.target = 0;
+        s.velocity = 0;
+      }
+      outerRef.current.rotation.y = s.angle;
+    }
   });
 
   return (
-    <primitive ref={groupRef} object={clonedScene} scale={0.67} {...props} />
+    <group
+      ref={outerRef}
+      onClick={() => {
+        // spin: each click adds 2pi
+        // with accel limits so ppl can spam click for funsies
+        spin.current.target += Math.PI * 2;
+      }}
+      onPointerOver={() => {
+        if (pulseProgress.current === null) pulseProgress.current = 0;
+        document.body.style.cursor = "pointer";
+      }}
+      onPointerOut={() => {
+        document.body.style.cursor = "";
+      }}
+    >
+      <primitive ref={groupRef} object={clonedScene} scale={0.67} {...props} />
+    </group>
   );
 }
 
