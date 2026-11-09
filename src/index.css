@@ -85,6 +85,10 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  /* these fix the dark orange that covers the moving grid
+  when Dark Reader is used */
+  position: relative;
+  z-index: 0;
 }
 
 @media (max-width: 768px) {
