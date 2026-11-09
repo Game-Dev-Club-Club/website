@@ -121,6 +121,8 @@ function Map() {
 
   const resetZoom = () => {
     sessionStorage.setItem("skipMapLoad", "true");
+    setActiveState(null);
+    setZoomStage(0);
     setZoomParams({
       x: 0,
       y: 0,
