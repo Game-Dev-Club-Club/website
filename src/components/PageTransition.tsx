@@ -37,9 +37,17 @@ export default function PageTransition({ children }: PageTransitionProps) {
 
       {/* 1. THE OVERLAY */}
       <motion.div
+        
         className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[var(--blackberry)]"
+        /*
         initial={{ y: 0 }}
         animate={{ y: "-100vh" }}
+        */
+        // something I kept delaying is making the hamburger menu more obvious
+        // the idea is to change the transition to a massive circle that shrinks to top left corner
+        // should draw the user's eye
+        initial={{ clipPath: "circle(150% at 0% 0%)" }}
+        animate={{ clipPath: "circle(0% at 0% 0%)" }}
         transition={{
           duration: 0.8,
           ease: "easeInOut",
