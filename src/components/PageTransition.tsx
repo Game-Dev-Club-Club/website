@@ -46,7 +46,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
         // something I kept delaying is making the hamburger menu more obvious
         // the idea is to change the transition to a massive circle that shrinks to top left corner
         // should draw the user's eye
-        initial={{ clipPath: "circle(150% at 0% 0%)" }}
+        initial={{ clipPath: "circle(142% at 0% 0%)" }}
         animate={{ clipPath: "circle(0% at 0% 0%)" }}
         transition={{
           duration: 0.8,
